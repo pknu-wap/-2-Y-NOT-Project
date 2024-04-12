@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'successPage.dart';
 import 'user.dart';
+import 'join_submit.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -19,22 +21,22 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const MyHomePage(),
-          '/success': (context) => const SuccessPage(),
+          '/': (context) => const LoginPage(),
+          '/success': (context) => const Main_Page()
         });
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
   final _key = GlobalKey<FormState>();
-  late String _username, _email;
+  late String _username, _pwd;
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               usernameInput(),
-              const SizedBox(
-                height: 15,
-              ),
-              emailInput(),
-              const SizedBox(height: 200),
+              const SizedBox(height: 15),
+              pwdInput(),
+              const SizedBox(height: 150),
+              loginButton(),
+              const SizedBox(height: 10),
               submitButton(),
+              const SizedBox(height: 10)
             ],
           ),
         ),
@@ -81,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget emailInput() {
+  Widget pwdInput() {
     return TextFormField(
       autofocus: true,
       validator: (val) {
@@ -91,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return null;
         }
       },
-      onSaved: (email) => _email = email as String,
+      onSaved: (email) => _pwd = email as String,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         labelText: '비밀번호',
@@ -103,19 +106,33 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget submitButton() {
+  Widget loginButton() {
     return ElevatedButton(
       onPressed: () {
         if (_key.currentState!.validate()) {
           _key.currentState!.save();
           Navigator.pushNamed(context, '/success',
-              arguments: User(_username, _email));
+              arguments: User(_username, _pwd));
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: const Text(
           "로그인",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget submitButton() {
+    return ElevatedButton(
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => join_submit())),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "회원가입",
           style: TextStyle(
             fontSize: 18,
           ),

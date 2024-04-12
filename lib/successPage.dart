@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
 import 'user.dart';
 
-class SuccessPage extends StatefulWidget {
-  const SuccessPage({super.key});
+class Main_Page extends StatefulWidget {
+  const Main_Page({super.key});
   @override
-  State<SuccessPage> createState() => _SuccessPageState();
+  State<Main_Page> createState() => _Main_PageState();
 }
 
-
-class _SuccessPageState extends State<SuccessPage> {
+class _Main_PageState extends State<Main_Page> {
   @override
+
   Widget build(BuildContext context) {
-    final User args = ModalRoute.of(context)!.settings.arguments as User;
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(
-            Icons.arrow_back_ios,
+    final ThemeData themeData = ThemeData(useMaterial3: true);
+    return MaterialApp(
+      theme: themeData,
+      home: Scaffold(
+        body: Container(
+          margin: const EdgeInsets.only(top:50),
+          padding: const EdgeInsets.all(10.0),
+          child: SearchBar(
+            trailing:[Icon(Icons.search)]
           ),
-        ),
-        title: const Text("Test App"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("로그인 성공"),
-            Text("아이디: ${args.username}"),
-            Text("비밀번호: ${args.email}"),
-          ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+
 }

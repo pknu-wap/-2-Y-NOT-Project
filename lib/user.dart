@@ -1,5 +1,5 @@
 class User {
   final String username;
-  final String email;
-  User(this.username, this.email);
+  final String pwd;
+  User(this.username, this.pwd);
 }
