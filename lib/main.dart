@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'successPage.dart';
-import 'user.dart';
-import 'join_submit.dart';
+import 'package:flutter_01/successPage.dart';
+import 'package:flutter_01/user.dart';
+import 'package:flutter_01/join_submit.dart';
 
 
 void main() {
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
   }
   Widget submitButton() {
     return ElevatedButton(
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => join_submit())),
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => JoinWidget())),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: const Text(
