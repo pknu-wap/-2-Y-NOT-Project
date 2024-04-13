@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 name: flutter_01
-=======
-name: booking
->>>>>>> 914c06af42073a13b616be54ce46b62bf30b57ea
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -23,11 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-<<<<<<< HEAD
   sdk: '>=3.3.3 <4.0.0'
-=======
-  sdk: '>=3.3.1 <4.0.0'
->>>>>>> 914c06af42073a13b616be54ce46b62bf30b57ea
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -65,11 +57,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-<<<<<<< HEAD
   assets:
   - image/
-=======
->>>>>>> 914c06af42073a13b616be54ce46b62bf30b57ea
 
   # To add assets to your application, add an assets section, like this:
   # assets:
