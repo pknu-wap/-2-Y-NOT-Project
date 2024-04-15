@@ -194,7 +194,7 @@ class SignUpSuccessScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('가입 완료'),
-        ),a
+        ),
         body: Center(
     child: Text('회원 가입이 완료되었습니다!'),
     ),
