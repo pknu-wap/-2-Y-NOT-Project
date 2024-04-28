@@ -1,8 +1,7 @@
 # 앱 2팀 Y-NOT
 
-부경대생을 위한 중고서적거래앱을 개발하고 있습니다	7
+부경대생을 위한 중고서적거래앱을 개발하고 있습니다
 
-#팀원
 ## Team
 |<img src="https://avatars.githubusercontent.com/u/163727539?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/152063735?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/87307176?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163748942?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|
