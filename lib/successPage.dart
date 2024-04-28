@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/user.dart';
+import 'package:flutter_01/Save_space.dart';
 
 class Main_Page extends StatefulWidget {
   const Main_Page({super.key});
@@ -9,79 +9,101 @@ class Main_Page extends StatefulWidget {
 
 class _Main_PageState extends State<Main_Page> {
   @override
-
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
     return MaterialApp(
       theme: themeData,
       home: Scaffold(
         body: Container(
-          margin: const EdgeInsets.only(top:50),
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children:[
-              Container(
-                child:Row(
-                  children:[
-                    Container(
-                      padding:const EdgeInsets.only(left:300),
-                      child: const Icon(Icons.bookmark_outline_outlined),
-                    ),
-                    Container(
-                      padding:const EdgeInsets.only(left:10),
-                       child: const Icon(Icons.notifications_none),
-                    ),
-                   ],
-                 )
-              ),
-              Container(
-                padding:const EdgeInsets.only(top:20),
-                child: const SearchBar(
-                    trailing:[Icon(Icons.search)]
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top:30,bottom:5,right:180),
-                child: const Text(
-                  "User님의 활동내역",
-                  style: TextStyle(
-                    fontSize: 18,),),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      child: Image.asset('image/picture_1.png',height:150,width:150),
-                      padding:EdgeInsets.all(10)
-                    ),
-                    Container(
-                        child: Image.asset('image/picture_2.png',height:150,width:150),
-                        padding:EdgeInsets.all(10)
-                    ),
-                    Container(
-                        child: Image.asset('image/picture_3.png',height:150,width:150),
-                        padding:EdgeInsets.all(10)
-                    ),
-                    Container(
-                        child: Image.asset('image/picture_4.png',height:150,width:150),
-                        padding:EdgeInsets.all(10)
-                    ),
-                    Container(
-                        child: Image.asset('image/picture_5.png',height:150,width:150),
-                        padding:EdgeInsets.all(10)
-                    ),
-                  ],
-                ),
-              ),
+            margin: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+                children: [
+                  const SizedBox(width:400),
+                  SaveCon(),
+                  const SizedBox(width:3),
+                  AlarmCon(),
+                  const SizedBox(height: 20),
+                  SearchB(),
+                  const SizedBox(height: 100)
 
-            ]
-          )
+                ]
+            ),
         ),
       ),
     );
   }
+  Widget Recent_text(){
+    return TextFormField(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'User 활동내역',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+  Widget Recent_Activity(){
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+              child: Image.asset(
+                  'image/picture_1.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)
+          ),
+          Container(
+              child: Image.asset(
+                  'image/picture_2.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)
+          ),
+          Container(
+              child: Image.asset(
+                  'image/picture_3.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)
+          ),
+          Container(
+              child: Image.asset(
+                  'image/picture_4.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)
+          ),
+          Container(
+              child: Image.asset(
+                  'image/picture_5.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)
+          ),
+        ],
+      ),
+    );
+  }
+  Widget SaveCon(){
+    return IconButton(onPressed: (){
+      Navigator.push(context,MaterialPageRoute(builder:(context) => SaveSpace()),
+      );
+    },
+        icon:Icon(Icons.bookmark_outline_outlined));
+  }
+  Widget SearchB(){
+    return SearchBar(
+      leading: Icon(Icons.search)
+    );
+  }
+  Widget SearchCon(){
+    return IconButton(
+      icon: Icon(Icons.search),
+      iconSize: 30,
+      onPressed: null,
+    );
+  }
+
+  Widget AlarmCon(){
+    return IconButton(
+      icon: Icon(Icons.notifications_none),
+      iconSize: 30,
+      onPressed: null,
+    );
+  }
 }
-
-
-
