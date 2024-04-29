@@ -3,6 +3,7 @@ import 'package:flutter_01/Save_space.dart';
 
 class Main_Page extends StatefulWidget {
   const Main_Page({super.key});
+
   @override
   State<Main_Page> createState() => _Main_PageState();
 }
@@ -15,28 +16,36 @@ class _Main_PageState extends State<Main_Page> {
       theme: themeData,
       home: Scaffold(
         body: Container(
-            margin: const EdgeInsets.only(top: 50),
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                children: [
-                  const SizedBox(width:400),
-                  SaveCon(),
-                  const SizedBox(width:3),
-                  AlarmCon(),
-                  const SizedBox(height: 20),
-                  SearchB(),
-                  const SizedBox(height: 100)
+          margin: const EdgeInsets.only(top: 50),
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+              children: [
+                Row(
+                    children: [
+                      const SizedBox(width: 270),
+                      SaveCon(),
+                      const SizedBox(width: 1),
+                      AlarmCon(),
+                      const SizedBox(height: 20),
+                    ]
+                ),
+                SearchB(),
+                const SizedBox(height: 10),
+                Recent_text(),
+                Recent_Activity(),
+                Find_text(),
 
-                ]
-            ),
+              ]
+          ),
         ),
       ),
     );
   }
-  Widget Recent_text(){
+
+  Widget Recent_text() {
     return TextFormField(
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+        border: InputBorder.none,
         labelText: 'User 활동내역',
         labelStyle: TextStyle(
           fontSize: 18,
@@ -45,7 +54,27 @@ class _Main_PageState extends State<Main_Page> {
       ),
     );
   }
-  Widget Recent_Activity(){
+
+  Widget Find_Activity(){
+    return SingleChildScrollView(
+
+    );
+  }
+
+  Widget Find_text() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        labelText: '찾고 계시는 책이 있나요?',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget Recent_Activity() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -79,19 +108,23 @@ class _Main_PageState extends State<Main_Page> {
       ),
     );
   }
-  Widget SaveCon(){
-    return IconButton(onPressed: (){
-      Navigator.push(context,MaterialPageRoute(builder:(context) => SaveSpace()),
+
+  Widget SaveCon() {
+    return IconButton(onPressed: () {
+      Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SaveSpace()),
       );
     },
-        icon:Icon(Icons.bookmark_outline_outlined));
+        icon: Icon(Icons.bookmark_outline_outlined));
   }
-  Widget SearchB(){
+
+  Widget SearchB() {
     return SearchBar(
-      leading: Icon(Icons.search)
+        leading: Icon(Icons.search)
     );
   }
-  Widget SearchCon(){
+
+  Widget SearchCon() {
     return IconButton(
       icon: Icon(Icons.search),
       iconSize: 30,
@@ -99,7 +132,7 @@ class _Main_PageState extends State<Main_Page> {
     );
   }
 
-  Widget AlarmCon(){
+  Widget AlarmCon() {
     return IconButton(
       icon: Icon(Icons.notifications_none),
       iconSize: 30,
