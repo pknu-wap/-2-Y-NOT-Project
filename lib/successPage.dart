@@ -47,6 +47,7 @@ class _Main_PageState extends State<Main_Page> {
       decoration: const InputDecoration(
         border: InputBorder.none,
         labelText: 'User 활동내역',
+
         labelStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
