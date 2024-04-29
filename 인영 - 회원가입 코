@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       title: '회원 가입',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFFE4D02), // 상단바 배경 색상
+          backgroundColor: Color(0xFFFE4D02), // 상단바 배경 색
         ),
       ),
       home: SignUpForm(),
@@ -53,7 +53,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     labelText: '사용자 이름',
                     hintText: '닉네임',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리를 더 둥글게 만듭니다.
+                      borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                     ), // 입력 창 테두리 설정
                   ),
                   validator: (value) {
@@ -131,9 +131,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpSuccessScreen()),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('회원 가입 완료!')),
                       );
                     }
                   },
@@ -144,23 +143,25 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색상
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색상
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
+                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백
                     shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게 만들기 위한 값 조절
+                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 8.0), // 취소 버튼과의 간격
+              SizedBox(height: 8.0), // 취소 버튼과 간격
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // 이전 화면으로 돌아가는 기능
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('취소 버튼이 눌렸습니다!')),
+                    );
                   },
                   child: Container(
                     height: 48.0,
@@ -169,12 +170,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색상
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색상
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
+                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백
                     shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게 만들기 위한 값 조절
+                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게
                       ),
                     ),
                   ),
@@ -187,18 +188,3 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
-
-class SignUpSuccessScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('가입 완료'),
-        ),
-        body: Center(
-    child: Text('회원 가입이 완료되었습니다!'),
-    ),
-    );
-  }
-}
-// develop 예시
