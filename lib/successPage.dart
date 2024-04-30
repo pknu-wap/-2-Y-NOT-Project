@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
+import 'package:flutter_01/Alarm_space.dart';
 
 class Main_Page extends StatefulWidget {
   const Main_Page({super.key});
@@ -15,6 +16,7 @@ class _Main_PageState extends State<Main_Page> {
     return MaterialApp(
       theme: themeData,
       home: Scaffold(
+        backgroundColor: Colors.white,
         body: Container(
           margin: const EdgeInsets.only(top: 50),
           padding: const EdgeInsets.all(10.0),
@@ -29,11 +31,17 @@ class _Main_PageState extends State<Main_Page> {
               ]),
               SearchB(),
               const SizedBox(height: 10),
-              Recent_text(),
+              Row(children:[
+                Recent_text(),
+              ]),
               Recent_Activity(),
-              Find_text(),
+              Row(children:[
+                Find_text(),
+              ]),
               Find_Activity(),
-              Realtime_text(),
+              Row(children:[
+                Realtime_text(),
+              ]),
               Realtime_Activity(),
             ]),
           ),
@@ -43,41 +51,37 @@ class _Main_PageState extends State<Main_Page> {
   }
 
   Widget Recent_text() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        labelText: 'User 활동내역',
-
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      'User 활동 내역',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
       ),
     );
   }
 
   Widget Find_text() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        labelText: '찾고 계시는 책이 있나요?',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      '찾고 계시는 책이 있나요?',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
       ),
     );
   }
 
   Widget Realtime_text() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        labelText: '실시간 최근 올라온 책들',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      '실시간 최근 올라온 책들',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
       ),
     );
   }
@@ -181,26 +185,30 @@ class _Main_PageState extends State<Main_Page> {
             MaterialPageRoute(builder: (context) => SaveSpace()),
           );
         },
+        color: Colors.orangeAccent,
         icon: Icon(Icons.bookmark_outline_outlined));
-  }
-
-  Widget SearchB() {
-    return SearchBar(leading: Icon(Icons.search));
-  }
-
-  Widget SearchCon() {
-    return IconButton(
-      icon: Icon(Icons.search),
-      iconSize: 30,
-      onPressed: null,
-    );
   }
 
   Widget AlarmCon() {
     return IconButton(
+      onPressed: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AlarmSpace()),
+        );
+      },
       icon: Icon(Icons.notifications_none),
       iconSize: 30,
-      onPressed: null,
+
+      color: Colors.orangeAccent,
     );
   }
+
+  Widget SearchB() {
+    return SearchBar(
+        leading: Icon(Icons.search),
+        hintText: "검색어를 입력하세요",
+        backgroundColor: MaterialStatePropertyAll(Colors.white70));
+  }
 }
+
