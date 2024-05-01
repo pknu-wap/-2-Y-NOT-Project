@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/user.dart';
 import 'package:flutter_01/join_submit.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const LoginPage(),
-          '/success': (context) => const Main_Page()
+          '/success': (context) => BookList()
         });
   }
 }
