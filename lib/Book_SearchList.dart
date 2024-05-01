@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'package:flutter_01/loginPage.dart';
 
-class Booklist extends StatelessWidget {
-  final BuildContext context;
-  Booklist({required this.context});
+class BookList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -21,11 +19,14 @@ class Booklist extends StatelessWidget {
                 Row(
                   children: [
                     BackButton(context: context),
+                    const SizedBox(width: 250),
                     AlarmCon(context: context),
                   ],
                 ),
                 SearchB(),
-
+                const SizedBox(height: 20),
+                //Text("here")
+                Resultblank(),
               ],
             ),
           ),
@@ -69,9 +70,67 @@ class Booklist extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
   }
 
-  Widget Resultblank(){
-    return Scaffold(
-
-    );
+  Widget Resultblank() {
+    return Container(
+        child: Row(
+            children: [
+              Image.asset('image/picture_1.png', height: 150, width: 150),
+              SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '공학경제개론',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '박찬석, 최성호 저자(글)',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '청람',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '29,000원',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '#쑤박',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.orangeAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Icon(Icons.bookmark_outline_outlined,
+                        color: Colors.orangeAccent);
+                  },
+                  icon: Icon(Icons.bookmark_outline_outlined)),
+            ],
+          ),
+        );
   }
 }
