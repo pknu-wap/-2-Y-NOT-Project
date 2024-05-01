@@ -4,29 +4,6 @@ import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/user.dart';
 import 'package:flutter_01/join_submit.dart';
 
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const LoginPage(),
-          '/success': (context) => BookList()
-        });
-  }
-}
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
