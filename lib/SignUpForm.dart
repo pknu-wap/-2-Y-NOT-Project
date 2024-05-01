@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/loginPage.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -126,7 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpSuccessScreen()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     }
                   },
