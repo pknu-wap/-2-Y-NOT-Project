@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
 
@@ -32,15 +31,15 @@ class _Main_PageState extends State<Main_Page> {
               ]),
               SearchB(),
               const SizedBox(height: 10),
-              Row(children:[
+              Row(children: [
                 Recent_text(),
               ]),
               Recent_Activity(),
-              Row(children:[
+              Row(children: [
                 Find_text(),
               ]),
               Find_Activity(),
-              Row(children:[
+              Row(children: [
                 Realtime_text(),
               ]),
               Realtime_Activity(),
@@ -103,15 +102,15 @@ class _Main_PageState extends State<Main_Page> {
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.png', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.png', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.png', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -133,15 +132,15 @@ class _Main_PageState extends State<Main_Page> {
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.png', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.png', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.png', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -163,15 +162,15 @@ class _Main_PageState extends State<Main_Page> {
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.png', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.png', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.png', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -192,7 +191,7 @@ class _Main_PageState extends State<Main_Page> {
 
   Widget AlarmCon() {
     return IconButton(
-      onPressed: (){
+      onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AlarmSpace()),
@@ -211,4 +210,3 @@ class _Main_PageState extends State<Main_Page> {
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
   }
 }
-
