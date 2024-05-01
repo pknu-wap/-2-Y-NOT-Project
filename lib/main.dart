@@ -31,6 +31,23 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
 
+  // 이메일 형식을 확인하는 정규 표현식
+  RegExp emailRegex = RegExp(
+    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    caseSensitive: false,
+    multiLine: false,
+  );
+
+  // 이메일 유효성 검사 함수
+  String? validateEmail(String? value) {
+    if (value?.isEmpty ?? true) {
+      return '이메일을 입력하세요';
+    } else if (!emailRegex.hasMatch(value!)) {
+      return '올바른 이메일 형식이 아닙니다';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,12 +113,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                     ), // 입력 창 테두리 설정
                   ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return '이메일을 입력하세요';
-                    }
-                    return null;
-                  },
+                  validator: validateEmail, // 이메일 유효성 검사
                 ),
               ),
               SizedBox(height: 8.0),
@@ -192,13 +204,12 @@ class SignUpSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('가입 완료'),
-        ),
-        body: Center(
-    child: Text('회원 가입이 완료되었습니다!'),
-    ),
+      appBar: AppBar(
+        title: Text('가입 완료'),
+      ),
+      body: Center(
+        child: Text('회원 가입이 완료되었습니다!'),
+      ),
     );
   }
 }
-// develop 예시
