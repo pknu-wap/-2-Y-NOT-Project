@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'Searchresult.dart';
 
 class BookList extends StatelessWidget {
+  final searchresult data;
+  const BookList({Key? key, required this.data}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -24,8 +27,7 @@ class BookList extends StatelessWidget {
                 ),
                 SearchB(),
                 const SizedBox(height: 20),
-                //Text("here")
-                Resultblank(),
+                Resultblank(5),
               ],
             ),
           ),
@@ -69,9 +71,9 @@ class BookList extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
   }
 
-  Widget Resultblank() {
-    return Container(
-        child: Row(
+  Widget Resultblank(int index) {
+    return ListView(
+        prototypeItem: Row(
             children: [
               Image.asset('image/picture_1.png', height: 150, width: 150),
               SizedBox(width: 20),
@@ -80,7 +82,7 @@ class BookList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '공학경제개론',
+                      '${searchresult[index]['subject']}',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
