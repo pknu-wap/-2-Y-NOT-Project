@@ -23,7 +23,7 @@ class _Main_PageState extends State<Main_Page> {
           child: SingleChildScrollView(
             child: Column(children: [
               Row(children: [
-                const SizedBox(width: 270),
+                const SizedBox(width: 300),
                 SaveCon(),
                 const SizedBox(width: 1),
                 AlarmCon(),
@@ -202,11 +202,17 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-
+  String? inputText;
   Widget SearchB() {
     return SearchBar(
+      onSubmitted: (value){
+        setState(() => inputText = value);
+        print('Input Text = $inputText');
+      } ,
         leading: Icon(Icons.search),
         hintText: "검색어를 입력하세요",
-        backgroundColor: MaterialStatePropertyAll(Colors.white70));
+        backgroundColor: MaterialStatePropertyAll(Colors.white70),
+    );
+
   }
 }
