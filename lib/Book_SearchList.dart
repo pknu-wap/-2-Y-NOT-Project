@@ -71,65 +71,65 @@ class BookList extends StatelessWidget {
 
   Widget Resultblank() {
     return Container(
-        child: Row(
-            children: [
-              Image.asset('image/picture_1.png', height: 150, width: 150),
-              SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        children: [
+          Image.asset('image/picture_1.png', height: 150, width: 150),
+          SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '공학경제개론',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '박찬석, 최성호 저자(글)',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '청람',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '29,000원',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                Row(
                   children: [
                     Text(
-                      '공학경제개론',
+                      '#쑤박',
                       style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        fontSize: 13,
+                        color: Colors.orangeAccent,
                       ),
-                    ),
-                    Text(
-                      '박찬석, 최성호 저자(글)',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      '청람',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      '29,000원',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '#쑤박',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.orangeAccent,
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    Icon(Icons.bookmark_outline_outlined,
-                        color: Colors.orangeAccent);
-                  },
-                  icon: Icon(Icons.bookmark_outline_outlined)),
-            ],
+              ],
+            ),
           ),
-        );
+          IconButton(
+              onPressed: () {
+                Icon(Icons.bookmark_outline_outlined,
+                    color: Colors.orangeAccent);
+              },
+              icon: Icon(Icons.bookmark_outline_outlined)),
+        ],
+      ),
+    );
   }
 }
