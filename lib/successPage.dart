@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'Searchresult.dart';
+import 'Book_SearchList.dart';
 
 class Main_Page extends StatefulWidget {
   const Main_Page({super.key});
@@ -10,6 +12,8 @@ class Main_Page extends StatefulWidget {
 }
 
 class _Main_PageState extends State<Main_Page> {
+  String? Stext;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -23,7 +27,7 @@ class _Main_PageState extends State<Main_Page> {
           child: SingleChildScrollView(
             child: Column(children: [
               Row(children: [
-                const SizedBox(width: 270),
+                const SizedBox(width: 300),
                 SaveCon(),
                 const SizedBox(width: 1),
                 AlarmCon(),
@@ -202,11 +206,34 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-
+  /*List<searchresult> searchResults = [];
+  void searchList(String query){
+    final results = searchResults.where((product) => product.subject.contains(query)).toList();
+    setState(() {
+      searchResults = results;
+    });
+  }
+  String? inputText;*/
   Widget SearchB() {
     return SearchBar(
-        leading: Icon(Icons.search),
+      /*onSubmitted: (value){
+        setState(() => inputText = value);
+        Stext=inputText;
+        //print('Input Text = $inputText');
+      } ,*/
+        leading: IconButton(icon: Icon(Icons.search),
+          onPressed:(){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookList(/*Searchresult: searchresult(subject: inputText)*/),
+              ),
+            );
+          }
+        ),
         hintText: "검색어를 입력하세요",
-        backgroundColor: MaterialStatePropertyAll(Colors.white70));
+        backgroundColor: MaterialStatePropertyAll(Colors.white70),
+    );
+
   }
 }
