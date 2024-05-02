@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/loginPage.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -127,7 +128,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => Main_Page()),
                       );
                     }
                   },

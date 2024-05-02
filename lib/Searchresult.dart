@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 class searchresult{
   final String subject;
   final String auther;
