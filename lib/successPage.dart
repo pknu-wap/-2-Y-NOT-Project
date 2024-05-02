@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'Searchresult.dart';
+import 'Book_SearchList.dart';
 
 class Main_Page extends StatefulWidget {
   const Main_Page({super.key});
@@ -10,6 +12,8 @@ class Main_Page extends StatefulWidget {
 }
 
 class _Main_PageState extends State<Main_Page> {
+  String? Stext;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -202,14 +206,31 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-  String? inputText;
+  /*List<searchresult> searchResults = [];
+  void searchList(String query){
+    final results = searchResults.where((product) => product.subject.contains(query)).toList();
+    setState(() {
+      searchResults = results;
+    });
+  }
+  String? inputText;*/
   Widget SearchB() {
     return SearchBar(
-      onSubmitted: (value){
+      /*onSubmitted: (value){
         setState(() => inputText = value);
-        print('Input Text = $inputText');
-      } ,
-        leading: Icon(Icons.search),
+        Stext=inputText;
+        //print('Input Text = $inputText');
+      } ,*/
+        leading: IconButton(icon: Icon(Icons.search),
+          onPressed:(){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookList(/*Searchresult: searchresult(subject: inputText)*/),
+              ),
+            );
+          }
+        ),
         hintText: "검색어를 입력하세요",
         backgroundColor: MaterialStatePropertyAll(Colors.white70),
     );
