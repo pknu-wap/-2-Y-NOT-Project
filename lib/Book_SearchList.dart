@@ -4,8 +4,8 @@ import 'package:flutter_01/Alarm_space.dart';
 import 'Searchresult.dart';
 
 class BookList extends StatelessWidget {
-  final searchresult data;
-  const BookList({Key? key, required this.data}) : super(key: key);
+  //final searchresult Searchresult;
+  const BookList({Key? key, /*required this.Searchresult*/}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -27,7 +27,7 @@ class BookList extends StatelessWidget {
                 ),
                 SearchB(),
                 const SizedBox(height: 20),
-                Resultblank(5),
+                Resultblank(),
               ],
             ),
           ),
@@ -71,7 +71,7 @@ class BookList extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
   }
 
-  Widget Resultblank(int index) {
+  Widget Resultblank() {
     return ListView(
         prototypeItem: Row(
             children: [
@@ -82,7 +82,8 @@ class BookList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${searchresult[index]['subject']}',
+                      //'${Searchresult.subject}'
+                      ' ',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
