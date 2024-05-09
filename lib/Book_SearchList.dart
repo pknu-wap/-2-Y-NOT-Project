@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'Searchresult.dart';
 
 class BookList extends StatelessWidget {
+  final searchresult Searchresult;
+
+  BookList({Key? key, required this.Searchresult}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
+    debugPrint(Searchresult.subject);
     return MaterialApp(
       theme: ThemeData(),
       home: Scaffold(
@@ -24,7 +30,6 @@ class BookList extends StatelessWidget {
                 ),
                 SearchB(),
                 const SizedBox(height: 20),
-                //Text("here")
                 Resultblank(),
               ],
             ),
@@ -70,66 +75,57 @@ class BookList extends StatelessWidget {
   }
 
   Widget Resultblank() {
-    return Container(
-      child: Row(
-        children: [
-          Image.asset('image/picture_1.png', height: 150, width: 150),
-          SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '공학경제개론',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  '박찬석, 최성호 저자(글)',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  '청람',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  '29,000원',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                  ),
-                ),
-                Row(
+    return SingleChildScrollView(
+      child: ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(8),
+          itemCount: datas.length,
+          itemBuilder: (BuildContext context, int index) {
+            final data = datas[index];
+            /*bool data.contains(inputText){
+              if(true){
+                result=data.subject;
+              }
+              else{
+                return null;
+              }
+            };*/
+            //String? result = data.contains(inputText) ? '${data.subject}' : null;
+            return Container(
+                child: Column(
                   children: [
                     Text(
-                      '#쑤박',
+                        'result',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                    ),
+                    Text(
+                      '${data.auther}',
                       style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.orangeAccent,
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '${data.publishing}',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '29,000원',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
                       ),
                     ),
                   ],
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-              onPressed: () {
-                Icon(Icons.bookmark_outline_outlined,
-                    color: Colors.orangeAccent);
-              },
-              icon: Icon(Icons.bookmark_outline_outlined)),
-        ],
-      ),
+                ));
+          }),
     );
   }
 }

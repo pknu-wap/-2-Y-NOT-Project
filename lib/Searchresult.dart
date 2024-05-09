@@ -10,6 +10,7 @@ class searchresult{
     required this.publishing,
 });
 }
+
 final List<searchresult> datas =[
   searchresult(
       subject: "공학경제개론",
@@ -40,5 +41,10 @@ final List<searchresult> datas =[
       subject: "스튜어트 미분적분학",
       auther: "James Stewart",
       publishing: "북스힐"
+  ),
+  searchresult(
+    subject: '',
+    auther: '',
+    publishing: ''
   ),
 ];
