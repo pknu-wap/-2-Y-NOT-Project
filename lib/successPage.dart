@@ -45,13 +45,46 @@ class _Main_PageState extends State<Main_Page> {
                 Realtime_text(),
               ]),
               Realtime_Activity(),
-              UnderB(),
             ]),
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (int wants) {
+            switch (wants) {
+              case 0:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Main_Page()));
+                break;
+              case 1:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookList(
+                            Searchresult: searchresult(
+                                subject: inputText ?? '',
+                                auther: '',
+                                publishing: ''))));
+                break;
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home_outlined,
+                ),
+                label: '홈'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add_outlined,
+                ),
+                label: '판매'),
+          ],
+          type: BottomNavigationBarType.fixed,
         ),
       ),
     );
   }
+
 
   Widget Recent_text() {
     return Text(
@@ -97,23 +130,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
+                  Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
+                  Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -127,23 +160,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
+                  Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
+                  Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -157,23 +190,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
+                  Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
+                  Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -233,48 +266,15 @@ class _Main_PageState extends State<Main_Page> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      BookList(
-                          Searchresult: searchresult(
-                              subject: inputText ?? '',
-                              auther: '',
-                              publishing: ''))),
+                  builder: (context) => BookList(
+                      Searchresult: searchresult(
+                          subject: inputText ?? '',
+                          auther: '',
+                          publishing: ''))),
             );
           }),
       hintText: "검색어를 입력하세요",
       backgroundColor: MaterialStatePropertyAll(Colors.white70),
-    );
-  }
-
-  Widget UnderB(){
-  return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (int wants){
-          switch (wants){
-            case 0:
-          Navigator.push(context,MaterialPageRoute(builder:(context) => Main_Page()));
-              break;
-            case 1:
-              Navigator.push(context,MaterialPageRoute(builder:(context) => BookList(
-                  Searchresult: searchresult(
-                      subject: inputText ?? '',
-                      auther: '',
-                      publishing: ''))));
-              break;
-            /*case 2:
-
-              break;*/
-          }
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(
-            Icons.home_outlined,
-          ),label: '홈'),
-          BottomNavigationBarItem(icon: Icon(
-            Icons.add_outlined,
-          ),label: '판매'),
-      ],
-      ),
     );
   }
 }

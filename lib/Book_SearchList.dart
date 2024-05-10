@@ -82,15 +82,7 @@ class BookList extends StatelessWidget {
           itemCount: datas.length,
           itemBuilder: (BuildContext context, int index) {
             final data = datas[index];
-            /*bool data.contains(inputText){
-              if(true){
-                result=data.subject;
-              }
-              else{
-                return null;
-              }
-            };*/
-            //String? result = data.contains(inputText) ? '${data.subject}' : null;
+            //String? result = data.contains(Searchresult.subject) ? '${data.subject}' : '';
             return Container(
                 child: Column(
                   children: [
