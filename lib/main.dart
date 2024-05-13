@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/LoginPage.dart';
+import 'DetailPage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: DetailPage(), // 첫 화면으로 DetailPage를 사용합니다.
+  ));
 }
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFFE4D02), // 상단바 배경 색상
-        ),
-      ),
-      home: LoginPage(),
-    );
-  }
-}
-
