@@ -1,76 +1,136 @@
 import 'package:flutter/material.dart';
 
-class BookDetailPage extends StatelessWidget {
-  final String title;
-  final String author;
-  final String description;
-  final String imageUrl;
+class ChatPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('채팅창'),
+      ),
+      body: Center(
+        child: Text('채팅창'),
+      ),
+    );
+  }
+}
 
-  // 생성자를 통해 데이터를 받아옵니다.
-  const BookDetailPage({
-    Key? key,
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.imageUrl,
-  }) : super(key: key);
+class DetailPage extends StatefulWidget {
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  String? _selectedValue; // nullable로 변경
+  List<String> _dummyImageUrls = [
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+  ]; // 더미 이미지 URL 목록
+
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('상세 정보'),
+        backgroundColor: Color(0xFFFFFFF), // 상단 바 배경색을 흰색으로 설정
+        title: Text(
+          '상세 정보',
+          style: TextStyle(color: Colors.black), // 텍스트를 흰색으로 설정
+        ),
+        centerTitle: true, // 텍스트를 중앙에 배치
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼 클릭 시 이전 페이지로 돌아가기
+          },
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 16.0), // 오른쪽 여백 추가
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white, // 아이콘 내부 색상을 흰색으로 설정
+                  ),
+                  child: Icon(
+                    Icons.notifications, // 알림 아이콘
+                    color: Color(0xFFFE4D02), // 아이콘 테두리 색상 설정
+                    size: 24, // 알림 아이콘 크기 설정
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 책 이미지
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
-                ),
+      body: Column(
+        children: <Widget>[
+          Divider(
+            height: 1, // 선의 높이 설정
+            color: Colors.grey, // 선의 색상 설정
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.white, // 바디 배경색을 흰색으로 설정
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 8.0),
+                  SizedBox(
+                    height: 250.0, // 사진 크기를 더 크게 조정
+                    child: PageView.builder(
+                      itemCount: _dummyImageUrls.length,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.network(_dummyImageUrls[index]),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 16.0),
-            // 책 제목
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
+        color: Colors.white, // 배경 색상 설정
+        child: ElevatedButton(
+          onPressed: () {
+            // 채팅하기 버튼을 누르면 채팅창으로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatPage()),
+            );
+          },
+          child: SizedBox(
+            width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
+            child: Text(
+              '채팅 하기',
+              textAlign: TextAlign.center, // 텍스트를 가운데로 정렬
+              style: TextStyle(color: Colors.white),
             ),
-            SizedBox(height: 8.0),
-            // 저자
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Author: $author',
-                style: TextStyle(
-                  fontSize: 18.0,
-                ),
-              ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
+            shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
+              borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
             ),
-            SizedBox(height: 8.0),
-            // 설명
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                description,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-          ],
+            minimumSize: Size(double.infinity, 50), // 버튼의 최소 크기 설정
+          ),
         ),
       ),
     );
@@ -78,25 +138,7 @@ class BookDetailPage extends StatelessWidget {
 }
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '상세 정보',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: BookDetailPage(
-        title: '선형대수',
-        author: '강점란, 서종진, 신준용, 우창화, 윤민, 이완석',
-        description:
-        '책소개.',
-        imageUrl: 'https://via.placeholder.com/400x600',
-      ),
-    );
-  }
+  runApp(MaterialApp(
+    home: DetailPage(),
+  ));
 }
