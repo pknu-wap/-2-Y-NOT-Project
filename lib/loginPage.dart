@@ -62,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget pwdInput() {
     return TextFormField(
+      obscureText: true,
       autofocus: true,
       validator: (val) {
         if (val!.isEmpty) {
