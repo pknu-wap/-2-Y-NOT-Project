@@ -128,7 +128,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Main_Page()),
+                        MaterialPageRoute(builder: (context) => MainPage()),
                       );
                     }
                   },
