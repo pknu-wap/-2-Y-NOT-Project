@@ -4,15 +4,14 @@ import 'package:flutter_01/Alarm_space.dart';
 import 'Searchresult.dart';
 import 'Book_SearchList.dart';
 
-class Main_Page extends StatefulWidget {
-  const Main_Page({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<Main_Page> createState() => _Main_PageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _Main_PageState extends State<Main_Page> {
-  String? Stext;
+class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +53,16 @@ class _Main_PageState extends State<Main_Page> {
             switch (wants) {
               case 0:
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Main_Page()));
+                    context, MaterialPageRoute(builder: (context) => MainPage()));
                 break;
               case 1:
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => BookList(
-                            Searchresult: searchresult(
+                            Searchresult: BookInfo(
                                 subject: inputText ?? '',
-                                auther: '',
+                                author: '',
                                 publishing: ''))));
                 break;
             }
@@ -238,7 +237,7 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-  List<searchresult> searchResults = [];
+  List<BookInfo> searchResults = [];
   void searchList(String query){
     final results = searchResults.where((product) => product.subject.contains(query)).toList();
     setState(() {
@@ -258,9 +257,9 @@ class _Main_PageState extends State<Main_Page> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookList(Searchresult: searchresult(
+                builder: (context) => BookList(Searchresult: BookInfo(
                     subject: inputText ?? '',
-                    auther: '',
+                    author: '',
                     publishing: '')),
               ),
             );

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => Main_Page(),//BookList(Searchresult: searchresult),
+        '/success': (context) => MainPage(),//BookList(Searchresult: searchresult),
       },
       home: LoginPage(),
     );
