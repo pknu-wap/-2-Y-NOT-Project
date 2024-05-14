@@ -4,15 +4,14 @@ import 'package:flutter_01/Alarm_space.dart';
 import 'Searchresult.dart';
 import 'Book_SearchList.dart';
 
-class Main_Page extends StatefulWidget {
-  const Main_Page({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<Main_Page> createState() => _Main_PageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _Main_PageState extends State<Main_Page> {
-  String? Stext;
+class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,6 @@ class _Main_PageState extends State<Main_Page> {
       home: Scaffold(
         backgroundColor: Colors.white,
         body: Container(
-          margin: const EdgeInsets.only(top: 50),
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             child: Column(children: [
@@ -49,6 +47,39 @@ class _Main_PageState extends State<Main_Page> {
               Realtime_Activity(),
             ]),
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (int wants) {
+            switch (wants) {
+              case 0:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MainPage()));
+                break;
+              case 1:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookList(
+                            Searchresult: BookInfo(
+                                subject: inputText ?? '',
+                                author: '',
+                                publishing: ''))));
+                break;
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home_outlined,
+                ),
+                label: '홈'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add_outlined,
+                ),
+                label: '판매'),
+          ],
+          type: BottomNavigationBarType.fixed,
         ),
       ),
     );
@@ -98,23 +129,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-                  Image.asset('image/picture_1.png', height: 150, width: 150),
+              Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_2.png', height: 150, width: 150),
+              Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -128,23 +159,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-                  Image.asset('image/picture_1.png', height: 150, width: 150),
+              Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_2.png', height: 150, width: 150),
+              Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -158,23 +189,23 @@ class _Main_PageState extends State<Main_Page> {
         children: [
           Container(
               child:
-                  Image.asset('image/picture_1.png', height: 150, width: 150),
+              Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_2.png', height: 150, width: 150),
+              Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -206,33 +237,36 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-  /*List<searchresult> searchResults = [];
+  List<BookInfo> searchResults = [];
   void searchList(String query){
     final results = searchResults.where((product) => product.subject.contains(query)).toList();
     setState(() {
       searchResults = results;
     });
   }
-  String? inputText;*/
+  String? inputText;
+
   Widget SearchB() {
     return SearchBar(
-      /*onSubmitted: (value){
+      onChanged: (value){
         setState(() => inputText = value);
-        Stext=inputText;
         //print('Input Text = $inputText');
-      } ,*/
-        leading: IconButton(icon: Icon(Icons.search),
+      } ,
+      leading: IconButton(icon: Icon(Icons.search),
           onPressed:(){
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookList(/*Searchresult: searchresult(subject: inputText)*/),
+                builder: (context) => BookList(Searchresult: BookInfo(
+                    subject: inputText ?? '',
+                    author: '',
+                    publishing: '')),
               ),
             );
           }
-        ),
-        hintText: "검색어를 입력하세요",
-        backgroundColor: MaterialStatePropertyAll(Colors.white70),
+      ),
+      hintText: "검색어를 입력하세요",
+      backgroundColor: MaterialStatePropertyAll(Colors.white70),
     );
 
   }
