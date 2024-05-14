@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter_01/Searchresult.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+void main() {
   runApp(MyApp());
 }
 
@@ -28,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => Main_Page(),//BookList(Searchresult: searchresult),
+        '/success': (context) => MainPage(),//BookList(Searchresult: searchresult),
       },
       home: LoginPage(),
     );
