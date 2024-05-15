@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/Searchresult.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'package:flutter_01/Make_BookList.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => MainPage(),//BookList(Searchresult: searchresult),
+        '/success': (context) => AddPicture(),//BookList(Searchresult: searchresult),
       },
       home: LoginPage(),
     );
