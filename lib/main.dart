@@ -33,7 +33,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   // 이메일 형식을 확인하는 정규 표현식
   RegExp emailRegex = RegExp(
-    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$',
     caseSensitive: false,
     multiLine: false,
   );
