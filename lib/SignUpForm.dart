@@ -14,7 +14,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   // 이메일 형식을 확인하는 정규 표현식
   RegExp emailRegex = RegExp(
-    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$',
     caseSensitive: false,
     multiLine: false,
   );
@@ -52,7 +52,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     hintText: '닉네임',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리를 더 둥글게 만듭니다.
-                    ), // 입력 창 테두리 설정
+                    ),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -72,7 +72,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     hintText: 'ID',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
-                    ), // 입력 창 테두리 설정
+                    ),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -92,7 +92,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     hintText: 'example@example.com',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
-                    ), // 입력 창 테두리 설정
+                    ),
                   ),
                   validator: validateEmail, // 이메일 유효성 검사
                 ),
@@ -107,7 +107,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     hintText: '비밀번호',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
-                    ), // 입력 창 테두리 설정
+                    ),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
