@@ -99,66 +99,50 @@ class _DetailPageState extends State<DetailPage> {
             height: 1, // 선의 높이 설정
             color: Colors.grey, // 선의 색상 설정
           ),
-          Expanded(
-            child: Container(
-              color: Colors.white, // 바디 배경색을 흰색으로 설정
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 8.0),
-                  SizedBox(
-                    height: 250.0, // 사진 크기를 더 크게 조정
-                    child: PageView.builder(
-                      itemCount: _dummyImageUrls.length,
-                      onPageChanged: (int page) {
-                        setState(() {
-                          _currentPage = page;
-                        });
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                _dummyImageUrls[index],
-                                fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '책 제목 ${index + 1}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '저자: 작가 이름',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  Text(
-                                    '출판사: 출판사 이름',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+          SizedBox(
+            height: 250.0, // 사진 크기를 더 크게 조정
+            child: PageView.builder(
+              itemCount: _dummyImageUrls.length,
+              onPageChanged: (int page) {
+                setState(() {
+                  _currentPage = page;
+                });
+              },
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                    _dummyImageUrls[index],
+                    fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
                   ),
-                  SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
-                  _buildPageIndicator(), // 페이지 인디케이터 추가
-                ],
-              ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
+          _buildPageIndicator(), // 페이지 인디케이터 추가
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '책 제목',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '저자: 작가 이름',
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  '출판사: 출판사 이름',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
             ),
           ),
         ],
@@ -167,21 +151,20 @@ class _DetailPageState extends State<DetailPage> {
           padding: const EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
           color: Colors.white, // 배경 색상 설정
           child: ElevatedButton(
-          onPressed: () {
-      // 채팅하기 버튼을 누르면 채팅창으로 이동
-      Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ChatPage()),
-    );
-  },
-    style
-        : ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
-      shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
-        borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
-      ),
-      minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
-    ),
+            onPressed: () {
+              // 채팅하기 버튼을 누르면 채팅창으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatPage()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
+              shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
+                borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
+              ),
+              minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
+            ),
             child: const SizedBox(
               width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
               child: Text(
