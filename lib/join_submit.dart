@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
 class JoinWidget extends StatelessWidget {
+  const JoinWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '회원 가입',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFFE4D02), // 상단바 배경 색
         ),
       ),
-      home: SignUpForm(),
+      home: const SignUpForm(),
     );
   }
 }
 
 class SignUpForm extends StatefulWidget {
+  const SignUpForm({super.key});
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -31,18 +35,18 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
+        title: const Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -60,9 +64,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _idController,
                   decoration: InputDecoration(
@@ -80,9 +84,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -100,9 +104,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -121,58 +125,58 @@ class _SignUpFormState extends State<SignUpForm> {
                   obscureText: true,
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 150.0),
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('회원 가입 완료!')),
+                        const SnackBar(content: Text('회원 가입 완료!')),
                       );
                     }
                   },
-                  child: Container(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFE4D02)), // FE4D02 색
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 24.0)), // 여백
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게
+                      ),
+                    ),
+                  ),
+                  child: const SizedBox(
                     height: 48.0,
                     child: Center(
                       child: Text('가입'),
                     ),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게
-                      ),
-                    ),
-                  ),
                 ),
               ),
-              SizedBox(height: 8.0), // 취소 버튼과 간격
+              const SizedBox(height: 8.0), // 취소 버튼과 간격
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 150.0),
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('취소 버튼이 눌렸습니다!')),
+                      const SnackBar(content: Text('취소 버튼이 눌렸습니다!')),
                     );
                   },
-                  child: Container(
-                    height: 48.0,
-                    child: Center(
-                      child: Text('취소'),
-                    ),
-                  ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFE4D02)), // FE4D02 색
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 24.0)), // 여백
                     shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게
                       ),
+                    ),
+                  ),
+                  child: const SizedBox(
+                    height: 48.0,
+                    child: Center(
+                      child: Text('취소'),
                     ),
                   ),
                 ),

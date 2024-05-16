@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:flutter_01/loginPage.dart';
 
 class BookList extends StatelessWidget {
+  const BookList({super.key});
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -40,12 +41,12 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Main_Page()),
+          MaterialPageRoute(builder: (context) => const Main_Page()),
         );
       },
       iconSize: 30,
       color: Colors.black,
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
     );
   }
 
@@ -54,17 +55,17 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AlarmSpace()),
+          MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
       iconSize: 30,
       color: Colors.orangeAccent,
-      icon: Icon(Icons.notifications_none),
+      icon: const Icon(Icons.notifications_none),
     );
   }
 
   Widget SearchB() {
-    return SearchBar(
+    return const SearchBar(
         leading: Icon(Icons.search),
         hintText: "검색어를 입력하세요",
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
@@ -75,8 +76,8 @@ class BookList extends StatelessWidget {
         child: Row(
             children: [
               Image.asset('image/picture_1.png', height: 150, width: 150),
-              SizedBox(width: 20),
-              Expanded(
+              const SizedBox(width: 20),
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -125,10 +126,10 @@ class BookList extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    Icon(Icons.bookmark_outline_outlined,
+                    const Icon(Icons.bookmark_outline_outlined,
                         color: Colors.orangeAccent);
                   },
-                  icon: Icon(Icons.bookmark_outline_outlined)),
+                  icon: const Icon(Icons.bookmark_outline_outlined)),
             ],
           ),
         );

@@ -54,7 +54,7 @@ class _Main_PageState extends State<Main_Page> {
             switch (wants) {
               case 0:
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Main_Page()));
+                    context, MaterialPageRoute(builder: (context) => const Main_Page()));
                 break;
               case 1:
                 Navigator.push(
@@ -68,7 +68,7 @@ class _Main_PageState extends State<Main_Page> {
                 break;
             }
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home_outlined,
@@ -87,7 +87,7 @@ class _Main_PageState extends State<Main_Page> {
   }
 
   Widget Recent_text() {
-    return Text(
+    return const Text(
       'User 활동 내역',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -99,7 +99,7 @@ class _Main_PageState extends State<Main_Page> {
   }
 
   Widget Find_text() {
-    return Text(
+    return const Text(
       '찾고 계시는 책이 있나요?',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -111,7 +111,7 @@ class _Main_PageState extends State<Main_Page> {
   }
 
   Widget Realtime_text() {
-    return Text(
+    return const Text(
       '실시간 최근 올라온 책들',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -125,29 +125,29 @@ class _Main_PageState extends State<Main_Page> {
   Widget Find_Activity() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      physics: RangeMaintainingScrollPhysics(),
+      physics: const RangeMaintainingScrollPhysics(),
       child: Row(
         children: [
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_1.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_2.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150)),
         ],
       ),
     );
@@ -159,25 +159,25 @@ class _Main_PageState extends State<Main_Page> {
       child: Row(
         children: [
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_1.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_2.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150)),
         ],
       ),
     );
@@ -189,25 +189,25 @@ class _Main_PageState extends State<Main_Page> {
       child: Row(
         children: [
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_1.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_2.png', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150)),
           Container(
+              padding: const EdgeInsets.all(10),
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150)),
         ],
       ),
     );
@@ -218,11 +218,11 @@ class _Main_PageState extends State<Main_Page> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SaveSpace()),
+            MaterialPageRoute(builder: (context) => const SaveSpace()),
           );
         },
         color: Colors.orangeAccent,
-        icon: Icon(Icons.bookmark_outline_outlined));
+        icon: const Icon(Icons.bookmark_outline_outlined));
   }
 
   Widget AlarmCon() {
@@ -230,10 +230,10 @@ class _Main_PageState extends State<Main_Page> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AlarmSpace()),
+          MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
-      icon: Icon(Icons.notifications_none),
+      icon: const Icon(Icons.notifications_none),
       iconSize: 30,
       color: Colors.orangeAccent,
     );
@@ -253,7 +253,7 @@ class _Main_PageState extends State<Main_Page> {
         setState(() => inputText = value);
         //print('Input Text = $inputText');
       } ,
-      leading: IconButton(icon: Icon(Icons.search),
+      leading: IconButton(icon: const Icon(Icons.search),
           onPressed:(){
             Navigator.push(
               context,
@@ -267,7 +267,7 @@ class _Main_PageState extends State<Main_Page> {
           }
       ),
       hintText: "검색어를 입력하세요",
-      backgroundColor: MaterialStatePropertyAll(Colors.white70),
+      backgroundColor: const MaterialStatePropertyAll(Colors.white70),
     );
 
   }
