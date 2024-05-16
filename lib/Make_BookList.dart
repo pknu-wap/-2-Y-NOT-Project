@@ -37,7 +37,10 @@ class _AddPictureState extends State<AddPicture> {
         ),
       ),
       body: Container(
+        child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -49,17 +52,38 @@ class _AddPictureState extends State<AddPicture> {
             AboutText(),
             BasicInformation(),
             BookCondition(),
-            const SizedBox(height: 200,width: 200,)
+            const SizedBox(
+              height: 200,
+              width: 200,
+            ),
+            TitleT(),
+            Row(children: [TitleF()]),
+            const SizedBox(height: 20),
+            PriceT(),
+            Row(children: [PriceF()]),
+            const SizedBox(height: 20),
+            DetailExplanationT(),
+            Row(children: [DetailExplanationF()]),
+            const SizedBox(height: 20),
+            WantPlaceT(),
+            Row(children: [WantPlaceF()]),
+            const SizedBox(height: 20),
+            HashtagT(),
+            Row(children: [HashtagF()]),
+            const SizedBox(height: 20),
+            complete(),
           ],
         ),
       ),
+      )
     );
   }
 
   Widget AboutText() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text('책에 대한 정보', style: TextStyle(fontSize: 20)),
+      child: Text('책에 대한 정보', style: TextStyle(fontSize: 25,
+        fontWeight: FontWeight.bold,)),
     );
   }
 
@@ -100,6 +124,130 @@ class _AddPictureState extends State<AddPicture> {
   Widget MakeSubjectF() {
     return Expanded(
       child: TextFormField(),
+    );
+  }
+
+  Widget TitleT(){
+    return Text('제목',style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ));
+  }
+
+  Widget PriceT(){
+    return Text('가격',style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ));
+  }
+
+  Widget DetailExplanationT(){
+    return Text('자세한 설명',style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ));
+  }
+
+  Widget WantPlaceT(){
+    return Text('거래 희망 장소',style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ));
+  }
+
+  Widget HashtagT(){
+    return Text('해시태그',style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ));
+  }
+
+  Widget TitleF(){
+    return Expanded(
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: '제목을 입력해주세요',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget PriceF(){
+    return Expanded(
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          hintText: '판매가격을 입력해주세요',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget DetailExplanationF(){
+    return Expanded(
+      child: TextFormField(
+        maxLength: 300,
+        decoration: InputDecoration(
+          hintText: '* 최대 300자 입력 가능',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget WantPlaceF(){
+    return Expanded(
+      child: TextFormField(decoration: InputDecoration(
+        hintText: '거래 희망 장소를 입력해주세요',
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+      ),),
+    );
+  }
+
+  Widget HashtagF(){
+    return Expanded(
+      child: TextFormField(
+        decoration: InputDecoration(
+        hintText: '태그를 입력해주세요 (최대 5개)',
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+      ),),
     );
   }
 
@@ -161,14 +309,19 @@ class _AddPictureState extends State<AddPicture> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('책 상태'),
+          Text('책 상태',style: TextStyle(fontSize: 20,
+            fontWeight: FontWeight.bold)),
           ToggleButtons(
             direction: vertical ? Axis.vertical : Axis.horizontal,
             onPressed: (int index) {
               setState(() {
-                // The button that is tapped is set to true, and the others to false.
                 for (int i = 0; i < _uml.length; i++) {
-                  _uml[i] = i == index;
+                  if (i == index) {
+                    isSelected[i] = !isSelected[i];
+                  } else {
+                    isSelected[i] = false;
+                  }
+                  //_uml[i] = i == index;
                 }
               });
             },
@@ -188,7 +341,6 @@ class _AddPictureState extends State<AddPicture> {
       ),
     );
   }
-
 
   Widget CameraButton() {
     return Container(
@@ -250,6 +402,12 @@ class _AddPictureState extends State<AddPicture> {
         ),
       ),
     );
+  }
+
+  Widget complete(){
+    return ElevatedButton(onPressed: (){
+      Get.to(MainPage());
+    }, style: ElevatedButton.styleFrom(padding: EdgeInsets.only(left:100,right:100)), child: const Text('등록완료'));
   }
 
 /*Widget ShowPicture() {
