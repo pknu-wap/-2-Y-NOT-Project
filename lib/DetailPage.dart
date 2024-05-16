@@ -40,14 +40,21 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  String? _selectedValue; // nullable로 변경
-  final List<String> _dummyImageUrls = [
-    "https://via.placeholder.com/350",
-    "https://via.placeholder.com/350",
-    "https://via.placeholder.com/350",
-    "https://via.placeholder.com/350",
-    "https://via.placeholder.com/350",
-  ]; // 더미 이미지 URL 목록
+  final List<Map<String, String>> _dummyData = [
+    {
+      'imageUrl': 'https://via.placeholder.com/350',
+      'title': '책 제목 1',
+      'author': '작가 이름 1',
+      'publisher': '출판사 이름 1',
+    },
+    {
+      'imageUrl': 'https://via.placeholder.com/350',
+      'title': '책 제목 2',
+      'author': '작가 이름 2',
+      'publisher': '출판사 이름 2',
+    },
+    // 추가적인 더미 데이터들을 필요에 따라 여기에 추가할 수 있습니다.
+  ];
 
   int _currentPage = 0;
 
@@ -102,7 +109,7 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 250.0, // 사진 크기를 더 크게 조정
             child: PageView.builder(
-              itemCount: _dummyImageUrls.length,
+              itemCount: _dummyData.length,
               onPageChanged: (int page) {
                 setState(() {
                   _currentPage = page;
@@ -112,7 +119,7 @@ class _DetailPageState extends State<DetailPage> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.network(
-                    _dummyImageUrls[index],
+                    _dummyData[index]['imageUrl']!,
                     fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
                   ),
                 );
@@ -127,7 +134,7 @@ class _DetailPageState extends State<DetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '책 제목',
+                  _dummyData[_currentPage]['title']!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -135,11 +142,11 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '저자: 작가 이름',
+                  '저자: ${_dummyData[_currentPage]['author']}',
                   style: TextStyle(fontSize: 14),
                 ),
                 Text(
-                  '출판사: 출판사 이름',
+                  '출판사: ${_dummyData[_currentPage]['publisher']}',
                   style: TextStyle(fontSize: 14),
                 ),
               ],
@@ -181,7 +188,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(_dummyImageUrls.length, (index) {
+      children: List.generate(_dummyData.length, (index) {
         return Container(
           width: 8.0,
           height: 8.0,
