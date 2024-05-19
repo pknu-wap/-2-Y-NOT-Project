@@ -283,7 +283,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _buildPageIndicator() {
+  Widget _buildPageIndicator() { //사진 순서에 따른 점 채우기 인디케이터
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children : List.generate(_dummyText.length, (index) {
