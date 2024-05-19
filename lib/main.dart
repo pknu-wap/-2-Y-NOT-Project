@@ -1,29 +1,21 @@
+// main.dart
+
 import 'package:flutter/material.dart';
-import 'package:flutter_01/LoginPage.dart';
-import 'package:get/get.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/Searchresult.dart';
-import 'package:flutter_01/Book_SearchList.dart';
+import 'MyPage.dart'; // MyPage.dart 파일을 임포트합니다
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  //final searchresult = data;
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
+      title: 'Flutter My Page',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFFE4D02), // 상단바 배경 색상
-        ),
+        primarySwatch: Colors.orange,
       ),
-      initialRoute: '/',
-      routes: {
-        '/success': (context) => MainPage(),//BookList(Searchresult: searchresult),
-      },
-      home: LoginPage(),
+      home: MyPage(), // MyHomePage 위젯을 초기 화면으로 사용합니다
     );
   }
 }
