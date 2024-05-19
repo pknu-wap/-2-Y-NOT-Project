@@ -46,62 +46,57 @@ class MyPage extends StatelessWidget {
           _buildPurchaseAndRentalSection(context), // 나의 구매 및 대여 섹션 추가
         ],
       ),
-        bottomNavigationBar: BottomAppBar(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white, // 하단바 주변의 배경색 설정
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5), // 그림자 효과 추가
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(0, 1), // 그림자 위치 설정
-                ),
-              ],
-            ),
-            height: 80.0, // 하단바의 높이를 더 크게 설정
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavBarItem(Icons.home, '홈', () {
-                  // 홈 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                }),
-                _buildNavBarItem(Icons.shopping_bag, '판매', () {
-                  // 판매 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SalesPage()),
-                  );
-                }),
-                _buildNavBarItem(Icons.receipt, '대여', () {
-                  // 대여 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RentalPage()),
-                  );
-                }),
-                _buildNavBarItem(Icons.chat, '채팅', () {
-                  // 채팅 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatPage()),
-                  );
-                }),
-                _buildNavBarItem(Icons.info, '정보', () {
-                  // 정보 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyPage()),
-                  );
-                }),
-              ],
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(color: Colors.grey, width: 2.0), // 상단 경계선 추가
             ),
           ),
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavBarItem(Icons.home, '홈', () {
+                // 홈 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              }),
+              _buildNavBarItem(Icons.shopping_bag, '판매', () {
+                // 판매 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SalesPage()),
+                );
+              }),
+              _buildNavBarItem(Icons.receipt, '대여', () {
+                // 대여 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RentalPage()),
+                );
+              }),
+              _buildNavBarItem(Icons.chat, '채팅', () {
+                // 채팅 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatPage()),
+                );
+              }),
+              _buildNavBarItem(Icons.info, '정보', () {
+                // 정보 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()),
+                );
+              }),
+            ],
+          ),
         ),
+      ),
     );
   }
 
