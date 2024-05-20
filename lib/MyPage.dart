@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Save_space.dart';
+import 'package:flutter_01/Alarm_space.dart';
+import 'Searchresult.dart';
+import 'Book_SearchList.dart';
 import 'package:image_picker/image_picker.dart'; // ImagePicker 패키지 추가
+import 'package:flutter_01/successPage.dart';
 
 class MyPage extends StatelessWidget {
+  final String inputText;
+
+  MyPage({this.inputText = ''});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +30,13 @@ class MyPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
             child: IconButton(
-              icon: Icon(Icons.notifications, color: Color(0xFFFE4D02)), // 아이콘 색상 변경
+              icon: Icon(Icons.notifications, color: Color(0xFFFE4D02)),
+              // 아이콘 색상 변경
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationsPage()), // 알림 페이지로 이동
+                  MaterialPageRoute(
+                      builder: (context) => NotificationsPage()), // 알림 페이지로 이동
                 );
               },
             ),
@@ -46,59 +57,46 @@ class MyPage extends StatelessWidget {
           _buildPurchaseAndRentalSection(context), // 나의 구매 및 대여 섹션 추가
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(color: Colors.grey, width: 2.0), // 상단 경계선 추가
-            ),
-          ),
-          height: 60.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavBarItem(Icons.home, '홈', () {
-                // 홈 페이지로 이동
-                Navigator.push(
+
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int wants) {
+          switch (wants) {
+            case 0:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
+              break;
+            case 1:
+              Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              }),
-              _buildNavBarItem(Icons.shopping_bag, '판매', () {
-                // 판매 페이지로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SalesPage()),
-                );
-              }),
-              _buildNavBarItem(Icons.receipt, '대여', () {
-                // 대여 페이지로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RentalPage()),
-                );
-              }),
-              _buildNavBarItem(Icons.chat, '채팅', () {
-                // 채팅 페이지로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatPage()),
-                );
-              }),
-              _buildNavBarItem(Icons.info, '정보', () {
-                // 정보 페이지로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyPage()),
-                );
-              }),
-            ],
-          ),
-        ),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BookList(
+                              Searchresult: BookInfo(
+                                  subject: inputText ?? '',
+                                  author: '',
+                                  publishing: ''))));
+              break;
+          }
+        },
+
+        items: [
+
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_outlined,
+              ),
+              label: '홈'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add_outlined,
+              ),
+              label: '판매'),
+        ],
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
+}
 
   Widget _buildProfileSection(BuildContext context) {
     return Container(
@@ -195,7 +193,6 @@ class MyPage extends StatelessWidget {
   }
 
 // 나머지 메서드는 생략...
-}
 
 // 하단바 아이템 페이지들은 이전과 동일합니다.
 
