@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/LoginPage.dart';
 import 'package:get/get.dart';
@@ -5,8 +6,10 @@ import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Searchresult.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
+  await Firebase.initializeApp(); // Firebase 초기화
+  runApp(MyApp()); // MyApp 위젯을 실행
 }
 
 class MyApp extends StatelessWidget {
