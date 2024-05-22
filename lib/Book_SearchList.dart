@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'Searchresult.dart';
 
 class BookInfo{
   final String subject;
@@ -52,7 +50,7 @@ final List<BookInfo> bookDatas =[
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
-  BookList({Key? key, required this.Searchresult}) : super(key: key);
+  const BookList({super.key, required this.Searchresult});
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +96,12 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MainPage()),
+          MaterialPageRoute(builder: (context) => const MainPage()),
         );
       },
       iconSize: 30,
       color: Colors.black,
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
     );
   }
 
@@ -112,17 +110,17 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AlarmSpace()),
+          MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
       iconSize: 30,
       color: Colors.orangeAccent,
-      icon: Icon(Icons.notifications_none),
+      icon: const Icon(Icons.notifications_none),
     );
   }
 
   Widget SearchB() {
-    return SearchBar(
+    return const SearchBar(
         leading: Icon(Icons.search),
         hintText: "검색어를 입력하세요",
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
@@ -146,7 +144,7 @@ class BookList extends StatelessWidget {
         children: [
           Text(
             '${data.subject}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -154,19 +152,19 @@ class BookList extends StatelessWidget {
           ),
           Text(
             '${data.author}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: Colors.black,
             ),
           ),
           Text(
             '${data.publishing}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: Colors.black,
             ),
           ),
-          Text(
+          const Text(
             '29,000원',
             style: TextStyle(
               fontSize: 15,
