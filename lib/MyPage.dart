@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/Save_space.dart';
-import 'package:flutter_01/Alarm_space.dart';
-import 'Searchresult.dart';
 import 'Book_SearchList.dart';
 import 'package:image_picker/image_picker.dart'; // ImagePicker 패키지 추가
-import 'package:flutter_01/successPage.dart';
+
 
 class MyPage extends StatelessWidget {
   final String inputText;
 
-  MyPage({this.inputText = ''});
+  const MyPage({super.key, this.inputText = ''});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '마이페이지',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // 이전 페이지로 이동
           },
@@ -30,20 +27,20 @@ class MyPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
             child: IconButton(
-              icon: Icon(Icons.notifications, color: Color(0xFFFE4D02)),
+              icon: const Icon(Icons.notifications, color: Color(0xFFFE4D02)),
               // 아이콘 색상 변경
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => NotificationsPage()), // 알림 페이지로 이동
+                      builder: (context) => const NotificationsPage()), // 알림 페이지로 이동
                 );
               },
             ),
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
             color: Colors.grey, // 경계선 색상 설정
             height: 2.0, // 경계선 두께 설정
@@ -63,7 +60,7 @@ class MyPage extends StatelessWidget {
           switch (wants) {
             case 0:
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyPage()));
+                  context, MaterialPageRoute(builder: (context) => const MyPage()));
               break;
             case 1:
               Navigator.push(
@@ -79,7 +76,7 @@ class MyPage extends StatelessWidget {
           }
         },
 
-        items: [
+        items: const [
 
           BottomNavigationBarItem(
               icon: Icon(
@@ -100,8 +97,8 @@ class MyPage extends StatelessWidget {
 
   Widget _buildProfileSection(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.0),
-      padding: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(8.0),
@@ -111,27 +108,27 @@ class MyPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 26,
                 backgroundImage: NetworkImage('https://example.com/profile.jpg'), // 프로필 이미지를 여기에 대체하세요
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
                     decoration: BoxDecoration(
-                      color: Color(0xFFFE4D02),
+                      color: const Color(0xFFFE4D02),
                       borderRadius: BorderRadius.circular(6.0),
                     ),
-                    child: Text(
+                    child: const Text(
                       '초보판매자',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
+                  const SizedBox(height: 8.0),
+                  const Text(
                     '닉네임',
                     style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -139,14 +136,14 @@ class MyPage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 1.0),
+          const SizedBox(height: 1.0),
           GestureDetector(
             onTap: () {
               _showImagePicker(context); // 프로필 수정 텍스트를 눌렀을 때 모달창을 열어줍니다.
             },
             child: Container(
-              padding: EdgeInsets.only(left: 4.0), // 왼쪽 여백 추가
-              child: Text(
+              padding: const EdgeInsets.only(left: 4.0), // 왼쪽 여백 추가
+              child: const Text(
                 '프로필 수정',
                 style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8), // 작게 FE402 색으로 설정
               ),
@@ -166,15 +163,15 @@ class MyPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('카메라로 찍기'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('카메라로 찍기'),
                 onTap: () {
                   _getImage(context, ImageSource.camera); // 카메라로 이미지 가져오기
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('갤러리에서 가져오기'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('갤러리에서 가져오기'),
                 onTap: () {
                   _getImage(context, ImageSource.gallery); // 갤러리에서 이미지 가져오기
                 },
@@ -198,11 +195,11 @@ class MyPage extends StatelessWidget {
 
 Widget _buildCategorySection(BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 8.0),
+    margin: const EdgeInsets.symmetric(vertical: 8.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             '나의 판매 및 대여',
@@ -215,7 +212,7 @@ Widget _buildCategorySection(BuildContext context) {
             // 판매내역 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SalesHistoryPage()),
+              MaterialPageRoute(builder: (context) => const SalesHistoryPage()),
             );
           },
         ),
@@ -225,7 +222,7 @@ Widget _buildCategorySection(BuildContext context) {
             // 대여내역 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RentalHistoryPage()),
+              MaterialPageRoute(builder: (context) => const RentalHistoryPage()),
             );
           },
         ),
@@ -235,7 +232,7 @@ Widget _buildCategorySection(BuildContext context) {
             // 후기 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ReviewsPage()),
+              MaterialPageRoute(builder: (context) => const ReviewsPage()),
             );
           },
         ),
@@ -245,7 +242,7 @@ Widget _buildCategorySection(BuildContext context) {
             // 내 상품 관리 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyItemsManagementPage()),
+              MaterialPageRoute(builder: (context) => const MyItemsManagementPage()),
             );
           },
         ),
@@ -256,11 +253,11 @@ Widget _buildCategorySection(BuildContext context) {
 
 Widget _buildPurchaseAndRentalSection(BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 8.0),
+    margin: const EdgeInsets.symmetric(vertical: 8.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             '나의 구매 및 대여',
@@ -273,7 +270,7 @@ Widget _buildPurchaseAndRentalSection(BuildContext context) {
             // 찜목록 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => WishListPage()),
+              MaterialPageRoute(builder: (context) => const WishListPage()),
             );
           },
         ),
@@ -283,7 +280,7 @@ Widget _buildPurchaseAndRentalSection(BuildContext context) {
             // 구매 내역 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PurchaseHistoryPage()),
+              MaterialPageRoute(builder: (context) => const PurchaseHistoryPage()),
             );
           },
         ),
@@ -293,7 +290,7 @@ Widget _buildPurchaseAndRentalSection(BuildContext context) {
             // 최근 본 상품 페이지로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RecentlyViewedItemsPage()),
+              MaterialPageRoute(builder: (context) => const RecentlyViewedItemsPage()),
             );
           },
         ),
@@ -316,10 +313,10 @@ Widget _buildNavBarItem(IconData icon, String text, VoidCallback onTap) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(icon),
-        SizedBox(height: 4.0),
+        const SizedBox(height: 4.0),
         Text(
           text,
-          style: TextStyle(fontSize: 12.0),
+          style: const TextStyle(fontSize: 12.0),
         ),
       ],
     ),
@@ -329,13 +326,15 @@ Widget _buildNavBarItem(IconData icon, String text, VoidCallback onTap) {
 // 각각의 하단바 아이템에 해당하는 페이지들을 추가합니다.
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('홈'),
+        title: const Text('홈'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('홈 페이지'),
       ),
     );
@@ -343,13 +342,15 @@ class HomePage extends StatelessWidget {
 }
 
 class SalesPage extends StatelessWidget {
+  const SalesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('판매'),
+        title: const Text('판매'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('판매 페이지'),
       ),
     );
@@ -357,13 +358,15 @@ class SalesPage extends StatelessWidget {
 }
 
 class RentalPage extends StatelessWidget {
+  const RentalPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('대여'),
+        title: const Text('대여'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('대여 페이지'),
       ),
     );
@@ -371,13 +374,15 @@ class RentalPage extends StatelessWidget {
 }
 
 class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('채팅'),
+        title: const Text('채팅'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('채팅 페이지'),
       ),
     );
@@ -385,13 +390,15 @@ class ChatPage extends StatelessWidget {
 }
 
 class NotificationsPage extends StatelessWidget {
+  const NotificationsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('알림페이지'),
+        title: const Text('알림페이지'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -399,13 +406,15 @@ class NotificationsPage extends StatelessWidget {
 }
 
 class SalesHistoryPage extends StatelessWidget {
+  const SalesHistoryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('판매 내역'),
+        title: const Text('판매 내역'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -413,13 +422,15 @@ class SalesHistoryPage extends StatelessWidget {
 }
 
 class RentalHistoryPage extends StatelessWidget {
+  const RentalHistoryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('대여 내역'),
+        title: const Text('대여 내역'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -427,13 +438,15 @@ class RentalHistoryPage extends StatelessWidget {
 }
 
 class ReviewsPage extends StatelessWidget {
+  const ReviewsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('후기'),
+        title: const Text('후기'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -441,13 +454,15 @@ class ReviewsPage extends StatelessWidget {
 }
 
 class MyItemsManagementPage extends StatelessWidget {
+  const MyItemsManagementPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('내 상품 관리'),
+        title: const Text('내 상품 관리'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -455,13 +470,15 @@ class MyItemsManagementPage extends StatelessWidget {
 }
 
 class WishListPage extends StatelessWidget {
+  const WishListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('찜 목록'),
+        title: const Text('찜 목록'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -469,13 +486,15 @@ class WishListPage extends StatelessWidget {
 }
 
 class PurchaseHistoryPage extends StatelessWidget {
+  const PurchaseHistoryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('구매 내역'),
+        title: const Text('구매 내역'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
@@ -483,13 +502,15 @@ class PurchaseHistoryPage extends StatelessWidget {
 }
 
 class RecentlyViewedItemsPage extends StatelessWidget {
+  const RecentlyViewedItemsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('최근 본 상품'),
+        title: const Text('최근 본 상품'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(' '),
       ),
     );
