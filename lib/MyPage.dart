@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'Book_SearchList.dart';
-import 'package:image_picker/image_picker.dart'; // ImagePicker 패키지 추가
-
 
 class MyPage extends StatelessWidget {
   final String inputText;
@@ -54,30 +53,26 @@ class MyPage extends StatelessWidget {
           _buildPurchaseAndRentalSection(context), // 나의 구매 및 대여 섹션 추가
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (int wants) {
-          switch (wants) {
+        onTap: (int index) {
+          switch (index) {
             case 0:
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const MyPage()));
+                  context, MaterialPageRoute(builder: (context) => const HomePage()));
               break;
             case 1:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          BookList(
-                              Searchresult: BookInfo(
-                                  subject: inputText ?? '',
-                                  author: '',
-                                  publishing: ''))));
+                      builder: (context) => BookList(
+                          Searchresult: BookInfo(
+                              subject: inputText,
+                              author: '',
+                              publishing: ''))));
               break;
           }
         },
-
         items: const [
-
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
@@ -93,7 +88,6 @@ class MyPage extends StatelessWidget {
       ),
     );
   }
-}
 
   Widget _buildProfileSection(BuildContext context) {
     return Container(
@@ -189,141 +183,119 @@ class MyPage extends StatelessWidget {
     // 여기에 이미지를 가져온 후의 처리를 추가하세요
   }
 
-// 나머지 메서드는 생략...
-
-// 하단바 아이템 페이지들은 이전과 동일합니다.
-
-Widget _buildCategorySection(BuildContext context) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            '나의 판매 및 대여',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  Widget _buildCategorySection(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              '나의 판매 및 대여',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        _buildMenuItem(
-          text: '판매 내역',
-          onTap: () {
-            // 판매내역 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SalesHistoryPage()),
-            );
-          },
-        ),
-        _buildMenuItem(
-          text: '대여 내역',
-          onTap: () {
-            // 대여내역 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const RentalHistoryPage()),
-            );
-          },
-        ),
-        _buildMenuItem(
-          text: '후기',
-          onTap: () {
-            // 후기 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ReviewsPage()),
-            );
-          },
-        ),
-        _buildMenuItem(
-          text: '내 상품 관리',
-          onTap: () {
-            // 내 상품 관리 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MyItemsManagementPage()),
-            );
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildPurchaseAndRentalSection(BuildContext context) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            '나의 구매 및 대여',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          _buildMenuItem(
+            text: '판매 내역',
+            onTap: () {
+              // 판매내역 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SalesHistoryPage()),
+              );
+            },
           ),
-        ),
-        _buildMenuItem(
-          text: '찜목록',
-          onTap: () {
-            // 찜목록 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const WishListPage()),
-            );
-          },
-        ),
-        _buildMenuItem(
-          text: '구매 내역',
-          onTap: () {
-            // 구매 내역 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const PurchaseHistoryPage()),
-            );
-          },
-        ),
-        _buildMenuItem(
-          text: '최근 본 상품',
-          onTap: () {
-            // 최근 본 상품 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const RecentlyViewedItemsPage()),
-            );
-          },
-        ),
-      ],
-    ),
-  );
-}
+          _buildMenuItem(
+            text: '대여 내역',
+            onTap: () {
+              // 대여내역 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RentalHistoryPage()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            text: '후기',
+            onTap: () {
+              // 후기 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ReviewsPage()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            text: '내 상품 관리',
+            onTap: () {
+              // 내 상품 관리 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyItemsManagementPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
-  return ListTile(
-    title: Text(text),
-    onTap: onTap,
-  );
-}
+  Widget _buildPurchaseAndRentalSection(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              '나의 구매 및 대여',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildMenuItem(
+            text: '찜목록',
+            onTap: () {
+              // 찜목록 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const WishListPage()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            text: '구매 내역',
+            onTap: () {
+              // 구매 내역 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PurchaseHistoryPage()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            text: '최근 본 상품',
+            onTap: () {
+              // 최근 본 상품 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RecentlyViewedItemsPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget _buildNavBarItem(IconData icon, String text, VoidCallback onTap) {
-  return InkWell(
-    onTap: onTap,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon),
-        const SizedBox(height: 4.0),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 12.0),
-        ),
-      ],
-    ),
-  );
+  Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
+    return ListTile(
+      title: Text(text),
+      onTap: onTap,
+    );
+  }
 }
-
-// 각각의 하단바 아이템에 해당하는 페이지들을 추가합니다.
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
