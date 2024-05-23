@@ -2,6 +2,8 @@ import 'package:chatview/chatview.dart';
 import 'chatdata.dart';
 import 'theme.dart';
 import 'package:flutter/material.dart';
+import 'successPage.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const Example());
@@ -109,20 +111,11 @@ class _ChatScreenState extends State<ChatScreen> {
           userStatusTextStyle: const TextStyle(color: Colors.grey),
           actions: [
             IconButton(
-              onPressed: _onThemeIconTap,
+              onPressed: () {
+                Transaction(context);
+              },
               icon: Icon(
-                isDarkTheme
-                    ? Icons.brightness_4_outlined
-                    : Icons.dark_mode_outlined,
-                color: theme.themeIconColor,
-              ),
-            ),
-            IconButton(
-              tooltip: 'Toggle TypingIndicator',
-              onPressed: _showHideTypingIndicator,
-              icon: Icon(
-                Icons.keyboard,
-                color: theme.themeIconColor,
+                Icons.check_circle,
               ),
             ),
           ],
@@ -270,11 +263,9 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _onSendTap(
-      String message,
+  void _onSendTap(String message,
       ReplyMessage replyMessage,
-      MessageType messageType,
-      ) {
+      MessageType messageType,) {
     final id = int.parse(Data.messageList.last.id) + 1;
     _chatController.addMessage(
       Message(
@@ -295,15 +286,37 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  void _onThemeIconTap() {
-    setState(() {
-      if (isDarkTheme) {
-        theme = LightTheme();
-        isDarkTheme = false;
-      } else {
-        theme = DarkTheme();
-        isDarkTheme = true;
-      }
-    });
+  void Transaction(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("실거래를 진행하시겠습니까?"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Get.to(MainPage());
+                      },
+                      child: const Text('동의')
+                  ),
+
+                  ElevatedButton(onPressed: () {
+                    Navigator.pop(context);
+                  },
+                      child: const Text('비동의')
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
