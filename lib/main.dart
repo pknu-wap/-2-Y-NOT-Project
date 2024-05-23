@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/LoginPage.dart';
+import 'package:flutter_01/Make_BookList.dart';
+import 'package:flutter_01/chat.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Searchresult.dart';
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => MainPage(),//BookList(Searchresult: searchresult),
+        '/success': (context) => MakeBookList(),//BookList(Searchresult: searchresult),
       },
       home: LoginPage(),
     );
