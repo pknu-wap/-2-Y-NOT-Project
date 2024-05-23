@@ -66,41 +66,36 @@ class _MakeBookListState extends State<MakeBookList> {
                     const SizedBox(width: 20),
                   ],
                 ),
-                Row(children: [TitleF()]),
-                const SizedBox(height: 20, ),
+                Center(child: TitleF()),
                 Row(
                   children: [
                     PriceT(),
                     const SizedBox(width: 20),
                   ],
                 ),
-                Row(children: [PriceF()]),
-                const SizedBox(height: 20),
+                Center(child: PriceF()),
                 Row(
                   children: [
                     DetailExplanationT(),
                     const SizedBox(width: 20),
                   ],
                 ),
-                Row(children: [DetailExplanationF()]),
-                const SizedBox(height: 20),
+                Center(child: DetailExplanationF()),
                 Row(
                   children: [
                     WantPlaceT(),
                     const SizedBox(width: 20),
                   ],
                 ),
-                Row(children: [WantPlaceF()]),
-                const SizedBox(height: 20),
+                Center(child: WantPlaceF()),
                 Row(
                   children: [
                     HashtagT(),
                     const SizedBox(width: 20),
                   ],
                 ),
-                Row(children: [HashtagF()]),
-                const SizedBox(height: 20),
-                complete(),
+                Center(child: HashtagF()),
+                Center(child: complete()),
               ],
             ),
           ),
@@ -123,7 +118,7 @@ class _MakeBookListState extends State<MakeBookList> {
   }
 
   Widget MakeAuthorT() {
-    return Text('저자');
+    return Text('저자 ');
   }
 
   Widget MakePublishingT() {
@@ -199,7 +194,7 @@ class _MakeBookListState extends State<MakeBookList> {
   }
 
   Widget TitleF() {
-    return Expanded(
+    return Container(
       child: TextFormField(
         decoration: InputDecoration(
           hintText: '제목을 입력해주세요',
@@ -213,11 +208,12 @@ class _MakeBookListState extends State<MakeBookList> {
           ),
         ),
       ),
+      width: 400,
     );
   }
 
   Widget PriceF() {
-    return Expanded(
+    return Container(
       child: TextFormField(
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
@@ -232,11 +228,12 @@ class _MakeBookListState extends State<MakeBookList> {
           ),
         ),
       ),
+      width: 400,
     );
   }
 
   Widget DetailExplanationF() {
-    return Expanded(
+    return Container(
       child: TextFormField(
         maxLength: 300,
         decoration: InputDecoration(
@@ -251,11 +248,12 @@ class _MakeBookListState extends State<MakeBookList> {
           ),
         ),
       ),
+      width: 400,
     );
   }
 
   Widget WantPlaceF() {
-    return Expanded(
+    return Container(
       child: TextFormField(
         decoration: InputDecoration(
           hintText: '거래 희망 장소를 입력해주세요',
@@ -269,11 +267,12 @@ class _MakeBookListState extends State<MakeBookList> {
           ),
         ),
       ),
+      width: 400,
     );
   }
 
   Widget HashtagF() {
-    return Expanded(
+    return Container(
       child: TextFormField(
         decoration: InputDecoration(
           hintText: '태그를 입력해주세요 (최대 5개)',
@@ -287,6 +286,7 @@ class _MakeBookListState extends State<MakeBookList> {
           ),
         ),
       ),
+      width: 400,
     );
   }
 
@@ -345,6 +345,7 @@ class _MakeBookListState extends State<MakeBookList> {
         children: <Widget>[
           Text('구판/신판',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -387,6 +388,7 @@ class _MakeBookListState extends State<MakeBookList> {
         children: <Widget>[
           Text('필기 여부',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -431,6 +433,7 @@ class _MakeBookListState extends State<MakeBookList> {
         children: <Widget>[
           Text('책 상태',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(width: 50),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -529,6 +532,8 @@ class _MakeBookListState extends State<MakeBookList> {
           Get.to(MainPage());
         },
         style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orangeAccent,
+            textStyle: const TextStyle(color: Colors.white),
             padding: EdgeInsets.only(left: 100, right: 100)),
         child: const Text('등록완료'));
   }

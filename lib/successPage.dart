@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'package:flutter_01/chat.dart';
 import 'Searchresult.dart';
 import 'Book_SearchList.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -64,6 +66,8 @@ class _MainPageState extends State<MainPage> {
                                 subject: inputText ?? '',
                                 author: '',
                                 publishing: ''))));
+              case 2:
+                Get.to(ChatScreen());
                 break;
             }
           },
@@ -78,6 +82,10 @@ class _MainPageState extends State<MainPage> {
                   Icons.add_outlined,
                 ),
                 label: '판매'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat,
+            ),
+                label: '채팅'),
           ],
           type: BottomNavigationBarType.fixed,
         ),
