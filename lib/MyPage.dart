@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'Book_SearchList.dart';
@@ -5,7 +6,7 @@ import 'Book_SearchList.dart';
 class MyPage extends StatelessWidget {
   final String inputText;
 
-  const MyPage({super.key, this.inputText = ''});
+  const MyPage({Key? key, this.inputText = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,7 @@ class MyPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 26,
                 backgroundImage: NetworkImage('https://example.com/profile.jpg'), // 프로필 이미지를 여기에 대체하세요
               ),
@@ -180,7 +181,29 @@ class MyPage extends StatelessWidget {
   void _getImage(BuildContext context, ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source); // 이미지 가져오기
 
-    // 여기에 이미지를 가져온 후의 처리를 추가하세요
+    // 이미지가 선택되었는지 확인
+    if (pickedFile != null) {
+      // 선택된 이미지를 보여주는 다이얼로그 또는 페이지로 이동
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text('선택된 이미지'),
+            ),
+            body: Center(
+              child: Image.file(
+                File(pickedFile.path), // 선택된 이미지 파일의 경로를 사용하여 이미지를 보여줍니다.
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      // 이미지가 선택되지 않았을 때의 처리
+      // (예를 들어, 사용자가 갤러리나 카메라를 취소한 경우)
+      print('이미지 선택이 취소되었습니다.');
+    }
   }
 
   Widget _buildCategorySection(BuildContext context) {
@@ -298,7 +321,7 @@ class MyPage extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +337,7 @@ class HomePage extends StatelessWidget {
 }
 
 class SalesPage extends StatelessWidget {
-  const SalesPage({super.key});
+  const SalesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +353,7 @@ class SalesPage extends StatelessWidget {
 }
 
 class RentalPage extends StatelessWidget {
-  const RentalPage({super.key});
+  const RentalPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +369,7 @@ class RentalPage extends StatelessWidget {
 }
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  const ChatPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -362,7 +385,7 @@ class ChatPage extends StatelessWidget {
 }
 
 class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({super.key});
+  const NotificationsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +401,7 @@ class NotificationsPage extends StatelessWidget {
 }
 
 class SalesHistoryPage extends StatelessWidget {
-  const SalesHistoryPage({super.key});
+  const SalesHistoryPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -394,7 +417,7 @@ class SalesHistoryPage extends StatelessWidget {
 }
 
 class RentalHistoryPage extends StatelessWidget {
-  const RentalHistoryPage({super.key});
+  const RentalHistoryPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -410,7 +433,7 @@ class RentalHistoryPage extends StatelessWidget {
 }
 
 class ReviewsPage extends StatelessWidget {
-  const ReviewsPage({super.key});
+  const ReviewsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -426,7 +449,7 @@ class ReviewsPage extends StatelessWidget {
 }
 
 class MyItemsManagementPage extends StatelessWidget {
-  const MyItemsManagementPage({super.key});
+  const MyItemsManagementPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +465,7 @@ class MyItemsManagementPage extends StatelessWidget {
 }
 
 class WishListPage extends StatelessWidget {
-  const WishListPage({super.key});
+  const WishListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -458,7 +481,7 @@ class WishListPage extends StatelessWidget {
 }
 
 class PurchaseHistoryPage extends StatelessWidget {
-  const PurchaseHistoryPage({super.key});
+  const PurchaseHistoryPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -474,7 +497,7 @@ class PurchaseHistoryPage extends StatelessWidget {
 }
 
 class RecentlyViewedItemsPage extends StatelessWidget {
-  const RecentlyViewedItemsPage({super.key});
+  const RecentlyViewedItemsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -488,3 +511,4 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
+
