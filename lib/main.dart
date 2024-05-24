@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/LoginPage.dart';
 import 'package:flutter_01/Make_BookList.dart';
-import 'package:flutter_01/chat.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/Searchresult.dart';
-import 'package:flutter_01/Book_SearchList.dart';
+import 'package:flutter_01/WishList.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => MakeBookList(),//BookList(Searchresult: searchresult),
       },
-      home: LoginPage(),
+      home: WishListForm(),
     );
   }
 }
