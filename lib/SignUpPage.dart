@@ -98,9 +98,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   validator: (value) {
                     String? validateEmail(String? value) {
-                      if (value == null || value.isEmpty) {
+                      if (value?.isEmpty ?? true) {
                         return '이메일을 입력하세요';
-                      } else if (!emailRegex.hasMatch(value)) {
+                      } else if (!emailRegex.hasMatch(value!)) {
                         return '올바른 이메일 형식이 아닙니다';
                       }
                       return null;
