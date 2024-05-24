@@ -3,6 +3,7 @@ import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/chat.dart';
 import 'package:flutter_01/Make_BookList.dart';
+import 'package:flutter_01/MyPage.dart';
 
 class WishListForm extends StatefulWidget {
   @override
@@ -99,6 +100,10 @@ class _WishListFormState extends State<WishListForm> {
             case 2:
               Get.to(ChatScreen());
               break;
+            case 3:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
+              break;
           }
         },
         items: [
@@ -115,6 +120,9 @@ class _WishListFormState extends State<WishListForm> {
           BottomNavigationBarItem(
               icon: Icon(Icons.chat),
               label: '채팅'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
       ),
