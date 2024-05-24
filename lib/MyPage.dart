@@ -1,7 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'Book_SearchList.dart';
+import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
+import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+// 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
+import 'package:flutter_01/successPage.dart';
+import 'package:flutter_01/chat.dart';
+import 'package:flutter_01/WishList.dart';
+
 
 class MyPage extends StatelessWidget {
   final String inputText;
@@ -14,7 +20,7 @@ class MyPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           '마이페이지',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -59,21 +65,32 @@ class MyPage extends StatelessWidget {
           switch (index) {
             case 0:
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const HomePage()));
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
               break;
             case 1:
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BookList(
-                          Searchresult: BookInfo(
-                              subject: inputText,
-                              author: '',
-                              publishing: ''))));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookSearch.BookList(
+                    Searchresult: BookSearch.BookInfo(
+                      subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
+                      author: '',
+                      publishing: '',
+                    ),
+                  ),
+                ),
+              );
+              break;
+            case 2:
+              Get.to(ChatScreen());
+              break;
+            case 3:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
               break;
           }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
@@ -84,6 +101,12 @@ class MyPage extends StatelessWidget {
                 Icons.add_outlined,
               ),
               label: '판매'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: '채팅'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
       ),
@@ -283,7 +306,8 @@ class MyPage extends StatelessWidget {
               // 찜목록 페이지로 이동
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const WishListPage()),
+                MaterialPageRoute(builder: (context) => WishListForm()
+                ),
               );
             },
           ),
@@ -511,4 +535,3 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
-
