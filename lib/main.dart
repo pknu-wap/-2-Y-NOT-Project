@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_01/LoginPage.dart';
+import 'package:flutter_01/loginPage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Searchresult.dart';
