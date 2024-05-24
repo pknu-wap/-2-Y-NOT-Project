@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/chat.dart';
+import 'package:flutter_01/Make_BookList.dart';
 
 class WishListForm extends StatefulWidget {
   @override
