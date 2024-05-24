@@ -54,12 +54,14 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리를 더 둥글게 만듭니다.
                     ),
                   ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return '사용자 이름을 입력하세요';
-                    }
-                    return null;
-                  },
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return '닉네임을 입력하세요';
+                      } else if (value == 'admin') { // 예시로 "admin"이 중복된 닉네임으로 간주
+                        return '이미 사용 중인 닉네임입니다';
+                      }
+                      return null;
+                    },
                 ),
               ),
               SizedBox(height: 8.0),
@@ -94,7 +96,16 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                     ),
                   ),
-                  validator: validateEmail, // 이메일 유효성 검사
+                  validator: (value) {
+                    String? validateEmail(String? value) {
+                      if (value == null || value.isEmpty) {
+                        return '이메일을 입력하세요';
+                      } else if (!emailRegex.hasMatch(value)) {
+                        return '올바른 이메일 형식이 아닙니다';
+                      }
+                      return null;
+                    }
+                  },
                 ),
               ),
               SizedBox(height: 8.0),
@@ -112,6 +123,12 @@ class _SignUpFormState extends State<SignUpForm> {
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return '비밀번호를 입력하세요';
+                    } else if (value!.length < 8) {
+                      return '비밀번호는 8자 이상이어야 합니다';
+                    } else if (!value.contains(RegExp(r'[0-9]'))) {
+                      return '숫자를 포함해야 합니다';
+                    } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                      return '특수 문자를 포함해야 합니다';
                     }
                     return null;
                   },
