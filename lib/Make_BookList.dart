@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
 
 class BookInfo {
   final String subject;
