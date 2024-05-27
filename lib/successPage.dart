@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:flutter_01/chat.dart';
-import 'Searchresult.dart';
+import 'package:flutter_01/About Chat/chat.dart';
 import 'Book_SearchList.dart';
 import 'package:get/get.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
                                 author: '',
                                 publishing: ''))));
               case 2:
-                Get.to(ChatScreen());
+                Get.to(ChatListScreen());
                 break;
             }
           },

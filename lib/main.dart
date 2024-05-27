@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_01/loginPage.dart';
 import 'package:flutter_01/Make_BookList.dart';
-import 'package:flutter_01/chat.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Searchresult.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => MakeBookList(),//BookList(Searchresult: searchresult),
+        '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
       home: LoginPage(),
     );
