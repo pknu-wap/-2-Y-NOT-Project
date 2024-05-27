@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_01/loginPage.dart';
-
+import 'loginPage.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -14,10 +13,11 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
-  // 이메일 형식을 확인하는 정규 표현식
+  // 특정 학교 이메일 형식을 확인하는 정규 표현식
   RegExp emailRegex = RegExp(
-    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    r'^[\w-\.]+@pukyong\.ac\.kr$',
     caseSensitive: false,
     multiLine: false,
   );
@@ -27,7 +27,7 @@ class _SignUpFormState extends State<SignUpForm> {
     if (value?.isEmpty ?? true) {
       return '이메일을 입력하세요';
     } else if (!emailRegex.hasMatch(value!)) {
-      return '올바른 이메일 형식이 아닙니다';
+      return '올바른 학교 이메일 형식이 아닙니다';
     }
     return null;
   }
@@ -50,6 +50,9 @@ class _SignUpFormState extends State<SignUpForm> {
           'username': _usernameController.text,
           'email': _emailController.text,
         });
+
+        // 이메일 인증 요청
+        await userCredential.user?.sendEmailVerification();
 
         // 회원가입 성공 시 로그인 페이지로 이동
         Navigator.pushReplacement(
@@ -82,6 +85,34 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _sendVerificationEmail() async {
+    if (validateEmail(_emailController.text) == null) {
+      try {
+        await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('인증 이메일이 전송되었습니다. 이메일을 확인하세요.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('인증 이메일 전송에 실패했습니다.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('올바른 학교 이메일을 입력하세요.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -125,12 +156,35 @@ class _SignUpFormState extends State<SignUpForm> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: '이메일',
-                    hintText: 'example@example.com',
+                    hintText: 'example@pukyong.ac.kr',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                   ),
                   validator: validateEmail,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: ElevatedButton(
+                  onPressed: _sendVerificationEmail,
+                  child: Container(
+                    height: 48.0,
+                    child: Center(
+                      child: Text('인증 이메일 요청'),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 8.0),
@@ -158,14 +212,7 @@ class _SignUpFormState extends State<SignUpForm> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
-                  onPressed: (){
-                    _signUp();
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return LoginPage();
-                      },
-                    ));
-                  },
+                  onPressed: _signUp,
                   child: Container(
                     height: 48.0,
                     child: Center(
