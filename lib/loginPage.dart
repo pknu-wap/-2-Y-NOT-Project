@@ -92,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               arguments: User(_username, _pwd));
         }
       },
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: const Text(
@@ -103,9 +104,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   Widget submitButton() {
     return ElevatedButton(
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => SignUpForm())),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUpForm())),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: const Text(
