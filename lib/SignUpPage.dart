@@ -11,6 +11,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   // 이메일 형식을 확인하는 정규 표현식
   RegExp emailRegex = RegExp(
@@ -35,7 +36,8 @@ class _SignUpFormState extends State<SignUpForm> {
       appBar: AppBar(
         title: Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        controller: _scrollController,
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -54,14 +56,14 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리를 더 둥글게 만듭니다.
                     ),
                   ),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return '닉네임을 입력하세요';
-                      } else if (value == 'admin') { // 예시로 "admin"이 중복된 닉네임으로 간주
-                        return '이미 사용 중인 닉네임입니다';
-                      }
-                      return null;
-                    },
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return '닉네임을 입력하세요';
+                    } else if (value == 'admin') { // 예시로 "admin"이 중복된 닉네임으로 간주
+                      return '이미 사용 중인 닉네임입니다';
+                    }
+                    return null;
+                  },
                 ),
               ),
               SizedBox(height: 8.0),
@@ -97,12 +99,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '이메일을 입력하세요';
-                      } else if (!emailRegex.hasMatch(value)) {
-                        return '올바른 이메일 형식이 아닙니다';
-                      }
-                      return null;
+                    if (value == null || value.isEmpty) {
+                      return '이메일을 입력하세요';
+                    } else if (!emailRegex.hasMatch(value)) {
+                      return '올바른 이메일 형식이 아닙니다';
+                    }
+                    return null;
                   },
                 ),
               ),
