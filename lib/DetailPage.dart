@@ -40,20 +40,11 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  final List<Map<String, String>> _dummyData = [
-    {
-      'imageUrl': 'https://via.placeholder.com/350',
-      'title': '책 제목 1',
-      'author': '작가 이름 1',
-      'publisher': '출판사 이름 1',
-    },
-    {
-      'imageUrl': 'https://via.placeholder.com/350',
-      'title': '책 제목 2',
-      'author': '작가 이름 2',
-      'publisher': '출판사 이름 2',
-    },
-    // 추가적인 더미 데이터들을 필요에 따라 여기에 추가할 수 있습니다.
+  final List<String> _dummyText = [
+    '첫 번째',
+    '두 번째',
+    '세 번째',
+    '네 번째',
   ];
 
   int _currentPage = 0;
@@ -62,7 +53,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0x0fffffff), // 상단 바 배경색을 흰색으로 설정
+        backgroundColor: const Color(0xFFFFFFFF), // 상단 바 배경색을 흰색으로 설정
         title: const Text(
           '상세 정보',
           style: TextStyle(color: Colors.black), // 텍스트를 흰색으로 설정
@@ -109,7 +100,7 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 250.0, // 사진 크기를 더 크게 조정
             child: PageView.builder(
-              itemCount: _dummyData.length,
+              itemCount: _dummyText.length,
               onPageChanged: (int page) {
                 setState(() {
                   _currentPage = page;
@@ -119,14 +110,14 @@ class _DetailPageState extends State<DetailPage> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.network(
-                    _dummyData[index]['imageUrl']!,
+                    'https://via.placeholder.com/350',
                     fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
                   ),
                 );
               },
             ),
           ),
-          SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
+          const SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
           _buildPageIndicator(), // 페이지 인디케이터 추가
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -134,20 +125,57 @@ class _DetailPageState extends State<DetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _dummyData[_currentPage]['title']!,
-                  style: TextStyle(
+                  _dummyText[_currentPage],
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '저자: ${_dummyData[_currentPage]['author']}',
-                  style: TextStyle(fontSize: 14),
+                  '닉네임',
+                  style: const TextStyle(fontSize: 14),
                 ),
                 Text(
-                  '출판사: ${_dummyData[_currentPage]['publisher']}',
-                  style: TextStyle(fontSize: 14),
+                  '2024.03.03',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                const SizedBox(height: 24), // 닉네임과 텍스트 사이에 여백 추가
+                const Text(
+                  '선형대수',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 8), // 텍스트와 선 사이에 여백 추가
+                Container(
+                  height: 2,
+                  color: const Color(0xFFFE4D02), // 선 색상 설정
+                ),
+                const SizedBox(height: 10), // 선과 텍스트 사이에 여백 추가
+                const Text(
+                  '공학이론',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const SizedBox(height: 8), // 텍스트와 텍스트 사이에 여백 추가
+                const Text(
+                  '저자',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4), // 텍스트와 텍스트 사이에 여백 추가
+                const Text(
+                  '청람',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -155,52 +183,58 @@ class _DetailPageState extends State<DetailPage> {
         ],
       ),
       bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
-          color: Colors.white, // 배경 색상 설정
-          child: ElevatedButton(
-            onPressed: () {
-              // 채팅하기 버튼을 누르면 채팅창으로 이동
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChatPage()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
-              shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
-                borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
-              ),
-              minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
+        padding: const EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
+        color: Colors.white, // 배경 색상 설정
+        child: ElevatedButton(
+          onPressed: () {
+            // 채팅하기 버튼을 누르면 채팅창으로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChatPage()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
+            shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
+              borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
             ),
-            child: const SizedBox(
-              width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
-              child: Text(
-                '채팅 하기',
-                textAlign: TextAlign.center, // 텍스트를 가운데로 정렬
-                style: TextStyle(color: Colors.white),
-              ),
+            minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
+          ),
+          child: const SizedBox(
+            width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
+            child: Text(
+              '채팅 하기',
+              textAlign: TextAlign.center, // 텍스트를 가운데로 정렬
+              style: TextStyle(color: Colors.white),
             ),
           ),
+        ),
       ),
     );
   }
 
-  Widget _buildPageIndicator() { //사진 순서에 따른 점 채우기 인디케이터
+  Widget _buildPageIndicator() { // 사진 순서에 따른 점 채우기 인디케이터
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(_dummyData.length, (index) {
+      children: List.generate(_dummyText.length, (index) {
         return Container(
           width: 8.0,
           height: 8.0,
-          margin: EdgeInsets.symmetric(horizontal: 4.0),
+          margin: const EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentPage == index
-                ? Color(0xFFFE4D02) // 선택된 페이지는 주황색으로 설정
+                ? const Color(0xFFFE4D02) // 선택된 페이지는 주황색으로 설정
                 : Colors.grey, // 선택되지 않은 페이지는 회색으로 설정
           ),
         );
       }),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: DetailPage(),
+  ));
 }
