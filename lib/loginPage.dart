@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/user.dart';
+import 'package:flutter_01/user.dart' as myapp;
 import 'package:get/get.dart';
 import 'package:flutter_01/SignUpPage.dart';
 
@@ -68,6 +68,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _key = GlobalKey<FormState>();
   final LoginController _loginController = Get.put(LoginController());
+
+  String? _username; // username 변수 추가
+  String? _pwd; // pwd 변수 추가
 
   @override
   Widget build(BuildContext context) {
@@ -211,8 +214,10 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         if (_key.currentState!.validate()) {
           _key.currentState!.save();
+          myapp.User user = myapp.User(_username, _pwd); // 사용자 객체 생성
           Navigator.pushNamed(context, '/success',
-              arguments: User(_username, _pwd));
+              arguments: user); // 생성된 사용자 객체를 arguments로 전달
+
         }
       },
       child: Container(

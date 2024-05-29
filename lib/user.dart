@@ -1,5 +1,6 @@
 class User {
-  final String username;
-  final String pwd;
-  User(this.username, this.pwd);
+  String? username;
+  String? password;
+
+  User(this.username, this.password); // 기본 생성자 추가
 }
