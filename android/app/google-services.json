@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "750517401099",
-    "project_id": "y-not-bookapp-project-2024",
-    "storage_bucket": "y-not-bookapp-project-2024.appspot.com"
+    "project_number": "439025789013",
+    "project_id": "booking-app-b1080",
+    "storage_bucket": "booking-app-b1080.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:750517401099:android:846b9139d1ade94911b90e",
+        "mobilesdk_app_id": "1:439025789013:android:16af9e347b1068249a4cdc",
         "android_client_info": {
-          "package_name": "com.example.booking"
+          "package_name": "com.example.flutter_01"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAN_jzdo-W91wqPSWka8J-4r61otjuYaOs"
+          "current_key": "AIzaSyCH4sFcscH_Fp75MNGfUk5SXFIaLLJuWrA"
         }
       ],
       "services": {
