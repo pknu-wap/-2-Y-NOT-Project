@@ -145,4 +145,4 @@ void main() {
   runApp(const MaterialApp(
     home: DetailPage(),
   ));
-}
+}//vnl
