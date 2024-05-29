@@ -37,8 +37,8 @@ class MakeBookList extends StatefulWidget {
 }
 
 class _MakeBookListState extends State<MakeBookList> {
-  final Version = <bool>[true,false];
-  final Written = <bool>[true,false];
+  final Version = <bool>[true, false];
+  final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
   XFile? image;
@@ -359,7 +359,7 @@ class _MakeBookListState extends State<MakeBookList> {
     );
   }
 
-  Widget OldNew(){
+  Widget OldNew() {
     const List<Widget> uml = <Widget>[
       Text('구판'),
       Text('신판'),
@@ -402,7 +402,7 @@ class _MakeBookListState extends State<MakeBookList> {
     );
   }
 
-  Widget Handwritten(){
+  Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
       Text('없음'),
@@ -443,7 +443,6 @@ class _MakeBookListState extends State<MakeBookList> {
         ],
       ),
     );
-
   }
 
   Widget BookCondition() {
@@ -617,3 +616,4 @@ class _MakeBookListState extends State<MakeBookList> {
       },
     ));
   }*/
+}
