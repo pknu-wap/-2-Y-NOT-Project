@@ -535,4 +535,3 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
-
