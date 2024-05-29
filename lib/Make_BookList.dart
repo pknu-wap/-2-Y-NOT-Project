@@ -5,6 +5,32 @@ import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+class BookInfo {
+  final String subject;
+  final String author;
+  final String publishing;
+
+  BookInfo({required this.subject, required this.author, required this.publishing});
+}
+
+class BookList extends StatelessWidget {
+  final BookInfo searchResult;
+
+  BookList({required this.searchResult});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Book List'),
+      ),
+      body: Center(
+        child: Text('Book List for ${searchResult.subject}'),
+      ),
+    );
+  }
+}
+
 class MakeBookList extends StatefulWidget {
   @override
   State<MakeBookList> createState() => _MakeBookListState();
@@ -591,4 +617,3 @@ class _MakeBookListState extends State<MakeBookList> {
       },
     ));
   }*/
-}
