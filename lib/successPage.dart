@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'package:flutter_01/About Chat/chat.dart';
 import 'Book_SearchList.dart';
+import 'package:get/get.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -63,6 +66,8 @@ class _MainPageState extends State<MainPage> {
                                 subject: inputText ?? '',
                                 author: '',
                                 publishing: ''))));
+              case 2:
+                Get.to(ChatListScreen());
                 break;
             }
           },
@@ -77,6 +82,10 @@ class _MainPageState extends State<MainPage> {
                   Icons.add_outlined,
                 ),
                 label: '판매'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat,
+            ),
+                label: '채팅'),
           ],
           type: BottomNavigationBarType.fixed,
         ),
@@ -130,10 +139,14 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_1.png', height: 150, width: 150)),
+              Image.asset('image/pknu_5.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_2.png', height: 150, width: 150)),
+              Image.asset('image/pknu_6.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
@@ -160,22 +173,32 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_1.png', height: 150, width: 150)),
+              Image.asset('image/pknu_0.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_2.png', height: 150, width: 150)),
+              Image.asset('image/pknu_1.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_3.jpeg', height: 150, width: 150)),
+              Image.asset('image/pknu_2.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_4.jpeg', height: 150, width: 150)),
+              Image.asset('image/pknu_3.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
           Container(
               padding: const EdgeInsets.all(10),
               child:
               Image.asset('image/picture_5.jpeg', height: 150, width: 150)),
+              Image.asset('image/pknu_4.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
         ],
       ),
     );
