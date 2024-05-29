@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/WishList.dart';
-import 'package:flutter_01/About Chat/ChatList.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
+        // '/success': (context) => ChatListScreen(), // ChatListScreen 라우트 삭제
       },
       home: WishListForm(),
     );
