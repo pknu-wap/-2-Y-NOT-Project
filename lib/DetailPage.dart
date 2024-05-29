@@ -261,7 +261,7 @@ class _DetailPageState extends State<DetailPage> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: DetailPage(),
   ));
 }

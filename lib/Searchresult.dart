@@ -1,6 +1,3 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter_01/Book_SearchList.dart';
-import 'package:flutter_01/Searchresult.dart';
 /*
 class SearchResult{
   final String subject;
