@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/About Chat/chatdata.dart';
 import 'package:flutter_01/About Chat/chat.dart';
 
 class ImageContainer extends StatelessWidget {

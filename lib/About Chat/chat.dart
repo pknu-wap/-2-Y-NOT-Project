@@ -1,10 +1,6 @@
-import 'package:chatview/chatview.dart';
-import 'chatdata.dart';
-import 'theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   runApp(const Example());
