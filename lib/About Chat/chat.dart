@@ -79,6 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -155,7 +156,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(labelText: 'Send a message...'),
                   ),
                 ),
                 IconButton(
