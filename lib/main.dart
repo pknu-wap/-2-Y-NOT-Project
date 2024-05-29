@@ -1,8 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'MyPage.dart'; // MyPage.dart 파일을 임포트합니다
+import 'package:flutter_01/loginPage.dart';
+import 'package:flutter_01/Make_BookList.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:get/get.dart';
+import 'package:flutter_01/successPage.dart';
+import 'package:flutter_01/Searchresult.dart';
+import 'package:flutter_01/Book_SearchList.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
+  await Firebase.initializeApp(); // Firebase 초기화
+  runApp(MyApp()); // MyApp 위젯을 실행
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +26,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: const MyPage(inputText: 'your_input_text_here'),      // MyHomePage 위젯을 초기 화면으로 사용합니다
+      initialRoute: '/',
+      routes: {
+        '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
+      },
+      home: LoginPage(),
     );
   }
 }
