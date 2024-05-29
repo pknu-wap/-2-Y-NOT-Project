@@ -160,4 +160,84 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  Widget usernameInput() {
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return '이메일을 입력해주세요.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (username) => _username = username as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: '이메일',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget pwdInput() {
+    return TextFormField(
+      obscureText: true,
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return '비밀번호를 입력해주세요.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (email) => _pwd = email as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: '비밀번호',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget loginButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (_key.currentState!.validate()) {
+          _key.currentState!.save();
+          Navigator.pushNamed(context, '/success',
+              arguments: User(_username, _pwd));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "로그인",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget submitButton() {
+    return ElevatedButton(
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => const SignUpForm())),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "회원가입",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
 }
