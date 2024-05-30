@@ -449,7 +449,6 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
-
   Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
