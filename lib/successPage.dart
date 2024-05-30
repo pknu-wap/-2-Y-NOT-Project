@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:flutter_01/About Chat/chat.dart';
-import 'Book_SearchList.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -155,19 +154,13 @@ class _MainPageState extends State<MainPage> {
               child: Image.asset('image/pknu_6.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
-              child:
-                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
-              child:
-                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
-              child:
-                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -205,27 +198,22 @@ class _MainPageState extends State<MainPage> {
       child: Row(
         children: [
           Container(
-              padding: const EdgeInsets.all(10),
               child:
                   Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
               child:
                   Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
               child:
                   Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
               child:
                   Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              padding: const EdgeInsets.all(10),
               child:
                   Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),

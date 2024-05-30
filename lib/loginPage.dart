@@ -5,7 +5,7 @@ import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/SignUpForm.dart';
+import 'package:flutter_01/SignUpPage.dart';
 import 'package:chat/chat.dart';
 
 import 'About Chat/chat.dart';
@@ -111,7 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   }
                 },
-                onSaved: (val) => _loginController.userPassword.value = val ?? '',
+                onSaved: (val) =>
+                _loginController.userPassword.value = val ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '비밀번호',
@@ -126,9 +127,12 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (_key.currentState!.validate()) {
                     _key.currentState!.save();
-                    bool loginSuccess = await _loginController.login(); // 로그인 시도 후 결과 저장
+                    bool loginSuccess = await _loginController
+                        .login(); // 로그인 시도 후 결과 저장
                     if (loginSuccess) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen())); // 로그인 성공 시 페이지 이동
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              ChatScreen())); // 로그인 성공 시 페이지 이동
                     }
                   }
                 },
@@ -144,8 +148,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpForm())),
+                onPressed: () =>
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUpForm())),
                 child: Container(
                   padding: const EdgeInsets.all(15),
                   child: const Text(
@@ -158,86 +163,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10)
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget usernameInput() {
-    return TextFormField(
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return '이메일을 입력해주세요.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (username) => _username = username as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: '이메일',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget pwdInput() {
-    return TextFormField(
-      obscureText: true,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return '비밀번호를 입력해주세요.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (email) => _pwd = email as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: '비밀번호',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget loginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_key.currentState!.validate()) {
-          _key.currentState!.save();
-          Navigator.pushNamed(context, '/success',
-              arguments: User(_username, _pwd));
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text(
-          "로그인",
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-      ),
-    );
-  }
-  Widget submitButton() {
-    return ElevatedButton(
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => const SignUpForm())),
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text(
-          "회원가입",
-          style: TextStyle(
-            fontSize: 18,
           ),
         ),
       ),
