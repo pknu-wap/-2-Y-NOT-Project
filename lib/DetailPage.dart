@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,6 +78,7 @@ class _DetailPageState extends State<DetailPage> {
       'Timestamp': Timestamp.now(),//최신순 정렬을 위해
     });
     _controller.clear();
+
   }
 
   @override
@@ -260,8 +262,10 @@ class _DetailPageState extends State<DetailPage> {
   }
 }
 
-void main() {
-  runApp(const MaterialApp(
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
     home: DetailPage(),
   ));
 }
