@@ -8,6 +8,19 @@ import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/chat.dart';
 import 'package:flutter_01/WishList.dart';
 
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Screen'),
+      ),
+      body: Center(
+        child: Text('This is the chat screen'),
+      ),
+    );
+  }
+}
 
 class MyPage extends StatelessWidget {
   final String inputText;
