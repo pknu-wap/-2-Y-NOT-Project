@@ -5,40 +5,14 @@ import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class BookInfo {
-  final String subject;
-  final String author;
-  final String publishing;
-
-  BookInfo({required this.subject, required this.author, required this.publishing});
-}
-
-class BookList extends StatelessWidget {
-  final BookInfo searchResult;
-
-  BookList({required this.searchResult});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Book List'),
-      ),
-      body: Center(
-        child: Text('Book List for ${searchResult.subject}'),
-      ),
-    );
-  }
-}
-
 class MakeBookList extends StatefulWidget {
   @override
   State<MakeBookList> createState() => _MakeBookListState();
 }
 
 class _MakeBookListState extends State<MakeBookList> {
-  final Version = <bool>[true,false];
-  final Written = <bool>[true,false];
+  final Version = <bool>[true, false];
+  final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
   XFile? image;
@@ -359,7 +333,7 @@ class _MakeBookListState extends State<MakeBookList> {
     );
   }
 
-  Widget OldNew(){
+  Widget OldNew() {
     const List<Widget> uml = <Widget>[
       Text('구판'),
       Text('신판'),
@@ -402,7 +376,7 @@ class _MakeBookListState extends State<MakeBookList> {
     );
   }
 
-  Widget Handwritten(){
+  Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
       Text('없음'),
@@ -443,7 +417,6 @@ class _MakeBookListState extends State<MakeBookList> {
         ],
       ),
     );
-
   }
 
   Widget BookCondition() {
@@ -563,7 +536,7 @@ class _MakeBookListState extends State<MakeBookList> {
             padding: EdgeInsets.only(left: 100, right: 100)),
         child: const Text('등록완료'));
   }
-
+}
 /*Widget ShowPicture() {
     return Container(
     height: 10,
