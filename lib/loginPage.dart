@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_01/Book_SearchList.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/SignUpPage.dart';
-import 'package:chat/chat.dart';
-
 import 'About Chat/chat.dart';
 
 class LoginController extends GetxController {
