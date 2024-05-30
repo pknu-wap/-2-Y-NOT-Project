@@ -5,8 +5,8 @@ import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/SignUpForm.dart';
 import 'package:chat/chat.dart';
+import 'package:flutter_01/SignUpPage.dart';
 
 import 'About Chat/chat.dart';
 
@@ -158,6 +158,88 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10)
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget usernameInput() {
+    String _username;
+    String _pwd;
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return '이메일을 입력해주세요.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (username) => _username = username as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: '이메일',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget pwdInput() {
+    String _pwd;
+    return TextFormField(
+      obscureText: true,
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return '비밀번호를 입력해주세요.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (email) => _pwd = email as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: '비밀번호',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget loginButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (_key.currentState!.validate()) {
+          _key.currentState!.save();
+          Navigator.pushNamed(context, '/success',);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "로그인",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget submitButton() {
+    return ElevatedButton(
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => SignUpForm())),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "회원가입",
+          style: TextStyle(
+            fontSize: 18,
           ),
         ),
       ),

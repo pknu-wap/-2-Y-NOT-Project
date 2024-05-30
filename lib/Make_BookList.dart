@@ -53,35 +53,40 @@ class _MakeBookListState extends State<MakeBookList> {
   }
 
   void saveText() {
-    if (Written[0] == true) _Takenote = true;
-    else _Takenote = false;
+    if (Written[0] == true)
+      _Takenote = true;
+    else
+      _Takenote = false;
 
-    for(int i=0;i<2;i++){
-      if(isSelectedd[i]==true){
-        int j=i;
-        if(i==0) _quality='상';
-        else if(i==1) _quality='중';
-        else _quality='하';
+    for (int i = 0; i < 2; i++) {
+      if (isSelectedd[i] == true) {
+        int j = i;
+        if (i == 0)
+          _quality = '상';
+        else if (i == 1)
+          _quality = '중';
+        else
+          _quality = '하';
       }
     }
     _controller.text = _controller.text.trim();
     if (_controller.text.isNotEmpty) {
-    FirebaseFirestore.instance.collection('book').add({
-    'Bookname':_Bookname,
-    'Bookauther':_Bookauthor,
-    'Publisher':_Publisher,
-    'Subject':_subject,
-    'Quality':_quality,
-    'TakeNote':_Takenote,
-    'Postname': _Postname,
-    'Price':_price,
-    'Detail':_Detail,
-    'MeetingPlace':_MeetingPlace,
-    'Tag':_tag,
-    'Seller': loggedInUser!.email,
-    'timestamp': Timestamp.now(),
-    });
-    _controller.clear();
+      FirebaseFirestore.instance.collection('book').add({
+        'Bookname': _Bookname,
+        'Bookauther': _Bookauthor,
+        'Publisher': _Publisher,
+        'Subject': _subject,
+        'Quality': _quality,
+        'TakeNote': _Takenote,
+        'Postname': _Postname,
+        'Price': _price,
+        'Detail': _Detail,
+        'MeetingPlace': _MeetingPlace,
+        'Tag': _tag,
+        'Seller': loggedInUser!.email,
+        'timestamp': Timestamp.now(),
+      });
+      _controller.clear();
     }
     print(_Bookname);
     print(_Bookauthor);
@@ -606,7 +611,7 @@ class _MakeBookListState extends State<MakeBookList> {
             padding: EdgeInsets.only(left: 100, right: 100)),
         child: const Text('등록완료'));
   }
-
+}
 /*Widget ShowPicture() {
     return Container(
     height: 10,
@@ -660,4 +665,3 @@ class _MakeBookListState extends State<MakeBookList> {
       },
     ));
   }*/
-}
