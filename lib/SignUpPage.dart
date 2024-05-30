@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
+  const SignUpForm({super.key});
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -11,7 +13,6 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
 
   // 이메일 형식을 확인하는 정규 표현식
   RegExp emailRegex = RegExp(
@@ -34,19 +35,18 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
+        title: const Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -58,17 +58,15 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return '닉네임을 입력하세요';
-                    } else if (value == 'admin') { // 예시로 "admin"이 중복된 닉네임으로 간주
-                      return '이미 사용 중인 닉네임입니다';
+                      return '사용자 이름을 입력하세요';
                     }
                     return null;
                   },
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _idController,
                   decoration: InputDecoration(
@@ -86,9 +84,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -98,19 +96,12 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '이메일을 입력하세요';
-                    } else if (!emailRegex.hasMatch(value)) {
-                      return '올바른 이메일 형식이 아닙니다';
-                    }
-                    return null;
-                  },
+                  validator: validateEmail, // 이메일 유효성 검사
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -123,69 +114,63 @@ class _SignUpFormState extends State<SignUpForm> {
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return '비밀번호를 입력하세요';
-                    } else if (value!.length < 8) {
-                      return '비밀번호는 8자 이상이어야 합니다';
-                    } else if (!value.contains(RegExp(r'[0-9]'))) {
-                      return '숫자를 포함해야 합니다';
-                    } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-                      return '특수 문자를 포함해야 합니다';
                     }
                     return null;
                   },
                   obscureText: true,
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 150.0),
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpSuccessScreen()),
+                        MaterialPageRoute(builder: (context) => const SignUpSuccessScreen()),
                       );
                     }
                   },
-                  child: Container(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFE4D02)), // FE4D02 색상
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색상
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게 만들기 위한 값 조절
+                      ),
+                    ),
+                  ),
+                  child: const SizedBox(
                     height: 48.0,
                     child: Center(
                       child: Text('가입'),
                     ),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색상
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색상
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게 만들기 위한 값 조절
-                      ),
-                    ),
-                  ),
                 ),
               ),
-              SizedBox(height: 8.0), // 취소 버튼과의 간격
+              const SizedBox(height: 8.0), // 취소 버튼과의 간격
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 150.0),
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context); // 이전 화면으로 돌아가는 기능
                   },
-                  child: Container(
-                    height: 48.0,
-                    child: Center(
-                      child: Text('취소'),
-                    ),
-                  ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFE4D02)), // FE4D02 색상
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFE4D02)), // FE4D02 색상
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // 버튼 글자 색상
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 24.0)), // 여백 조정
                     shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0), // 모서리를 둥글게 만들기 위한 값 조절
                       ),
+                    ),
+                  ),
+                  child: const SizedBox(
+                    height: 48.0,
+                    child: Center(
+                      child: Text('취소'),
                     ),
                   ),
                 ),
@@ -199,13 +184,15 @@ class _SignUpFormState extends State<SignUpForm> {
 }
 
 class SignUpSuccessScreen extends StatelessWidget {
+  const SignUpSuccessScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('가입 완료'),
+        title: const Text('가입 완료'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('회원 가입이 완료되었습니다!'),
       ),
     );

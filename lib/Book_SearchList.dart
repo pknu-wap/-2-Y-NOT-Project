@@ -2,61 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
 
-class BookInfo{
-  final String subject;
-  final String author;
-  final String publishing;
-
-  BookInfo({
-    required this.subject,
-    required this.author,
-    required this.publishing,
-  });
-}
-
-final List<BookInfo> bookDatas =[
-  BookInfo(
-      subject: "공학경제개론",
-      author: "박찬성",
-      publishing: "청람"
-  ),
-  BookInfo(
-      subject: "대학물리학",
-      author: "Raymond A.Serway",
-      publishing: "북스힐"
-  ),
-  BookInfo(
-      subject: "해도의 세계사",
-      author: "미아자키 마사카츠",
-      publishing: "어문학사"
-  ),
-  BookInfo(
-      subject: "기초공학수학",
-      author: "김동식",
-      publishing: "생능"
-  ),
-  BookInfo(
-      subject: "선형대수학과 응용",
-      author: "이재진",
-      publishing: "경문사"
-  ),
-  BookInfo(
-      subject: "스튜어트 미분적분학",
-      author: "James Stewart",
-      publishing: "북스힐"
-  ),
-];
-
 class BookList extends StatelessWidget {
-  final BookInfo Searchresult;
-
-  const BookList({super.key, required this.Searchresult});
+  const BookList({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
-    final data = GetBookListContainsInputSubject();
-    debugPrint(Searchresult.subject);
     return MaterialApp(
       theme: ThemeData(),
       home: Scaffold(
@@ -75,14 +26,8 @@ class BookList extends StatelessWidget {
                 ),
                 SearchB(),
                 const SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return Example(data[index]);
-                  },
-                ),
+                //Text("here")
+                Resultblank(),
               ],
             ),
           ),
@@ -96,7 +41,7 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
+          MaterialPageRoute(builder: (context) => const Main_Page()),
         );
       },
       iconSize: 30,
@@ -126,85 +71,67 @@ class BookList extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(Colors.white70));
   }
 
-
-  List<BookInfo> GetBookListContainsInputSubject() {
-    List<BookInfo> findBookList = [];
-    for(BookInfo bookInfo in bookDatas) {
-      if (bookInfo.subject.contains(Searchresult.subject)){
-        findBookList.add(bookInfo);
-      }
-    }
-    return findBookList;
-  }
-
-
-  Widget Example(data) {
+  Widget Resultblank() {
     return Container(
-      child: Column(
-        children: [
-          Text(
-            '${data.subject}',
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            '${data.author}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            '${data.publishing}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-          const Text(
-            '29,000원',
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-}
-
-/*
-class SearchIf extends StatefulWidget {
-  const SearchIf({super.key, required this.books});
-  final Books books;
-  @override
-  State<SearchIf> createState() => _SearchIfState();
-}
-
-class _SearchIfState extends State<SearchIf> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-          itemCount: Books.length,
-          itemBuilder: (context, index){
-            return Card(
-              child: ListTile(
-                title: Text(bookData[index].subject),
-                leading: SizedBox(
-                  child: Text(bookData[index].author),
+        child: Row(
+            children: [
+              Image.asset('image/picture_1.png', height: 150, width: 150),
+              const SizedBox(width: 20),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '공학경제개론',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '박찬석, 최성호 저자(글)',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '청람',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '29,000원',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '#쑤박',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.orangeAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            );
-          }
-      ),
-    );
+              IconButton(
+                  onPressed: () {
+                    const Icon(Icons.bookmark_outline_outlined,
+                        color: Colors.orangeAccent);
+                  },
+                  icon: const Icon(Icons.bookmark_outline_outlined)),
+            ],
+          ),
+        );
   }
 }
-*/

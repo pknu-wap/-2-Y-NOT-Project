@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -43,47 +40,22 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  final List<String> _dummyText = [
-    '첫 번째',
-    '두 번째',
-    '세 번째',
-    '네 번째',
-  ];
+  String? _selectedValue; // nullable로 변경
+  final List<String> _dummyImageUrls = [
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+    "https://via.placeholder.com/350",
+  ]; // 더미 이미지 URL 목록
 
   int _currentPage = 0;
-
-  final _controller = TextEditingController();
-  final _auth = FirebaseAuth.instance;
-  User? loggedInUser;
-
-  @override
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser!.email);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-  void saveRoom(){
-    FirebaseFirestore.instance.collection('chatroom').add({
-      //'Image':,//프로필 사진
-      'Sender': loggedInUser!.email,//채팅보내는 사람
-      //'BookId':,//책document코드
-      'Timestamp': Timestamp.now(),//최신순 정렬을 위해
-    });
-    _controller.clear();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFFFFF), // 상단 바 배경색을 흰색으로 설정
+        backgroundColor: const Color(0x0fffffff), // 상단 바 배경색을 흰색으로 설정
         title: const Text(
           '상세 정보',
           style: TextStyle(color: Colors.black), // 텍스트를 흰색으로 설정
@@ -127,141 +99,118 @@ class _DetailPageState extends State<DetailPage> {
             height: 1, // 선의 높이 설정
             color: Colors.grey, // 선의 색상 설정
           ),
-          SizedBox(
-            height: 250.0, // 사진 크기를 더 크게 조정
-            child: PageView.builder(
-              itemCount: _dummyText.length,
-              onPageChanged: (int page) {
-                setState(() {
-                  _currentPage = page;
-                });
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    'https://via.placeholder.com/350',
-                    fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
+          Expanded(
+            child: Container(
+              color: Colors.white, // 바디 배경색을 흰색으로 설정
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 8.0),
+                  SizedBox(
+                    height: 250.0, // 사진 크기를 더 크게 조정
+                    child: PageView.builder(
+                      itemCount: _dummyImageUrls.length,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                                _dummyImageUrls[index],
+                                fit: BoxFit.cover, // 이미지를 화면에 꽉 채우기 위해 설정
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '책 제목 ${index + 1}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '저자: 작가 이름',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '출판사: 출판사 이름',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
-          _buildPageIndicator(), // 페이지 인디케이터 추가
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _dummyText[_currentPage],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '닉네임',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                Text(
-                  '2024.03.03',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(height: 24), // 닉네임과 텍스트 사이에 여백 추가
-                const Text(
-                  '선형대수',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ),
-                const SizedBox(height: 8), // 텍스트와 선 사이에 여백 추가
-                Container(
-                  height: 2,
-                  color: const Color(0xFFFE4D02), // 선 색상 설정
-                ),
-                const SizedBox(height: 10), // 선과 텍스트 사이에 여백 추가
-                const Text(
-                  '공학이론',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                const SizedBox(height: 8), // 텍스트와 텍스트 사이에 여백 추가
-                const Text(
-                  '저자',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4), // 텍스트와 텍스트 사이에 여백 추가
-                const Text(
-                  '청람',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+                  SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
+                  _buildPageIndicator(), // 페이지 인디케이터 추가
+                ],
+              ),
             ),
           ),
         ],
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
-        color: Colors.white, // 배경 색상 설정
-        child: ElevatedButton(
+          padding: const EdgeInsets.all(16.0), // 버튼 주위의 여백 설정
+          color: Colors.white, // 배경 색상 설정
+          child: ElevatedButton(
           onPressed: () {
-            // 채팅하기 버튼을 누르면 채팅창으로 이동
-            saveRoom();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
-            shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
-              borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
+      // 채팅하기 버튼을 누르면 채팅창으로 이동
+      Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatPage()),
+    );
+  },
+    style
+        : ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFFFE4D02), // 버튼의 배경 색상을 FFFE4D02로 설정
+      shape: RoundedRectangleBorder( // 버튼의 모서리를 조절하는 설정
+        borderRadius: BorderRadius.circular(8.0), // 모서리를 8.0으로 조절
+      ),
+      minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
+    ),
+            child: const SizedBox(
+              width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
+              child: Text(
+                '채팅 하기',
+                textAlign: TextAlign.center, // 텍스트를 가운데로 정렬
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-            minimumSize: const Size(double.infinity, 50), // 버튼의 최소 크기 설정
           ),
-          child: const SizedBox(
-            width: double.infinity, // 버튼의 가로 크기를 화면 전체로 설정
-            child: Text(
-              '채팅 하기',
-              textAlign: TextAlign.center, // 텍스트를 가운데로 정렬
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
       ),
     );
   }
 
-  Widget _buildPageIndicator() { // 사진 순서에 따른 점 채우기 인디케이터
+  Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(_dummyText.length, (index) {
+      children: List.generate(_dummyImageUrls.length, (index) {
         return Container(
           width: 8.0,
           height: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 4.0),
+          margin: EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentPage == index
-                ? const Color(0xFFFE4D02) // 선택된 페이지는 주황색으로 설정
+                ? Color(0xFFFE4D02) // 선택된 페이지는 주황색으로 설정
                 : Colors.grey, // 선택되지 않은 페이지는 회색으로 설정
           ),
         );
       }),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: DetailPage(),
-  ));
 }
