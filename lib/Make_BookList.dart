@@ -16,17 +16,22 @@ class _MakeBookListState extends State<MakeBookList> {
   final _controller = TextEditingController();
   final _auth = FirebaseAuth.instance;
   User? loggedInUser;
-  String? _Bookname;//책이름
-  String? _Bookauthor;//저자
-  String? _Publisher;//출판사
-  String? _Subject;//과목명
-  String? _Quality;//책상태
-  bool? _Takenote;//필기여부
-  String? _Postname;//제목
-  String? _Price;//가격
-  String? _Detail;//자세한 설명
-  String? _MeetingPlace;//거래희망장소
-  String? _Tag;//해시태그
+  String? _Bookname; //책이름
+  String? _Bookauthor; //저자
+  String? _Publisher; //출판사
+  String? _Subject; //과목명
+  String? _Quality; //책상태
+  bool? _Takenote; //필기여부
+  String? _Postname; //제목
+  String? _Price; //가격
+  String? _Detail; //자세한 설명
+  String? _MeetingPlace; //거래희망장소
+  String? _Tag; //해시태그맵
+  String? _Tag1; //해시태그1
+  String? _Tag2; //해시태그2
+  String? _Tag3; //해시태그3
+  String? _Tag4; //해시태그4
+  String? _Tag5; //해시태그5
   final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
@@ -34,6 +39,7 @@ class _MakeBookListState extends State<MakeBookList> {
   List<XFile?> multiImage = [];
   List<XFile?> images = [];
   String? inputText;
+  String? ttag;
 
   void initState() {
     super.initState();
@@ -71,6 +77,7 @@ class _MakeBookListState extends State<MakeBookList> {
     }
     _controller.text = _controller.text.trim();
     if (_controller.text.isNotEmpty) {
+      DivideTag();
       FirebaseFirestore.instance.collection('book').add({
         'Bookname': _Bookname,
         'Bookauther': _Bookauthor,
@@ -82,7 +89,13 @@ class _MakeBookListState extends State<MakeBookList> {
         'Price': _Price,
         'Detail': _Detail,
         'MeetingPlace': _MeetingPlace,
-        'Tag': _Tag,
+        'Tag': {
+          '1Tag': _Tag1,
+          '2Tag': _Tag2,
+          '3Tag': _Tag3,
+          '4Tag': _Tag4,
+          '5Tag': _Tag5
+        },
         'Seller': loggedInUser!.email,
         'timestamp': Timestamp.now(),
       });
@@ -374,11 +387,20 @@ class _MakeBookListState extends State<MakeBookList> {
     );
   }
 
+  void DivideTag() {
+    List<String> _tags = ttag!.split(','); // ttag가 null이 아님을 보장하고 ','로 분할
+    _Tag1 = _tags.isNotEmpty ? _tags[0] : null; // 첫 번째 요소를 가져오고, 리스트가 비어 있으면 null 할당
+    _Tag2 = _tags.isNotEmpty ? _tags[1] : null;
+    _Tag3 = _tags.isNotEmpty ? _tags[2] : null;
+    _Tag4 = _tags.isNotEmpty ? _tags[3] : null;
+    _Tag5 = _tags.isNotEmpty ? _tags[4] : null;
+  }
+
   Widget HashtagF() {
     return Container(
       child: TextFormField(
         onChanged: (value) {
-          setState(() => _Tag = value);
+          setState(() => ttag = value);
         },
         decoration: InputDecoration(
           hintText: '태그를 입력해주세요 (최대 5개)',
@@ -438,6 +460,7 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
+
   Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
@@ -591,9 +614,8 @@ class _MakeBookListState extends State<MakeBookList> {
     return ElevatedButton(
         onPressed: () {
           saveText();
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) =>
-                  MainPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MainPage()));
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orangeAccent,
