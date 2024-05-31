@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'Searchresult.dart';
+import 'package:flutter_01/Searchresult.dart';
 import 'Book_SearchList.dart';
 
 class Main_Page extends StatefulWidget {
@@ -12,7 +12,7 @@ class Main_Page extends StatefulWidget {
 }
 
 class _Main_PageState extends State<Main_Page> {
-  String? Stext;
+  String? inputText;
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +61,9 @@ class _Main_PageState extends State<Main_Page> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => BookList(
-                            Searchresult: searchresult(
+                            searchResult: SearchResult(
                                 subject: inputText ?? '',
-                                auther: '',
+                                author: '',
                                 publishing: ''))));
                 break;
             }
@@ -238,29 +238,27 @@ class _Main_PageState extends State<Main_Page> {
       color: Colors.orangeAccent,
     );
   }
-  List<searchresult> searchResults = [];
+  List<SearchResult> searchResults = [];
   void searchList(String query){
     final results = searchResults.where((product) => product.subject.contains(query)).toList();
     setState(() {
       searchResults = results;
     });
   }
-  String? inputText;
 
   Widget SearchB() {
     return SearchBar(
       onChanged: (value){
         setState(() => inputText = value);
-        //print('Input Text = $inputText');
       } ,
       leading: IconButton(icon: const Icon(Icons.search),
           onPressed:(){
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookList(Searchresult: searchresult(
+                builder: (context) => BookList(searchResult: SearchResult(
                     subject: inputText ?? '',
-                    auther: '',
+                    author: '',
                     publishing: '')),
               ),
             );
@@ -269,6 +267,5 @@ class _Main_PageState extends State<Main_Page> {
       hintText: "검색어를 입력하세요",
       backgroundColor: const MaterialStatePropertyAll(Colors.white70),
     );
-
   }
 }

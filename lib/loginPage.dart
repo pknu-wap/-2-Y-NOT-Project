@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/SignUpPage.dart';
 import 'package:flutter_01/user.dart';
-import 'package:flutter_01/join_submit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
   }
   Widget submitButton() {
     return ElevatedButton(
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => const JoinWidget())),
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => const SignUpForm())),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: const Text(
