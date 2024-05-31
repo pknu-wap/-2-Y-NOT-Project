@@ -4,10 +4,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
 // 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/chat.dart';
 import 'package:flutter_01/WishList.dart';
 
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Screen'),
+      ),
+      body: Center(
+        child: Text('This is the chat screen'),
+      ),
+    );
+  }
+}
 
 class MyPage extends StatelessWidget {
   final String inputText;
@@ -535,4 +546,3 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
-
