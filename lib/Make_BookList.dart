@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
@@ -11,13 +13,93 @@ class MakeBookList extends StatefulWidget {
 }
 
 class _MakeBookListState extends State<MakeBookList> {
-  final Version = <bool>[true,false];
-  final Written = <bool>[true,false];
+  final _controller = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+  User? loggedInUser;
+  String? _Bookname;
+  String? _Bookauthor;
+  String? _Publisher;
+  String? _subject;
+  String? _quality;
+  bool? _Takenote;
+  String? _Postname;
+  String? _price;
+  String? _Detail;
+  String? _MeetingPlace;
+  String? _tag;
+  final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
   XFile? image;
   List<XFile?> multiImage = [];
   List<XFile?> images = [];
+  String? inputText;
+
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser!.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void saveText() {
+    if (Written[0] == true)
+      _Takenote = true;
+    else
+      _Takenote = false;
+
+    for (int i = 0; i < 2; i++) {
+      if (isSelectedd[i] == true) {
+        int j = i;
+        if (i == 0)
+          _quality = '상';
+        else if (i == 1)
+          _quality = '중';
+        else
+          _quality = '하';
+      }
+    }
+    _controller.text = _controller.text.trim();
+    if (_controller.text.isNotEmpty) {
+      FirebaseFirestore.instance.collection('book').add({
+        'Bookname': _Bookname,
+        'Bookauther': _Bookauthor,
+        'Publisher': _Publisher,
+        'Subject': _subject,
+        'Quality': _quality,
+        'TakeNote': _Takenote,
+        'Postname': _Postname,
+        'Price': _price,
+        'Detail': _Detail,
+        'MeetingPlace': _MeetingPlace,
+        'Tag': _tag,
+        'Seller': loggedInUser!.email,
+        'timestamp': Timestamp.now(),
+      });
+      _controller.clear();
+    }
+    print(_Bookname);
+    print(_Bookauthor);
+    print(_Publisher);
+    print(_subject);
+    print(_quality);
+    print(_Takenote);
+    print(_Postname);
+    print(_price);
+    print(_Detail);
+    print(_MeetingPlace);
+    print(_tag);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +138,6 @@ class _MakeBookListState extends State<MakeBookList> {
                 BasicInformation(),
                 BookCondition(),
                 Handwritten(),
-                OldNew(),
                 const SizedBox(
                   height: 30,
                 ),
@@ -131,25 +212,46 @@ class _MakeBookListState extends State<MakeBookList> {
 
   Widget MakeNameF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        controller: _controller,
+        onChanged: (value) {
+          setState(() => _Bookname = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakeAuthorF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Bookauthor = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakePublishingF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Publisher = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakeSubjectF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _subject = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
@@ -196,6 +298,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget TitleF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Postname = value);
+        },
         decoration: InputDecoration(
           hintText: '제목을 입력해주세요',
           enabledBorder: const OutlineInputBorder(
@@ -215,6 +320,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget PriceF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _price = value);
+        },
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintText: '판매가격을 입력해주세요',
@@ -235,6 +343,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget DetailExplanationF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Detail = value);
+        },
         maxLength: 300,
         decoration: InputDecoration(
           hintText: '* 최대 300자 입력 가능',
@@ -255,6 +366,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget WantPlaceF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _MeetingPlace = value);
+        },
         decoration: InputDecoration(
           hintText: '거래 희망 장소를 입력해주세요',
           enabledBorder: const OutlineInputBorder(
@@ -274,6 +388,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget HashtagF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _tag = value);
+        },
         decoration: InputDecoration(
           hintText: '태그를 입력해주세요 (최대 5개)',
           enabledBorder: const OutlineInputBorder(
@@ -332,51 +449,7 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
-
-  Widget OldNew(){
-    const List<Widget> uml = <Widget>[
-      Text('구판'),
-      Text('신판'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('구판/신판',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(width: 30),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < Version.length; i++) {
-                  if (i == index) {
-                    Version[i] = !Version[i];
-                  } else {
-                    Version[i] = false;
-                  }
-                  //isSelected[i] = i == index;
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: Version,
-            children: uml,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget Handwritten(){
+  Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
       Text('없음'),
@@ -417,7 +490,6 @@ class _MakeBookListState extends State<MakeBookList> {
         ],
       ),
     );
-
   }
 
   Widget BookCondition() {
@@ -529,6 +601,7 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget complete() {
     return ElevatedButton(
         onPressed: () {
+          saveText();
           Get.to(MainPage());
         },
         style: ElevatedButton.styleFrom(
@@ -537,7 +610,7 @@ class _MakeBookListState extends State<MakeBookList> {
             padding: EdgeInsets.only(left: 100, right: 100)),
         child: const Text('등록완료'));
   }
-
+}
 /*Widget ShowPicture() {
     return Container(
     height: 10,
@@ -591,4 +664,3 @@ class _MakeBookListState extends State<MakeBookList> {
       },
     ));
   }*/
-}
