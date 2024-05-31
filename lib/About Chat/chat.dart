@@ -59,7 +59,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(MainPage());
+                        //Get.to(MainPage());
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainPage()),
+                        );
                       },
                       child: const Text('동의')
                   ),
@@ -163,8 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: _sendMessage,
                 ),
               ],
-            ),
-          )
+          ),
         ],
       ),
     );

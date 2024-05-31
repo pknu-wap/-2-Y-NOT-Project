@@ -1,4 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -50,12 +54,11 @@ class _DetailPageState extends State<DetailPage> {
 
   final ScrollController _scrollController = ScrollController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFFFFFFF), // 상단 바 배경색을 흰색으로 설정
         title: const Text(
           '상세 정보',
           style: TextStyle(color: Colors.black),
@@ -69,7 +72,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 16.0), // 오른쪽 여백 추가
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -246,8 +249,71 @@ class _DetailPageState extends State<DetailPage> {
                       ],
                     ),
                   ),
-                ],
-              ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
+          _buildPageIndicator(), // 페이지 인디케이터 추가
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _dummyText[_currentPage],
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '닉네임',
+                  style: const TextStyle(fontSize: 14),
+                ),
+                Text(
+                  '2024.03.03',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                const SizedBox(height: 24), // 닉네임과 텍스트 사이에 여백 추가
+                const Text(
+                  '선형대수',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 8), // 텍스트와 선 사이에 여백 추가
+                Container(
+                  height: 2,
+                  color: const Color(0xFFFE4D02), // 선 색상 설정
+                ),
+                const SizedBox(height: 10), // 선과 텍스트 사이에 여백 추가
+                const Text(
+                  '공학이론',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const SizedBox(height: 8), // 텍스트와 텍스트 사이에 여백 추가
+                const Text(
+                  '저자',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4), // 텍스트와 텍스트 사이에 여백 추가
+                const Text(
+                  '청람',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -283,10 +349,10 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _buildPageIndicator() {
+  Widget _buildPageIndicator() { // 사진 순서에 따른 점 채우기 인디케이터
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children : List.generate(_dummyText.length, (index) {
+      children: List.generate(_dummyText.length, (index) {
         return Container(
           width: 8.0,
           height: 8.0,
@@ -294,36 +360,18 @@ class _DetailPageState extends State<DetailPage> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentPage == index
-                ? const Color(0xFFFE4D02)
-                : Colors.grey,
+                ? const Color(0xFFFE4D02) // 선택된 페이지는 주황색으로 설정
+                : Colors.grey, // 선택되지 않은 페이지는 회색으로 설정
           ),
         );
       }),
     );
   }
-
-  Widget _buildTag(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(
-          color: const Color(0xFFFE4D02),
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color(0xFFFE4D02),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
 }
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: DetailPage(),
   ));
