@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_01/successPage.dart';
-
 
 class MakeBookList extends StatefulWidget {
   @override
@@ -12,13 +13,84 @@ class MakeBookList extends StatefulWidget {
 }
 
 class _MakeBookListState extends State<MakeBookList> {
-  final Version = <bool>[true, false];
+
+  final _controller = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+  User? loggedInUser;
+  String? _Bookname;//책이름
+  String? _Bookauthor;//저자
+  String? _Publisher;//출판사
+  String? _Subject;//과목명
+  String? _Quality;//책상태
+  bool? _Takenote;//필기여부
+  String? _Postname;//제목
+  String? _Price;//가격
+  String? _Detail;//자세한 설명
+  String? _MeetingPlace;//거래희망장소
+  String? _Tag;//해시태그
+
   final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
   XFile? image;
   List<XFile?> multiImage = [];
   List<XFile?> images = [];
+  String? inputText;
+
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser!.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void saveText() {
+    if (Written[0] == true)
+      _Takenote = true;
+    else
+      _Takenote = false;
+
+    for (int i = 0; i < 2; i++) {
+      if (isSelectedd[i] == true) {
+        int j = i;
+        if (i == 0)
+          _Quality = '상';
+        else if (i == 1)
+          _Quality = '중';
+        else
+          _Quality = '하';
+      }
+    }
+    _controller.text = _controller.text.trim();
+    if (_controller.text.isNotEmpty) {
+      FirebaseFirestore.instance.collection('book').add({
+        'Bookname': _Bookname,
+        'Bookauther': _Bookauthor,
+        'Publisher': _Publisher,
+        'Subject': _Subject,
+        'Quality': _Quality,
+        'TakeNote': _Takenote,
+        'Postname': _Postname,
+        'Price': _Price,
+        'Detail': _Detail,
+        'MeetingPlace': _MeetingPlace,
+        'Tag': _Tag,
+        'Seller': loggedInUser!.email,
+        'timestamp': Timestamp.now(),
+      });
+      _controller.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +129,6 @@ class _MakeBookListState extends State<MakeBookList> {
                 BasicInformation(),
                 BookCondition(),
                 Handwritten(),
-                OldNew(),
                 const SizedBox(
                   height: 30,
                 ),
@@ -132,25 +203,46 @@ class _MakeBookListState extends State<MakeBookList> {
 
   Widget MakeNameF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        controller: _controller,
+        onChanged: (value) {
+          setState(() => _Bookname = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakeAuthorF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Bookauthor = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakePublishingF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Publisher = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
   Widget MakeSubjectF() {
     return Expanded(
-      child: TextFormField(),
+      child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Subject = value);
+          //print('Input Text = $inputText');
+        },
+      ),
     );
   }
 
@@ -197,6 +289,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget TitleF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Postname = value);
+        },
         decoration: InputDecoration(
           hintText: '제목을 입력해주세요',
           enabledBorder: const OutlineInputBorder(
@@ -216,6 +311,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget PriceF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Price = value);
+        },
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintText: '판매가격을 입력해주세요',
@@ -236,6 +334,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget DetailExplanationF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Detail = value);
+        },
         maxLength: 300,
         decoration: InputDecoration(
           hintText: '* 최대 300자 입력 가능',
@@ -256,6 +357,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget WantPlaceF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _MeetingPlace = value);
+        },
         decoration: InputDecoration(
           hintText: '거래 희망 장소를 입력해주세요',
           enabledBorder: const OutlineInputBorder(
@@ -275,6 +379,9 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget HashtagF() {
     return Container(
       child: TextFormField(
+        onChanged: (value) {
+          setState(() => _Tag = value);
+        },
         decoration: InputDecoration(
           hintText: '태그를 입력해주세요 (최대 5개)',
           enabledBorder: const OutlineInputBorder(
@@ -333,7 +440,6 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
-
   Widget OldNew() {
     const List<Widget> uml = <Widget>[
       Text('구판'),
@@ -376,7 +482,6 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
-
   Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
@@ -529,7 +634,10 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget complete() {
     return ElevatedButton(
         onPressed: () {
-          Get.to(MainPage());
+          saveText();
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>
+                  MainPage()));
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orangeAccent,
