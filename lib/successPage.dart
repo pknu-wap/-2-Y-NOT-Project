@@ -1,591 +1,296 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_01/Make_BookList.dart';
+import 'package:flutter_01/Save_space.dart';
+import 'package:flutter_01/Alarm_space.dart';
+import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:flutter_01/Book_SearchList.dart';
+import 'MyPage.dart';
 
-class MakeBookList extends StatefulWidget {
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
   @override
-  State<MakeBookList> createState() => _MakeBookListState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MakeBookListState extends State<MakeBookList> {
-  final Version = <bool>[true, false];
-  final Written = <bool>[true, false];
-  final isSelectedd = <bool>[true, false, false];
-  final picker = ImagePicker();
-  XFile? image;
-  List<XFile?> multiImage = [];
-  List<XFile?> images = [];
-
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Get.to(MainPage());
-            },
-            icon: Icon(Icons.arrow_back),
+    final ThemeData themeData = ThemeData(useMaterial3: true);
+    return MaterialApp(
+      theme: themeData,
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MakeBookList()),);
+          },
+          child: Icon(
+            Icons.add,
+            size: 30,
           ),
-          title: Text('판매'),
-          centerTitle: true,
-          shape: Border(
-            bottom: BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orangeAccent,
         ),
         body: Container(
+          padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,//가운데 정렬
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    CameraButton(),
-                    AddPictureButton(),
-                  ],
-                ),
-                //Expanded(child: ShowPicture()),
-                Center(child: AboutText()),
-                BasicInformation(),
-                BookCondition(),
-                Handwritten(),
-                OldNew(),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  children: [
-                    TitleT(),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                Center(child: TitleF()),
-                Row(
-                  children: [
-                    PriceT(),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                Center(child: PriceF()),
-                Row(
-                  children: [
-                    DetailExplanationT(),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                Center(child: DetailExplanationF()),
-                Row(
-                  children: [
-                    WantPlaceT(),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                Center(child: WantPlaceF()),
-                Row(
-                  children: [
-                    HashtagT(),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                Center(child: HashtagF()),
-                Center(child: complete()),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  Widget AboutText() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text('책에 대한 정보',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          )),
-    );
-  }
-
-  Widget MakeNameT() {
-    return Text('책 이름');
-  }
-
-  Widget MakeAuthorT() {
-    return Text('저자 ');
-  }
-
-  Widget MakePublishingT() {
-    return Text('출판사');
-  }
-
-  Widget MakeSubjectT() {
-    return Text('과목명');
-  }
-
-  Widget MakeNameF() {
-    return Expanded(
-      child: TextFormField(),
-    );
-  }
-
-  Widget MakeAuthorF() {
-    return Expanded(
-      child: TextFormField(),
-    );
-  }
-
-  Widget MakePublishingF() {
-    return Expanded(
-      child: TextFormField(),
-    );
-  }
-
-  Widget MakeSubjectF() {
-    return Expanded(
-      child: TextFormField(),
-    );
-  }
-
-  Widget TitleT() {
-    return Text('제목',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ));
-  }
-
-  Widget PriceT() {
-    return Text('가격',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ));
-  }
-
-  Widget DetailExplanationT() {
-    return Text('자세한 설명',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ));
-  }
-
-  Widget WantPlaceT() {
-    return Text('거래 희망 장소',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ));
-  }
-
-  Widget HashtagT() {
-    return Text('해시태그',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ));
-  }
-
-  Widget TitleF() {
-    return Container(
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: '제목을 입력해주세요',
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            child: Column(children: [
+              Row(children: [
+                const SizedBox(width: 300),
+                SaveCon(),
+                const SizedBox(width: 1),
+                AlarmCon(),
+                const SizedBox(height: 20),
+              ]),
+              SearchB(),
+              const SizedBox(height: 10),
+              Row(children: [
+                Recent_text(),
+              ]),
+              Recent_Activity(),
+              Row(children: [
+                Find_text(),
+              ]),
+              Find_Activity(),
+              Row(children: [
+                Realtime_text(),
+              ]),
+              Realtime_Activity(),
+            ]),
           ),
         ),
-      ),
-      width: 400,
-    );
-  }
-
-  Widget PriceF() {
-    return Container(
-      child: TextFormField(
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          hintText: '판매가격을 입력해주세요',
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-        ),
-      ),
-      width: 400,
-    );
-  }
-
-  Widget DetailExplanationF() {
-    return Container(
-      child: TextFormField(
-        maxLength: 300,
-        decoration: InputDecoration(
-          hintText: '* 최대 300자 입력 가능',
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-        ),
-      ),
-      width: 400,
-    );
-  }
-
-  Widget WantPlaceF() {
-    return Container(
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: '거래 희망 장소를 입력해주세요',
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-        ),
-      ),
-      width: 400,
-    );
-  }
-
-  Widget HashtagF() {
-    return Container(
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: '태그를 입력해주세요 (최대 5개)',
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-        ),
-      ),
-      width: 400,
-    );
-  }
-
-  Widget BasicInformation() {
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: null,
-        border: Border.all(color: Colors.deepOrangeAccent, width: 1),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              MakeNameT(),
-              SizedBox(width: 10),
-              MakeNameF(),
-            ],
-          ),
-          Row(
-            children: [
-              MakeAuthorT(),
-              SizedBox(width: 10),
-              MakeAuthorF(),
-            ],
-          ),
-          Row(
-            children: [
-              MakePublishingT(),
-              SizedBox(width: 10),
-              MakePublishingF(),
-            ],
-          ),
-          Row(
-            children: [
-              MakeSubjectT(),
-              SizedBox(width: 10),
-              MakeSubjectF(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget OldNew() {
-    const List<Widget> uml = <Widget>[
-      Text('구판'),
-      Text('신판'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('구판/신판',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(width: 30),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < Version.length; i++) {
-                  if (i == index) {
-                    Version[i] = !Version[i];
-                  } else {
-                    Version[i] = false;
-                  }
-                  //isSelected[i] = i == index;
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: Version,
-            children: uml,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget Handwritten() {
-    const List<Widget> uml = <Widget>[
-      Text('있음'),
-      Text('없음'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('필기 여부',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(width: 30),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < Written.length; i++) {
-                  if (i == index) {
-                    Written[i] = !Written[i];
-                  } else {
-                    Written[i] = false;
-                  }
-                  //isSelected[i] = i == index;
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: Written,
-            children: uml,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget BookCondition() {
-    const List<Widget> uml = <Widget>[
-      Text('상'),
-      Text('중'),
-      Text('하'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('책 상태',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(width: 50),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < isSelectedd.length; i++) {
-                  if (i == index) {
-                    isSelectedd[i] = !isSelectedd[i];
-                  } else {
-                    isSelectedd[i] = false;
-                  }
-                  //isSelected[i] = i == index;
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: isSelectedd,
-            children: uml,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget CameraButton() {
-    return Container(
-      margin: EdgeInsets.all(5),
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 0.5,
-              blurRadius: 5)
-        ],
-      ),
-      child: IconButton(
-        onPressed: () async {
-          image = await picker.pickImage(source: ImageSource.camera);
-          if (image != null) {
-            setState(() {
-              images.add(image);
-            });
-          }
-        },
-        icon: Icon(
-          Icons.add_a_photo,
-          size: 25,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget AddPictureButton() {
-    return Container(
-      margin: EdgeInsets.all(5),
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 0.5,
-              blurRadius: 5)
-        ],
-      ),
-      child: IconButton(
-        onPressed: () async {
-          multiImage = await picker.pickMultiImage();
-          setState(() {
-            images.addAll(multiImage);
-          });
-        },
-        icon: Icon(
-          Icons.add_photo_alternate_outlined,
-          size: 25,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget complete() {
-    return ElevatedButton(
-        onPressed: () {
-          Get.to(MainPage());
-        },
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orangeAccent,
-            textStyle: const TextStyle(color: Colors.white),
-            padding: EdgeInsets.only(left: 100, right: 100)),
-        child: const Text('등록완료'));
-  }
-}
-/*Widget ShowPicture() {
-    return Container(
-    height: 10,
-    child: GridView.builder(
-      padding: EdgeInsets.all(10),
-      shrinkWrap: true,
-      itemCount: images.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1 / 1,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: FileImage(
-                    File(images[index]!.path),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (int wants) {
+            switch (wants) {
+              case 0:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
+                break;
+              case 1:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookList(
+                            Searchresult: BookInfo(
+                                subject: inputText ?? '',
+                                author: '',
+                                publishing: ''))));
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatListScreen()),
+                );
+                break;
+              case 3:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyPage()));
+                break;
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 15,
+                  Icons.home_outlined,
                 ),
-                onPressed: () {
-                  setState(() {
-                    images.removeAt(index);
-                  });
-                },
-              ),
-            ),
+                label: '홈'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add_outlined,
+                ),
+                label: '판매'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.chat,
+                ),
+                label: '채팅'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: '정보'),
           ],
+          type: BottomNavigationBarType.fixed,
+        ),
+      ),
+    );
+  }
+
+  Widget Recent_text() {
+    return const Text(
+      'User 활동 내역',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
+      ),
+    );
+  }
+
+  Widget Find_text() {
+    return const Text(
+      '찾고 계시는 책이 있나요?',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
+      ),
+    );
+  }
+
+  Widget Realtime_text() {
+    return const Text(
+      '실시간 최근 올라온 책들',
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 15, // 폰트 크기
+        fontWeight: FontWeight.bold, // 폰트 두께
+        color: Colors.black, // 폰트 색상
+      ),
+    );
+  }
+
+  Widget Find_Activity() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const RangeMaintainingScrollPhysics(),
+      child: Row(
+        children: [
+          Container(
+              child: Image.asset('image/pknu_5.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/pknu_6.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+        ],
+      ),
+    );
+  }
+
+  Widget Recent_Activity() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+              child: Image.asset('image/pknu_0.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/pknu_1.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/pknu_2.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/pknu_3.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child: Image.asset('image/pknu_4.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+        ],
+      ),
+    );
+  }
+
+  Widget Realtime_Activity() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+              child:
+              Image.asset('image/picture_1.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child:
+              Image.asset('image/picture_2.png', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child:
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child:
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+          Container(
+              child:
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              padding: EdgeInsets.all(10)),
+        ],
+      ),
+    );
+  }
+
+  Widget SaveCon() {
+    return IconButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SaveSpace()),
+          );
+        },
+        color: Colors.orangeAccent,
+        icon: const Icon(Icons.bookmark_outline_outlined));
+  }
+
+  Widget AlarmCon() {
+    return IconButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
-    ));
-  }*/
+      icon: const Icon(Icons.notifications_none),
+      iconSize: 30,
+      color: Colors.orangeAccent,
+    );
+  }
+
+  List<BookInfo> searchResults = [];
+
+  void searchList(String query) {
+    final results = searchResults
+        .where((product) => product.subject.contains(query))
+        .toList();
+    setState(() {
+      searchResults = results;
+    });
+  }
+
+  String? inputText;
+
+  Widget SearchB() {
+    return SearchBar(
+      onChanged: (value) {
+        setState(() => inputText = value);
+        //print('Input Text = $inputText');
+      },
+      leading: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookList(
+                    Searchresult: BookInfo(
+                        subject: inputText ?? '', author: '', publishing: '')),
+              ),
+            );
+          }),
+      hintText: "검색어를 입력하세요",
+      backgroundColor: const MaterialStatePropertyAll(Colors.white70),
+    );
+  }
+}
