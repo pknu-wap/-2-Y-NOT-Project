@@ -202,6 +202,7 @@ packages:
     source: hosted
     version: "0.9.3+1"
   firebase_auth:
+
     dependency: "direct dev"
     description:
       name: firebase_auth
@@ -213,6 +214,7 @@ packages:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
+
       sha256: a0270e1db3b2098a14cb2a2342b3cd2e7e458e0c391b1f64f6f78b14296ec093
       url: "https://pub.dev"
     source: hosted
@@ -221,6 +223,7 @@ packages:
     dependency: transitive
     description:
       name: firebase_auth_web
+
       sha256: "64e067e763c6378b7e774e872f0f59f6812885e43020e25cde08f42e9459837b"
       url: "https://pub.dev"
     source: hosted
