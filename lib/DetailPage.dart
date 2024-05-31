@@ -111,7 +111,7 @@ class _DetailPageState extends State<DetailPage> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
-                      'https://via.placeholder.com/350',
+                      'https://picsum.photos/250?image=9',
                       fit: BoxFit.cover,
                     ),
                   );
