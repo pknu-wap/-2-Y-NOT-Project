@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/About Chat/chatdata.dart';
 import 'package:flutter_01/About Chat/chat.dart';
+import 'package:get/get.dart';
 
 class ImageContainer extends StatelessWidget {
   final double borderRadius;
