@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 import 'MyPage.dart';
