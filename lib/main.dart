@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart';
 import 'package:flutter_01/WishList.dart';
-import 'MyPage.dart'; // MyPage.dart 파일을 임포트합니다
+import 'MyPage.dart';
 import 'package:flutter_01/loginPage.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
@@ -10,12 +9,12 @@ import 'package:get/get.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ); // Firebase 초기화
+  await Firebase.initializeApp(); // Firebase 초기화
+  Get.testMode = true;
   runApp(MyApp()); // MyApp 위젯을 실행
 }
 
