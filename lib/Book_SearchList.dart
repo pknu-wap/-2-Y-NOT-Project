@@ -47,6 +47,15 @@ final List<BookInfo> bookDatas =[
   ),
 ];
 
+void main() {
+  final ThemeData themeData = ThemeData(); // themeData 변수 선언 및 초기화
+  applyTheme(themeData); // themeData 변수 사용
+}
+
+void applyTheme(ThemeData themeData) {
+  // 여기에 테마 적용 로직을 추가하세요
+}
+
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
