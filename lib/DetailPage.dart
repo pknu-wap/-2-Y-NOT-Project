@@ -193,47 +193,31 @@ class _DetailPageState extends State<DetailPage> {
                     color: Colors.grey,
                     thickness: 1,
                   ),
+              const SizedBox(height: 100),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
                   Container(
-                    width: double.infinity,
-                    height: 100,
-                    child: Stack(
-                      alignment: Alignment.center,
+                    color: Colors.white, // 배경색 설정
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // 내부 패딩 설정
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Positioned(
-                          top: 0,
-                          child: Container(
-                            height: 100,
-                            width: 1,
-                            color: Colors.grey,
+                        const Text(
+                          '판매자의 말',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 1,
-                              color: Colors.grey,
-                              /*child: Column( //이거 회색줄 바로 아래에 놔서 픽셀 초과 오류남 그래서 회색줄 밑 말고 배경 아래에 둬야함
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      '판매자의 말',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    const Text(
-                                        '부경대 후문에서 거래 가능합니다.',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        )
-                                    )
-                                  ]
-                              )*/
-                          ),
-                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                            '부경대 후문에서 거래 가능합니다.',
+                            style: TextStyle(
+                              fontSize: 16,
+                            )
+                        )
                       ],
                     ),
                   ),
@@ -243,6 +227,7 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
+
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),
         color: Colors.white,
