@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chat/chat.dart';
 import 'package:flutter_01/SignUpPage.dart';
+import 'package:flutter_01/successPage.dart';
 import 'About Chat/chat.dart';
 
 class LoginController extends GetxController {
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (loginSuccess) {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) =>
-                              ChatScreen())); // 로그인 성공 시 페이지 이동
+                              MainPage())); // 로그인 성공 시 페이지 이동
                     }
                   }
                 },
