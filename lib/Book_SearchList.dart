@@ -47,10 +47,6 @@ final List<BookInfo> bookDatas =[
   ),
 ];
 
-ThemeData themeData = new ThemeData();
-// themeData를 사용하는 코드 추가
-applyTheme(themeData);
-
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
