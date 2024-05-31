@@ -50,6 +50,7 @@ class _DetailPageState extends State<DetailPage> {
 
   final ScrollController _scrollController = ScrollController();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
