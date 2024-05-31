@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_01/Book_SearchList.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/SignUpForm.dart';
+import 'package:chat/chat.dart';
+import 'package:flutter_01/SignUpPage.dart';
+import 'package:flutter_01/successPage.dart';
+import 'About Chat/chat.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth _authentication = FirebaseAuth.instance;
@@ -30,7 +30,7 @@ class LoginController extends GetxController {
       print(credential);
 
       QuerySnapshot snapshot = await _db
-          .collection('user')
+          .collection('users')
           .where('userId', isEqualTo: credential.user!.uid)
           .get();
 
@@ -108,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   }
                 },
-                onSaved: (val) => _loginController.userPassword.value = val ?? '',
+                onSaved: (val) =>
+                _loginController.userPassword.value = val ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '비밀번호',
@@ -123,9 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (_key.currentState!.validate()) {
                     _key.currentState!.save();
-                    bool loginSuccess = await _loginController.login(); // 로그인 시도 후 결과 저장
+                    bool loginSuccess = await _loginController
+                        .login(); // 로그인 시도 후 결과 저장
                     if (loginSuccess) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage())); // 로그인 성공 시 페이지 이동
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              MainPage())); // 로그인 성공 시 페이지 이동
                     }
                   }
                 },
@@ -141,8 +145,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpForm())),
+                onPressed: () =>
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUpForm())),
                 child: Container(
                   padding: const EdgeInsets.all(15),
                   child: const Text(
