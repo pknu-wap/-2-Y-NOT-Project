@@ -249,10 +249,11 @@ class _DetailPageState extends State<DetailPage> {
                       ],
                     ),
                   ),
-                );
-              },
+                )
             ),
-          ),
+          ]
+    ),
+  ),
           const SizedBox(height: 16), // 페이지 인디케이터와 사진 사이에 간격 추가
           _buildPageIndicator(), // 페이지 인디케이터 추가
           Padding(
@@ -315,11 +316,10 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ],
             ),
-          ],
         ),
-      ),
+      );
 
-      bottomNavigationBar: Container(
+      /*bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),
         color: Colors.white,
         child: ElevatedButton(
@@ -345,8 +345,8 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
         ),
-      ),
-    );
+      )*/
+    )
   }
 
   Widget _buildPageIndicator() { // 사진 순서에 따른 점 채우기 인디케이터
