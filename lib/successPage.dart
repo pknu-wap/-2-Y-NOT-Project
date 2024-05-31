@@ -5,6 +5,7 @@ import 'package:flutter_01/Alarm_space.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'MyPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,7 +24,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(MakeBookList());
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MakeBookList()),);
           },
           child: Icon(
             Icons.add,
@@ -78,7 +79,14 @@ class _MainPageState extends State<MainPage> {
                                 author: '',
                                 publishing: ''))));
               case 2:
-                Get.to(ChatListScreen());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatListScreen()),
+                );
+                break;
+              case 3:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyPage()));
                 break;
             }
           },
@@ -98,6 +106,9 @@ class _MainPageState extends State<MainPage> {
                   Icons.chat,
                 ),
                 label: '채팅'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: '정보'),
           ],
           type: BottomNavigationBarType.fixed,
         ),

@@ -16,17 +16,17 @@ class _MakeBookListState extends State<MakeBookList> {
   final _controller = TextEditingController();
   final _auth = FirebaseAuth.instance;
   User? loggedInUser;
-  String? _Bookname;
-  String? _Bookauthor;
-  String? _Publisher;
-  String? _subject;
-  String? _quality;
-  bool? _Takenote;
-  String? _Postname;
-  String? _price;
-  String? _Detail;
-  String? _MeetingPlace;
-  String? _tag;
+  String? _Bookname;//책이름
+  String? _Bookauthor;//저자
+  String? _Publisher;//출판사
+  String? _Subject;//과목명
+  String? _Quality;//책상태
+  bool? _Takenote;//필기여부
+  String? _Postname;//제목
+  String? _Price;//가격
+  String? _Detail;//자세한 설명
+  String? _MeetingPlace;//거래희망장소
+  String? _Tag;//해시태그
   final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
@@ -62,11 +62,11 @@ class _MakeBookListState extends State<MakeBookList> {
       if (isSelectedd[i] == true) {
         int j = i;
         if (i == 0)
-          _quality = '상';
+          _Quality = '상';
         else if (i == 1)
-          _quality = '중';
+          _Quality = '중';
         else
-          _quality = '하';
+          _Quality = '하';
       }
     }
     _controller.text = _controller.text.trim();
@@ -75,30 +75,19 @@ class _MakeBookListState extends State<MakeBookList> {
         'Bookname': _Bookname,
         'Bookauther': _Bookauthor,
         'Publisher': _Publisher,
-        'Subject': _subject,
-        'Quality': _quality,
+        'Subject': _Subject,
+        'Quality': _Quality,
         'TakeNote': _Takenote,
         'Postname': _Postname,
-        'Price': _price,
+        'Price': _Price,
         'Detail': _Detail,
         'MeetingPlace': _MeetingPlace,
-        'Tag': _tag,
+        'Tag': _Tag,
         'Seller': loggedInUser!.email,
         'timestamp': Timestamp.now(),
       });
       _controller.clear();
     }
-    print(_Bookname);
-    print(_Bookauthor);
-    print(_Publisher);
-    print(_subject);
-    print(_quality);
-    print(_Takenote);
-    print(_Postname);
-    print(_price);
-    print(_Detail);
-    print(_MeetingPlace);
-    print(_tag);
   }
 
   @override
@@ -248,7 +237,7 @@ class _MakeBookListState extends State<MakeBookList> {
     return Expanded(
       child: TextFormField(
         onChanged: (value) {
-          setState(() => _subject = value);
+          setState(() => _Subject = value);
           //print('Input Text = $inputText');
         },
       ),
@@ -321,7 +310,7 @@ class _MakeBookListState extends State<MakeBookList> {
     return Container(
       child: TextFormField(
         onChanged: (value) {
-          setState(() => _price = value);
+          setState(() => _Price = value);
         },
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
@@ -389,7 +378,7 @@ class _MakeBookListState extends State<MakeBookList> {
     return Container(
       child: TextFormField(
         onChanged: (value) {
-          setState(() => _tag = value);
+          setState(() => _Tag = value);
         },
         decoration: InputDecoration(
           hintText: '태그를 입력해주세요 (최대 5개)',
@@ -602,7 +591,9 @@ class _MakeBookListState extends State<MakeBookList> {
     return ElevatedButton(
         onPressed: () {
           saveText();
-          Get.to(MainPage());
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>
+                  MainPage()));
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orangeAccent,
