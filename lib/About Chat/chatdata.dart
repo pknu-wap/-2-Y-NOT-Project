@@ -15,7 +15,7 @@ class ChatMessage{
     required this.sendDate,
     required this.message,
     this.imageUri,
-});
+  });
 }
 
 List<ChatMessage> chatMessageList=[
