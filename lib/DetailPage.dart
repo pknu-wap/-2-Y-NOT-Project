@@ -160,7 +160,7 @@ class _DetailPageState extends State<DetailPage> {
                   const Text(
                     '공학이론',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
@@ -202,9 +202,9 @@ class _DetailPageState extends State<DetailPage> {
                       alignment: Alignment.center,
                       children: [
                         Positioned(
-                          top: -100,
+                          top: 0,
                           child: Container(
-                            height: 200,
+                            height: 100,
                             width: 1,
                             color: Colors.grey, // 세로 줄 추가
                           ),
