@@ -194,7 +194,31 @@ class _DetailPageState extends State<DetailPage> {
                     color: Colors.grey,
                     thickness: 1,
                   ),
-              const SizedBox(height: 100),
+                  const Text(
+                    '책 상태',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                        height: 2,
+                    ),
+                  ),
+                  const Text(
+                    '필기 여부',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      height: 2,
+                    ),
+                  ),
+                  const Text(
+                    '구판/신판',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      height: 2,
+                    ),
+                  ),
+              const SizedBox(height: 2),
               const Divider(
                 color: Colors.grey,
                 thickness: 1,
