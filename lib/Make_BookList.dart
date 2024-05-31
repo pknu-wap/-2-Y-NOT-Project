@@ -25,7 +25,7 @@ class _MakeBookListState extends State<MakeBookList> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Get.to(Main_Page());
+              Get.to(MainPage());
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -528,7 +528,7 @@ class _MakeBookListState extends State<MakeBookList> {
   Widget complete() {
     return ElevatedButton(
         onPressed: () {
-          Get.to(Main_Page());
+          Get.to(MainPage());
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orangeAccent,

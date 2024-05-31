@@ -41,7 +41,7 @@ class BookList extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Main_Page()),
+          MaterialPageRoute(builder: (context) => const MainPage()),
         );
       },
       iconSize: 30,

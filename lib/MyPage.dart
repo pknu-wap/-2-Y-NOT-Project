@@ -77,7 +77,7 @@ class MyPage extends StatelessWidget {
           switch (index) {
             case 0:
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Main_Page()));
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
               break;
             case 1:
               Navigator.push(

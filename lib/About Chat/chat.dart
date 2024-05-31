@@ -59,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(Main_Page());
+                        Get.to(MainPage());
                       },
                       child: const Text('동의')
                   ),
