@@ -124,7 +124,7 @@ class _WishListFormState extends State<WishListForm> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => BookList(
-                          Searchresult: BookInfo(
+                          searchResult: BookInfo(
                               subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
                               author: '',
                               publishing: ''))));
