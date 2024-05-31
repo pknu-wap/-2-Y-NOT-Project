@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:flutter_01/Searchresult.dart';
 import 'Book_SearchList.dart';
 
 class Main_Page extends StatefulWidget {
