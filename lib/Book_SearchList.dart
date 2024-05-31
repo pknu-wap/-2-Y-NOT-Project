@@ -54,7 +54,6 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = ThemeData(useMaterial3: true);
     final data = GetBookListContainsInputSubject();
     debugPrint(Searchresult.subject);
     return MaterialApp(
