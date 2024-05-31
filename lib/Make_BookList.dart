@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_01/successPage.dart';
 
 class MakeBookList extends StatefulWidget {
   @override
@@ -13,6 +13,7 @@ class MakeBookList extends StatefulWidget {
 }
 
 class _MakeBookListState extends State<MakeBookList> {
+
   final _controller = TextEditingController();
   final _auth = FirebaseAuth.instance;
   User? loggedInUser;
@@ -460,7 +461,6 @@ class _MakeBookListState extends State<MakeBookList> {
       ),
     );
   }
-
   Widget Handwritten() {
     const List<Widget> uml = <Widget>[
       Text('있음'),
