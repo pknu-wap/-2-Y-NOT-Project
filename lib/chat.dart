@@ -1,5 +1,5 @@
 //import 'package:chatview/chatview.dart'; chat 패키지로 쓸 예정이라 지워도 ㄱㅊ
-import 'chatdata.dart';
+/*import 'chatdata.dart';
 import 'theme.dart';
 import 'package:flutter/material.dart';
 import 'successPage.dart';
@@ -315,4 +315,4 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
   }
-}
+}*/
