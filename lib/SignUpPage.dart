@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/loginPage.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -143,7 +144,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpSuccessScreen()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     }
                   },
@@ -193,20 +194,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SignUpSuccessScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('가입 완료'),
-      ),
-      body: Center(
-        child: Text('회원 가입이 완료되었습니다!'),
       ),
     );
   }

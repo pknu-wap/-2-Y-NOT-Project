@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_01/successPage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_01/successPage.dart';
 
 class MakeBookList extends StatefulWidget {
   @override
@@ -13,6 +13,7 @@ class MakeBookList extends StatefulWidget {
 }
 
 class _MakeBookListState extends State<MakeBookList> {
+
   final _controller = TextEditingController();
   final _auth = FirebaseAuth.instance;
   User? loggedInUser;
@@ -27,6 +28,7 @@ class _MakeBookListState extends State<MakeBookList> {
   String? _Detail;//자세한 설명
   String? _MeetingPlace;//거래희망장소
   String? _Tag;//해시태그
+
   final Written = <bool>[true, false];
   final isSelectedd = <bool>[true, false, false];
   final picker = ImagePicker();
@@ -433,6 +435,48 @@ class _MakeBookListState extends State<MakeBookList> {
               SizedBox(width: 10),
               MakeSubjectF(),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget OldNew() {
+    const List<Widget> uml = <Widget>[
+      Text('구판'),
+      Text('신판'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('구판/신판',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(width: 30),
+          ToggleButtons(
+            onPressed: (int index) {
+              setState(() {
+                for (int i = 0; i < Version.length; i++) {
+                  if (i == index) {
+                    Version[i] = !Version[i];
+                  } else {
+                    Version[i] = false;
+                  }
+                  //isSelected[i] = i == index;
+                }
+              });
+            },
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            selectedBorderColor: Colors.red[700],
+            selectedColor: Colors.white,
+            fillColor: Colors.red[200],
+            color: Colors.red[400],
+            constraints: const BoxConstraints(
+              minHeight: 40.0,
+              minWidth: 80.0,
+            ),
+            isSelected: Version,
+            children: uml,
           ),
         ],
       ),
