@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chat/chat.dart';
 import 'package:flutter_01/SignUpPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_01/successPage.dart';
 import 'About Chat/chat.dart';
 
@@ -64,6 +66,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _key = GlobalKey<FormState>();
+  final LoginController _loginController = Get.put(LoginController());
   late String _username, _pwd;
 
   @override
@@ -193,8 +196,6 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         if (_key.currentState!.validate()) {
           _key.currentState!.save();
-          Navigator.pushNamed(context, '/success',
-              arguments: User(_username, _pwd));
         }
       },
       child: Container(
