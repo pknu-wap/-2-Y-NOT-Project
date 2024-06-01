@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/SignUpPage.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:get/get.dart';
+import 'Book_db.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: SignUpForm(),
+      home: GetBookDataTest(),
     );
   }
 }
