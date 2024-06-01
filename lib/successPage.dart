@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => GetDataTest()),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => GetBookDataTest()),);
           },
           child: Icon(
             Icons.add,
