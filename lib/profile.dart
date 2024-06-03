@@ -8,108 +8,108 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Danggeun Profile Form',
+      title: 'Profile',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primaryColor: Color(0xFFFE4D02), // 상단바 배경색 설정
       ),
-      home: ProfileFormPage(),
+      home: ProfilePage(),
     );
   }
 }
 
-class ProfileFormPage extends StatefulWidget {
-  @override
-  _ProfileFormPageState createState() => _ProfileFormPageState();
-}
-
-class _ProfileFormPageState extends State<ProfileFormPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  String _name = '';
-  String _email = '';
-  String _phone = '';
-  String _address = '';
-
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Danggeun Profile Form'),
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.white), // 상단바 텍스트 색상 설정
+        ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _name = value ?? '';
-                },
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Profile',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey[300],
+                    // 이미지를 여기에 추가하거나 네트워크에서 가져와서 설정하세요.
+                  ),
+                  child: Center(
+                    child: Text(
+                      'ㅇ',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nickname',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      'Your Nickname',
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Profile Information',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[200],
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _email = value ?? '';
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProfileTextField(label: 'Name'),
+                  ProfileTextField(label: 'Email'),
+                  ProfileTextField(label: 'Phone'),
+                  ProfileTextField(label: 'Address'),
+                ],
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Phone'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your phone number';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _phone = value ?? '';
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Address'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your address';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _address = value ?? '';
-                },
-              ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    _formKey.currentState?.save();
-                    // Do something with the saved values
-                    print('Name: $_name');
-                    print('Email: $_email');
-                    print('Phone: $_phone');
-                    print('Address: $_address');
-                    // You can add further actions here such as saving to a database or sending to a server
-                  }
-                },
-                child: Text('Submit'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class ProfileTextField extends StatelessWidget {
+  final String label;
+
+  const ProfileTextField({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        border: InputBorder.none,
       ),
     );
   }
