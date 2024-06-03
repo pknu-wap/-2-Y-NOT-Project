@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:flutter_01/About Chat/chat.dart';
-import 'Book_SearchList.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:flutter_01/Book_SearchList.dart';
+import 'Book_db.dart';
+import 'MyPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -14,7 +16,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
@@ -22,6 +23,18 @@ class _MainPageState extends State<MainPage> {
       theme: themeData,
       home: Scaffold(
         backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => GetBookDataTest()),);
+          },
+          child: Icon(
+            Icons.add,
+            size: 30,
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orangeAccent,
+        ),
         body: Container(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
@@ -54,8 +67,8 @@ class _MainPageState extends State<MainPage> {
           onTap: (int wants) {
             switch (wants) {
               case 0:
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MainPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
                 break;
               case 1:
                 Navigator.push(
@@ -67,11 +80,18 @@ class _MainPageState extends State<MainPage> {
                                 author: '',
                                 publishing: ''))));
               case 2:
-                Get.to(ChatListScreen());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatListScreen()),
+                );
+                break;
+              case 3:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyPage()));
                 break;
             }
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home_outlined,
@@ -83,9 +103,13 @@ class _MainPageState extends State<MainPage> {
                 ),
                 label: '판매'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.chat,
-            ),
+                icon: Icon(
+                  Icons.chat,
+                ),
                 label: '채팅'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: '정보'),
           ],
           type: BottomNavigationBarType.fixed,
         ),
@@ -94,7 +118,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget Recent_text() {
-    return Text(
+    return const Text(
       'User 활동 내역',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -106,7 +130,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget Find_text() {
-    return Text(
+    return const Text(
       '찾고 계시는 책이 있나요?',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -118,7 +142,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget Realtime_text() {
-    return Text(
+    return const Text(
       '실시간 최근 올라온 책들',
       textAlign: TextAlign.left,
       style: TextStyle(
@@ -132,28 +156,23 @@ class _MainPageState extends State<MainPage> {
   Widget Find_Activity() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      physics: RangeMaintainingScrollPhysics(),
+      physics: const RangeMaintainingScrollPhysics(),
       child: Row(
         children: [
           Container(
-              child:
-              Image.asset('image/pknu_5.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_5.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/pknu_6.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_6.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              child: Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -166,24 +185,19 @@ class _MainPageState extends State<MainPage> {
       child: Row(
         children: [
           Container(
-              child:
-              Image.asset('image/pknu_0.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_0.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/pknu_1.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/pknu_2.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/pknu_3.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_3.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
-              child:
-              Image.asset('image/pknu_4.png', height: 150, width: 150),
+              child: Image.asset('image/pknu_4.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -197,23 +211,23 @@ class _MainPageState extends State<MainPage> {
         children: [
           Container(
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
+                  Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
+                  Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
@@ -225,11 +239,11 @@ class _MainPageState extends State<MainPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SaveSpace()),
+            MaterialPageRoute(builder: (context) => const SaveSpace()),
           );
         },
         color: Colors.orangeAccent,
-        icon: Icon(Icons.bookmark_outline_outlined));
+        icon: const Icon(Icons.bookmark_outline_outlined));
   }
 
   Widget AlarmCon() {
@@ -237,45 +251,48 @@ class _MainPageState extends State<MainPage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AlarmSpace()),
+          MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
-      icon: Icon(Icons.notifications_none),
+      icon: const Icon(Icons.notifications_none),
       iconSize: 30,
       color: Colors.orangeAccent,
     );
   }
+
   List<BookInfo> searchResults = [];
-  void searchList(String query){
-    final results = searchResults.where((product) => product.subject.contains(query)).toList();
+
+  void searchList(String query) {
+    final results = searchResults
+        .where((product) => product.subject.contains(query))
+        .toList();
     setState(() {
       searchResults = results;
     });
   }
+
   String? inputText;
 
   Widget SearchB() {
     return SearchBar(
-      onChanged: (value){
+      onChanged: (value) {
         setState(() => inputText = value);
         //print('Input Text = $inputText');
-      } ,
-      leading: IconButton(icon: Icon(Icons.search),
-          onPressed:(){
+      },
+      leading: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookList(Searchresult: BookInfo(
-                    subject: inputText ?? '',
-                    author: '',
-                    publishing: '')),
+                builder: (context) => BookList(
+                    Searchresult: BookInfo(
+                        subject: inputText ?? '', author: '', publishing: '')),
               ),
             );
-          }
-      ),
+          }),
       hintText: "검색어를 입력하세요",
-      backgroundColor: MaterialStatePropertyAll(Colors.white70),
+      backgroundColor: const MaterialStatePropertyAll(Colors.white70),
     );
-
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/SignUpForm.dart';
+import 'package:flutter_01/SignUpPage.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth _authentication = FirebaseAuth.instance;
