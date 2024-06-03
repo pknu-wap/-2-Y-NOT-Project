@@ -1,4 +1,4 @@
-import 'package:chatview/chatview.dart';
+/*import 'package:chatview/chatview.dart';
 
 class ChatMessage{
   final String id;
@@ -150,3 +150,4 @@ class Data {
     ),
   ];
 }
+*/
