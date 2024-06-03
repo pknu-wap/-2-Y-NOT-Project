@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
-
-// 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
+import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
 
@@ -65,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        const NotificationsPage(), // 알림 페이지로 이동
+                    const NotificationsPage(), // 알림 페이지로 이동
                   ),
                 );
               },
@@ -122,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                     Text(
                       '닉네임',
                       style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10), // 닉네임과 가입일 텍스트 사이의 간격
                   ],
@@ -140,16 +139,59 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 5), // 가입일 텍스트와 다음 요소 사이의 간격
+            SizedBox(height: 20), // 가입일 텍스트와 다음 요소 사이의 간격
             Row(
               children: [
-                SizedBox(width: 135), // 왼쪽 여백
-                Container(
-                  height: 15, // 회색 부분의 높이
-                  color: Colors.grey, // 회색 배경색
-                  width: 15, // 회색 부분의 너비
+                SizedBox(width: 10), // 왼쪽 여백
+                Expanded(
+                  child: Container(
+                    height: 20, // 회색 부분의 높이
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), // 둥근 모서리 설정
+                      color: Colors.grey, // 회색 배경색
+                    ),
+                    child: Stack(
+                      children: [
+                        FractionallySizedBox(
+                          widthFactor: 1 / 3, // 1/3만큼의 너비
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15), // 전체 둥근 모서리
+                              color: Color(0xFFFE4D02), // FE4D02 색상
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
+            ),
+            SizedBox(height: 10), // 색 줄과 텍스트 사이의 간격
+            Padding(
+              padding: const EdgeInsets.only(left: 40), // 왼쪽 여백 추가
+              child: Text(
+                '초보 판매자',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Spacer(), // Add a spacer to push the next elements to the bottom
+            Padding(
+              padding: const EdgeInsets.only(left: 40, bottom: 10), // 왼쪽 여백 추가
+              child: Text(
+                '판매 도서',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 40, bottom: 20), // 왼쪽 여백 추가
+              child: Text(
+                '받은 거래 후기',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
@@ -159,7 +201,7 @@ class ProfilePage extends StatelessWidget {
           switch (index) {
             case 0:
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MainPage()));
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
               break;
             case 1:
               Navigator.push(

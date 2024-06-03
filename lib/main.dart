@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: MyPage(),
+      home: ProfilePage(),
     );
   }
 }
