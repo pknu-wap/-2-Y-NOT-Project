@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/profile.dart';
+import 'package:flutter_01/MyPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: ProfilePage(),
+      home: MyPage(),
     );
   }
 }

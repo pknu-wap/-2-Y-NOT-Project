@@ -32,7 +32,7 @@ class MyPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           '마이페이지',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -58,7 +58,7 @@ class MyPage extends StatelessWidget {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
+          preferredSize: const Size.fromHeight(5.0),
           child: Container(
             color: Colors.grey, // 경계선 색상 설정
             height: 2.0, // 경계선 두께 설정

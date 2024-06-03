@@ -22,9 +22,39 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(color: Colors.white), // 상단바 텍스트 색상 설정
+        title: const Text(
+          '프로필',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, size: 30),
+          onPressed: () {
+            Navigator.pop(context); // 이전 페이지로 이동
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
+            child: IconButton(
+              icon: const Icon(Icons.notifications, color: Color(0xFFFE4D02), size: 30),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsPage(), // 알림 페이지로 이동
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(5.0),
+          child: Container(
+            color: Colors.grey, // 경계선 색상 설정
+            height: 2.0, // 경계선 두께 설정
+          ),
         ),
       ),
       body: Padding(
@@ -32,11 +62,6 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
             Row(
               children: [
                 Container(
@@ -49,7 +74,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'ㅇ',
+                      '이미지',
                       style: TextStyle(fontSize: 24),
                     ),
                   ),
@@ -58,58 +83,68 @@ class ProfilePage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Nickname',
-                      style: TextStyle(fontSize: 18),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFE4D02),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      child: const Text(
+                        '초보판매자',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
                     ),
                     Text(
-                      'Your Nickname',
+                      '닉네임',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
-              'Profile Information',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[200],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProfileTextField(label: 'Name'),
-                  ProfileTextField(label: 'Email'),
-                  ProfileTextField(label: 'Phone'),
-                  ProfileTextField(label: 'Address'),
-                ],
-              ),
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_outlined,
+              ),
+              label: '홈'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add_outlined,
+              ),
+              label: '판매'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: '채팅'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: '정보'),
+        ],
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
 }
 
-class ProfileTextField extends StatelessWidget {
-  final String label;
-
-  const ProfileTextField({required this.label});
+class NotificationsPage extends StatelessWidget {
+  const NotificationsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        border: InputBorder.none,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          '알림',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text('여기에 알림 내용이 표시됩니다.'),
       ),
     );
   }
