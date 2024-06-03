@@ -6,6 +6,7 @@ import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
 // 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/WishList.dart';
+import 'package:flutter_01/profile.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
@@ -126,63 +127,73 @@ class MyPage extends StatelessWidget {
   }
 
   Widget _buildProfileSection(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 26,
-                backgroundImage: NetworkImage('https://example.com/profile.jpg'), // 프로필 이미지를 여기에 대체하세요
-              ),
-              const SizedBox(width: 16.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFE4D02),
-                      borderRadius: BorderRadius.circular(6.0),
+    return GestureDetector(
+      onTap: () {
+        // 프로필 페이지로 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 26,
+                  backgroundImage: NetworkImage('https://example.com/profile.jpg'), // 프로필 이미지를 여기에 대체하세요
+                ),
+                const SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFE4D02),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      child: const Text(
+                        '초보판매자',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
                     ),
-                    child: const Text(
-                      '초보판매자',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    const SizedBox(height: 8.0),
+                    const Text(
+                      '닉네임',
+                      style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  const Text(
-                    '닉네임',
-                    style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 1.0),
-          GestureDetector(
-            onTap: () {
-              _showImagePicker(context); // 프로필 수정 텍스트를 눌렀을 때 모달창을 열어줍니다.
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 4.0), // 왼쪽 여백 추가
-              child: const Text(
-                '프로필 수정',
-                style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8), // 작게 FE402 색으로 설정
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 1.0),
+            GestureDetector(
+              onTap: () {
+                _showImagePicker(context); // 프로필 수정 텍스트를 눌렀을 때 모달창을 열어줍니다.
+              },
+              child: Container(
+                padding: const EdgeInsets.only(left: 4.0), // 왼쪽 여백 추가
+                child: const Text(
+                  '프로필 수정',
+                  style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8), // 작게 FE402 색으로 설정
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
 
   void _showImagePicker(BuildContext context) {
     showModalBottomSheet(
