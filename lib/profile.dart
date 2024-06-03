@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+
 // 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
@@ -43,7 +44,8 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           '프로필',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -56,12 +58,14 @@ class ProfilePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
             child: IconButton(
-              icon: const Icon(Icons.notifications, color: Color(0xFFFE4D02), size: 30),
+              icon: const Icon(Icons.notifications,
+                  color: Color(0xFFFE4D02), size: 30),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const NotificationsPage(), // 알림 페이지로 이동
+                    builder: (context) =>
+                        const NotificationsPage(), // 알림 페이지로 이동
                   ),
                 );
               },
@@ -104,7 +108,8 @@ class ProfilePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 2.0),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE4D02),
                         borderRadius: BorderRadius.circular(6.0),
@@ -116,7 +121,8 @@ class ProfilePage extends StatelessWidget {
                     ),
                     Text(
                       '닉네임',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10), // 닉네임과 가입일 텍스트 사이의 간격
                   ],
@@ -129,7 +135,8 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(width: 120), // 왼쪽 여백
                 Text(
                   '가입일: 2024-06-03',
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -188,12 +195,9 @@ class ProfilePage extends StatelessWidget {
                 Icons.add_outlined,
               ),
               label: '판매'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: '채팅'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: '정보'),
+              icon: Icon(Icons.account_circle), label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
       ),
