@@ -1,9 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/chat.dart';
-import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'package:flutter_01/Book_SearchList.dart';
+
+class BookList extends StatelessWidget {
+  final BookInfo searchResult;
+
+  BookList({required this.searchResult});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Book List'),
+      ),
+      body: Center(
+        child: Text('Displaying books based on search result'),
+      ),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Screen'),
+      ),
+      body: Center(
+        child: Text('This is the chat screen'),
+      ),
+    );
+  }
+}
 
 class WishListForm extends StatefulWidget {
   @override
