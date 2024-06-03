@@ -12,6 +12,7 @@ import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Searchresult.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
+import 'package:flutter_01/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: WishListForm(),
+      home: ProfileFormPage(),
     );
   }
 }
