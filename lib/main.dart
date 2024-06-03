@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_01/DetailPage.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/WishList.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: WishListForm(),
+      home: DetailPage(),
     );
   }
 }
