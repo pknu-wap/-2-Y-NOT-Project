@@ -1,4 +1,26 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
+import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+// 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
+import 'package:flutter_01/successPage.dart';
+import 'package:flutter_01/WishList.dart';
+import 'package:flutter_01/MyPage.dart';
+
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Screen'),
+      ),
+      body: Center(
+        child: Text('This is the chat screen'),
+      ),
+    );
+  }
+}
 
 void main() {
   runApp(MyApp());
@@ -64,9 +86,10 @@ class ProfilePage extends StatelessWidget {
           children: [
             Row(
               children: [
+                SizedBox(width: 20),
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.grey[300],
@@ -98,7 +121,29 @@ class ProfilePage extends StatelessWidget {
                       '닉네임',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
+                    SizedBox(height: 10), // 닉네임과 가입일 텍스트 사이의 간격
                   ],
+                ),
+              ],
+            ),
+            SizedBox(height: 5), // 닉네임과 가입일 텍스트 사이의 간격
+            Row(
+              children: [
+                SizedBox(width: 120), // 왼쪽 여백
+                Text(
+                  '가입일: 2024-06-03',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 5), // 가입일 텍스트와 다음 요소 사이의 간격
+            Row(
+              children: [
+                SizedBox(width: 135), // 왼쪽 여백
+                Container(
+                  height: 15, // 회색 부분의 높이
+                  color: Colors.grey, // 회색 배경색
+                  width: 15, // 회색 부분의 너비
                 ),
               ],
             ),
@@ -106,6 +151,35 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookSearch.BookList(
+                    Searchresult: BookSearch.BookInfo(
+                      subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
+                      author: '',
+                      publishing: '',
+                    ),
+                  ),
+                ),
+              );
+              break;
+            case 2:
+              Get.to(ChatScreen());
+              break;
+            case 3:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
+              break;
+          }
+        },
         items: [
           BottomNavigationBarItem(
               icon: Icon(
@@ -128,6 +202,77 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
+    return ListTile(
+      title: Text(text),
+      onTap: onTap,
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('홈'),
+      ),
+      body: const Center(
+        child: Text('홈 페이지'),
+      ),
+    );
+  }
+}
+
+class SalesPage extends StatelessWidget {
+  const SalesPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('판매'),
+      ),
+      body: const Center(
+        child: Text('판매 페이지'),
+      ),
+    );
+  }
+}
+
+class RentalPage extends StatelessWidget {
+  const RentalPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('대여'),
+      ),
+      body: const Center(
+        child: Text('대여 페이지'),
+      ),
+    );
+  }
+}
+
+class ChatPage extends StatelessWidget {
+  const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('채팅'),
+      ),
+      body: const Center(
+        child: Text('채팅 페이지'),
+      ),
+    );
+  }
 }
 
 class NotificationsPage extends StatelessWidget {
@@ -137,14 +282,10 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '알림',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        centerTitle: true,
+        title: const Text('알림페이지'),
       ),
-      body: Center(
-        child: Text('여기에 알림 내용이 표시됩니다.'),
+      body: const Center(
+        child: Text(' '),
       ),
     );
   }
