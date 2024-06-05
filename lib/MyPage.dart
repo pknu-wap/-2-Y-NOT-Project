@@ -37,29 +37,34 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '마이페이지',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                // Handle back button
+              },
+              child: Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  '마이페이지',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationsPage()),
+                );
+              },
+              child: Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+            ),
+          ],
         ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // 이전 페이지로 이동
-          },
-        ),
-        actions: [
-          const Expanded(child: SizedBox()),
-          GestureDetector(
-            child: const Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationsPage()),
-              );
-            },
-          ),
-        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5.0),
           child: Container(
