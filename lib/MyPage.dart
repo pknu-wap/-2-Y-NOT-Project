@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
-import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
+import 'package:flutter_01/Book_SearchList.dart';
+// 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/WishList.dart';
-import 'package:flutter_01/profile.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
@@ -21,81 +21,71 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-class MyPage extends StatefulWidget {
+class MyPage extends StatelessWidget {
   final String inputText;
 
-  MyPage({Key? key, this.inputText = ''}) : super(key: key);
-
-  @override
-  _MyPageState createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> {
-  File? _imageFile; // 선택된 이미지를 저장하는 변수
+  const MyPage({Key? key, this.inputText = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-                // Handle back button
-              },
-              child: Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  '마이페이지',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
+        title: const Text(
+          '마이페이지',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // 이전 페이지로 이동
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
+            child: IconButton(
+              icon: const Icon(Icons.notifications, color: Color(0xFFFE4D02)),
+              // 아이콘 색상 변경
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationsPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationsPage()), // 알림 페이지로 이동
                 );
               },
-              child: Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
             ),
-          ],
-        ),
+          ),
+        ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5.0),
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Colors.grey,
-            height: 2.0,
+            color: Colors.grey, // 경계선 색상 설정
+            height: 2.0, // 경계선 두께 설정
           ),
         ),
       ),
       body: ListView(
         children: [
           _buildProfileSection(context), // 프로필 섹션 추가
-          _buildCategorySection(context),
-          _buildPurchaseAndRentalSection(context),
+          _buildCategorySection(context), // 카테고리 섹션 추가
+          _buildPurchaseAndRentalSection(context), // 나의 구매 및 대여 섹션 추가
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
             case 0:
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainPage()),
-              );
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
               break;
             case 1:
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BookSearch.BookList(
-                    Searchresult: BookSearch.BookInfo(
-                      subject: '',
+                  builder: (context) => BookList(
+                    searchQuery: BookInfo(
+                      subject: inputText ?? '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
                       author: '',
                       publishing: '',
                     ),
@@ -108,9 +98,7 @@ class _MyPageState extends State<MyPage> {
               break;
             case 3:
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyPage()),
-              );
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
               break;
           }
         },
@@ -133,78 +121,66 @@ class _MyPageState extends State<MyPage> {
               label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
-      ),
+      ),*/
     );
   }
 
   Widget _buildProfileSection(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilePage()),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _buildProfileImage(), // 프로필 원형 이미지 추가
-                const SizedBox(width: 16.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFE4D02),
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      child: const Text(
-                        '초보판매자',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 26,
+                backgroundImage: NetworkImage('https://example.com/profile.jpg'), // 프로필 이미지를 여기에 대체하세요
+              ),
+              const SizedBox(width: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFE4D02),
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
-                    const SizedBox(height: 8.0),
-                    const Text(
-                      '닉네임',
-                      style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
+                    child: const Text(
+                      '초보판매자',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 1.0),
-            GestureDetector(
-              onTap: () {
-                _showImagePicker(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: const Text(
-                  '프로필 수정',
-                  style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8),
-                ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    '닉네임',
+                    style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 1.0),
+          GestureDetector(
+            onTap: () {
+              _showImagePicker(context); // 프로필 수정 텍스트를 눌렀을 때 모달창을 열어줍니다.
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 4.0), // 왼쪽 여백 추가
+              child: const Text(
+                '프로필 수정',
+                style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8), // 작게 FE402 색으로 설정
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildProfileImage() {
-    return CircleAvatar(
-      radius: 26,
-      backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
     );
   }
 
@@ -220,7 +196,6 @@ class _MyPageState extends State<MyPage> {
                 leading: const Icon(Icons.camera_alt),
                 title: const Text('카메라로 찍기'),
                 onTap: () {
-                  Navigator.pop(context); // 모달 창 닫기
                   _getImage(context, ImageSource.camera); // 카메라로 이미지 가져오기
                 },
               ),
@@ -228,7 +203,6 @@ class _MyPageState extends State<MyPage> {
                 leading: const Icon(Icons.photo_library),
                 title: const Text('갤러리에서 가져오기'),
                 onTap: () {
-                  Navigator.pop(context); // 모달 창 닫기
                   _getImage(context, ImageSource.gallery); // 갤러리에서 이미지 가져오기
                 },
               ),
@@ -260,19 +234,12 @@ class _MyPageState extends State<MyPage> {
           ),
         ),
       );
-
-      // 선택된 이미지를 _imageFile에 할당하고 화면을 다시 그립니다.
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
     } else {
       // 이미지가 선택되지 않았을 때의 처리
       // (예를 들어, 사용자가 갤러리나 카메라를 취소한 경우)
       print('이미지 선택이 취소되었습니다.');
     }
   }
-
-
 
   Widget _buildCategorySection(BuildContext context) {
     return Container(
@@ -351,7 +318,8 @@ class _MyPageState extends State<MyPage> {
               // 찜목록 페이지로 이동
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WishListForm()),
+                MaterialPageRoute(builder: (context) => WishListForm()
+                ),
               );
             },
           ),
@@ -579,5 +547,3 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
-
-
