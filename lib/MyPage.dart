@@ -80,7 +80,7 @@ class _MyPageState extends State<MyPage> {
           _buildPurchaseAndRentalSection(context),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
             case 0:
@@ -133,7 +133,7 @@ class _MyPageState extends State<MyPage> {
               label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
-      ),
+      ),*/
     );
   }
 
