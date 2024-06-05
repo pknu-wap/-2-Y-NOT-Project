@@ -4,8 +4,34 @@ import 'dart:io'; // Import the dart:io library for File class
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 void main() => runApp(MyApp());
+
+class ImageService {
+  final _storage = FirebaseStorage.instance;
+
+  Future<String> uploadImage(File imageFile) async {
+    try {
+      var snapshot = await _storage.ref().child('profile_images/${imageFile.path}').putFile(imageFile);
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return '';
+    }
+  }
+
+  Future<String> getImageUrl(String imagePath) async {
+    try {
+      var downloadUrl = await _storage.ref().child(imagePath).getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return '';
+    }
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -22,15 +48,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final ImageService _imageService = ImageService();
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
+  String? _profileImageUrl; // 추가: 사용자의 프로필 이미지 URL
 
   Future<void> _changeProfileImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
 
-    setState(() {
-      _imageFile = pickedFile;
-    });
+    if (pickedFile != null) {
+      // 이미지를 선택한 경우에만 업로드를 시도합니다.
+      setState(() {
+        _imageFile = pickedFile;
+      });
+
+      // 이미지를 업로드하고 다운로드 URL을 받아옵니다.
+      final imageUrl = await _imageService.uploadImage(File(_imageFile!.path));
+
+      if (imageUrl.isNotEmpty) {
+        // 다운로드 URL이 비어있지 않은 경우에만 저장합니다.
+        setState(() {
+          _profileImageUrl = imageUrl;
+        });
+      }
+    }
   }
 
   void _showImageSourceActionSheet(BuildContext context) {
@@ -63,6 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
