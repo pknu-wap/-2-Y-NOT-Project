@@ -185,13 +185,13 @@ class _MyPageState extends State<MyPage> {
             const SizedBox(height: 1.0),
             GestureDetector(
               onTap: () {
-                _showImagePicker(context);
+                _showImagePicker(context); // _getImage에서 _showImagePicker로 수정
               },
               child: Container(
-                padding: const EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: 2.0),
                 child: const Text(
                   '프로필 수정',
-                  style: TextStyle(color: Color(0xFFFE4D02), fontSize: 8),
+                  style: TextStyle(color: Color(0xFFFE4D02), fontSize: 10),
                 ),
               ),
             ),
@@ -202,6 +202,7 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget _buildProfileImage() {
+    print(_imageFile);
     return CircleAvatar(
       radius: 26,
       backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
@@ -221,7 +222,7 @@ class _MyPageState extends State<MyPage> {
                 title: const Text('카메라로 찍기'),
                 onTap: () {
                   Navigator.pop(context); // 모달 창 닫기
-                  _getImage(context, ImageSource.camera); // 카메라로 이미지 가져오기
+                  _getImage(ImageSource.camera); // 카메라로 이미지 가져오기
                 },
               ),
               ListTile(
@@ -229,7 +230,7 @@ class _MyPageState extends State<MyPage> {
                 title: const Text('갤러리에서 가져오기'),
                 onTap: () {
                   Navigator.pop(context); // 모달 창 닫기
-                  _getImage(context, ImageSource.gallery); // 갤러리에서 이미지 가져오기
+                  _getImage(ImageSource.gallery); // 갤러리에서 이미지 가져오기
                 },
               ),
             ],
@@ -239,40 +240,16 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  void _getImage(BuildContext context, ImageSource source) async {
+  void _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source); // 이미지 가져오기
 
     // 이미지가 선택되었는지 확인
     if (pickedFile != null) {
-      // 선택된 이미지를 보여주는 다이얼로그 또는 페이지로 이동
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: Text('선택된 이미지'),
-            ),
-            body: Center(
-              child: Image.file(
-                File(pickedFile.path), // 선택된 이미지 파일의 경로를 사용하여 이미지를 보여줍니다.
-              ),
-            ),
-          ),
-        ),
-      );
-
-      // 선택된 이미지를 _imageFile에 할당하고 화면을 다시 그립니다.
       setState(() {
         _imageFile = File(pickedFile.path);
       });
-    } else {
-      // 이미지가 선택되지 않았을 때의 처리
-      // (예를 들어, 사용자가 갤러리나 카메라를 취소한 경우)
-      print('이미지 선택이 취소되었습니다.');
     }
   }
-
-
 
   Widget _buildCategorySection(BuildContext context) {
     return Container(
@@ -284,7 +261,7 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               '나의 판매 및 대여',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           _buildMenuItem(
@@ -342,7 +319,7 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               '나의 구매 및 대여',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           _buildMenuItem(
@@ -381,9 +358,16 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
-    return ListTile(
-      title: Text(text),
-      onTap: onTap,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0), // 아래 여백 조정
+      child: ListTile(
+        title: Text(
+          text,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500), // 텍스트 크기 조정
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: -100.0), // 여백 조정
+        onTap: onTap,
+      ),
     );
   }
 }
@@ -415,22 +399,6 @@ class SalesPage extends StatelessWidget {
       ),
       body: const Center(
         child: Text('판매 페이지'),
-      ),
-    );
-  }
-}
-
-class RentalPage extends StatelessWidget {
-  const RentalPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('대여'),
-      ),
-      body: const Center(
-        child: Text('대여 페이지'),
       ),
     );
   }
@@ -579,5 +547,3 @@ class RecentlyViewedItemsPage extends StatelessWidget {
     );
   }
 }
-
-
