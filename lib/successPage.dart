@@ -211,23 +211,23 @@ class _MainPageState extends State<MainPage> {
         children: [
           Container(
               child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
+                  Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
+                  Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
