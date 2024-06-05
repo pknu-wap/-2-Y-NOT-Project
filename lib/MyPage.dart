@@ -49,17 +49,15 @@ class _MyPageState extends State<MyPage> {
           },
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.notifications, color: Color(0xFFFE4D02)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NotificationsPage()),
-                );
-              },
-            ),
+          const Expanded(child: SizedBox()),
+          GestureDetector(
+            child: const Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
+            },
           ),
         ],
         bottom: PreferredSize(
