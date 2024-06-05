@@ -1,197 +1,234 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
-import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
-import 'package:flutter_01/WishList.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io'; // Import the dart:io library for File class
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
 
-class ChatScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat Screen'),
-      ),
-      body: Center(
-        child: Text('This is the chat screen'),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Profile',
-      theme: ThemeData(
-        primaryColor: Color(0xFFFE4D02), // 상단바 배경색 설정
-      ),
       home: ProfilePage(),
     );
   }
 }
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
+
+  Future<void> _changeProfileImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  void _showImageSourceActionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('갤러리에서 열기'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _changeProfileImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('카메라로 찍기'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _changeProfileImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '프로필',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, size: 30),
-          onPressed: () {
-            Navigator.pop(context); // 이전 페이지로 이동
-          },
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0), // 오른쪽에 약간의 패딩 추가
-            child: IconButton(
-              icon: const Icon(Icons.notifications,
-                  color: Color(0xFFFE4D02), size: 30),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                    const NotificationsPage(), // 알림 페이지로 이동
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5.0),
-          child: Container(
-            color: Colors.grey, // 경계선 색상 설정
-            height: 2.0, // 경계선 두께 설정
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 16),
             Row(
               children: [
-                SizedBox(width: 20),
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[300],
-                    // 이미지를 여기에 추가하거나 네트워크에서 가져와서 설정하세요.
-                  ),
-                  child: Center(
-                    child: Text(
-                      '이미지',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                  ),
+                const SizedBox(width: 16),
+                GestureDetector(
+                  child: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // Handle back button
+                  },
                 ),
-                SizedBox(width: 20),
+                const Expanded(child: SizedBox()),
+                const Text(
+                  '프로필',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                ),
+                const Expanded(child: SizedBox()),
+                GestureDetector(
+                  child: const Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationsPage()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
+            const SizedBox(height: 8), // 상단바 위 여백을 늘리기 위해 추가
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 1,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const SizedBox(width: 36),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showImageSourceActionSheet(context),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 50,
+                        backgroundImage: _imageFile == null
+                            ? null
+                            : FileImage(File(_imageFile!.path)),
+                        child: _imageFile == null
+                            ? Icon(Icons.person, color: Colors.white, size: 50)
+                            : null,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () => _showImageSourceActionSheet(context),
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Color(0xFFDEDEDE),
+                          ),
+                          child: const Icon(Icons.camera_alt_outlined, color: Colors.white, size: 24),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 2.0),
+                      width: 80,
+                      height: 30,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFE4D02),
-                        borderRadius: BorderRadius.circular(6.0),
+                        color: Color(0xFFFE4D02),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
-                        '초보판매자',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
+                      child: const Text('초보판매자', style: TextStyle(color: Colors.white, fontSize: 13)),
                     ),
-                    Text(
-                      '닉네임',
-                      style:
-                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10), // 닉네임과 가입일 텍스트 사이의 간격
+                    const SizedBox(height: 8),
+                    const Text('닉네임', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                   ],
                 ),
+                const SizedBox(width: 16),
               ],
             ),
-            SizedBox(height: 5), // 닉네임과 가입일 텍스트 사이의 간격
-            Row(
-              children: [
-                SizedBox(width: 120), // 왼쪽 여백
-                Text(
-                  '가입일: 2024-06-03',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ],
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.only(left: 24),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              alignment: Alignment.centerLeft,
+              color: const Color(0xFFDFDFDF),
+              child: const Text('가입일 2024.01.01', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: 20), // 가입일 텍스트와 다음 요소 사이의 간격
+            const SizedBox(height: 35),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 10), // 왼쪽 여백
-                Expanded(
-                  child: Container(
-                    height: 20, // 회색 부분의 높이
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15), // 둥근 모서리 설정
-                      color: Colors.grey, // 회색 배경색
-                    ),
-                    child: Stack(
-                      children: [
-                        FractionallySizedBox(
-                          widthFactor: 1 / 3, // 1/3만큼의 너비
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15), // 전체 둥근 모서리
-                              color: Color(0xFFFE4D02), // FE4D02 색상
-                            ),
-                          ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFDFDFDF),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFE4D02),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
-                    ),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned(
+                              bottom: -25,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                alignment: Alignment.center,
+                                child: const Text('초보판매자', style: TextStyle(color: Colors.black, fontSize: 16)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 10), // 색 줄과 텍스트 사이의 간격
-            Padding(
-              padding: const EdgeInsets.only(left: 40), // 왼쪽 여백 추가
-              child: Text(
-                '초보 판매자',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
+            const SizedBox(height: 50),
+            Row(
+              children: [
+                const SizedBox(width: 36),
+                const Text('판매도서 ', style: TextStyle(color: Colors.black, fontSize: 18,)),
+                const Text('2권', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
             ),
-            Spacer(), // Add a spacer to push the next elements to the bottom
-            Padding(
-              padding: const EdgeInsets.only(left: 40, bottom: 10), // 왼쪽 여백 추가
-              child: Text(
-                '판매 도서',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 40, bottom: 20), // 왼쪽 여백 추가
-              child: Text(
-                '받은 거래 후기',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const SizedBox(width: 36),
+                const Text('받은 거래 후기 ', style: TextStyle(color: Colors.black, fontSize: 18,)),
+                const Text('1회', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
             ),
           ],
         ),
@@ -200,8 +237,7 @@ class ProfilePage extends StatelessWidget {
         onTap: (int index) {
           switch (index) {
             case 0:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
               break;
             case 1:
               Navigator.push(
@@ -209,7 +245,7 @@ class ProfilePage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => BookSearch.BookList(
                     Searchresult: BookSearch.BookInfo(
-                      subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
+                      subject: '',
                       author: '',
                       publishing: '',
                     ),
@@ -218,40 +254,30 @@ class ProfilePage extends StatelessWidget {
               );
               break;
             case 2:
-              Get.to(ChatScreen());
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
               break;
             case 3:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage()));
               break;
           }
         },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-              ),
-              label: '홈'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_outlined,
-              ),
-              label: '판매'),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.add_outlined), label: '판매'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: '정보'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
       ),
     );
   }
+}
 
-  Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
-    return ListTile(
-      title: Text(text),
-      onTap: onTap,
-    );
-  }
+Widget _buildMenuItem({required String text, required VoidCallback onTap}) {
+  return ListTile(
+    title: Text(text),
+    onTap: onTap,
+  );
 }
 
 class HomePage extends StatelessWidget {
