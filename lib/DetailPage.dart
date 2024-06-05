@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Add this import
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -312,41 +313,10 @@ class _DetailPageState extends State<DetailPage> {
             ]
         ),
       ),
-
     );
-
-    /*bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.white,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ChatPage()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFE4D02),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            minimumSize: const Size(double.infinity, 50),
-          ),
-          child: const SizedBox(
-            width: double.infinity,
-            child: Text(
-              '채팅 하기',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      )
-    )*/
   }
 
-  Widget _buildPageIndicator() { // 사진 순서에 따른 점 채우기 인디케이터
-
+  Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(_dummyText.length, (index) {
@@ -363,27 +333,8 @@ class _DetailPageState extends State<DetailPage> {
         );
       }),
     );
-  }//dsd
-
-  Widget _buildTag(String text) {
-    return Container(
-        padding : const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(
-          color: const Color(0xFFFE4D02),
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color(0xFFFE4D02),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
   }
+
   Widget _buildTag(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
@@ -407,8 +358,8 @@ class _DetailPageState extends State<DetailPage> {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(); // Ensure that you have initialized Firebase before this
   runApp(MaterialApp(
-    home: DetailPage(),
+    home: const DetailPage(), // Add const here
   ));
 }

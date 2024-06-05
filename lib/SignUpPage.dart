@@ -13,6 +13,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _idController = TextEditingController(); // 추가된 부분
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -174,23 +175,10 @@ class _SignUpFormState extends State<SignUpForm> {
                           borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '이메일을 입력하세요';
-                        } else if (!emailRegex.hasMatch(value)) {
-                          return '올바른 이메일 형식이 아닙니다';
-                        }
-                        return null;
-                      },
+                      validator: validateEmail,
                     ),
                   ],
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return '사용자 이름을 입력하세요';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 8.0),
               Padding(
@@ -224,24 +212,8 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ],
                 ),
-                validator: validateEmail,
               ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return '비밀번호를 입력하세요';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: _signUp,
                 child: Text('가입'),
