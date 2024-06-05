@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/profile.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'package:get/get.dart';
+import 'Book_db.dart';
+import 'data_random_choice.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진이 초기화될 때까지 기다림
