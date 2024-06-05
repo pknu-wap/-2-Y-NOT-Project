@@ -263,11 +263,11 @@ class _DetailPageState extends State<DetailPage> {
         );
       }),
     );
-  }//dsd
+  } //dsd
 
   Widget _buildTag(String text) {
     return Container(
-        padding : const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
@@ -284,10 +284,4 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: DetailPage(),
-  ));
 }
