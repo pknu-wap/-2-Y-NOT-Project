@@ -59,14 +59,18 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(MainPage());
+                        //Get.to(MainPage());
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainPage()),
+                        );
                       },
                       child: const Text('동의')
                   ),
-
-                  ElevatedButton(onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: const Text('비동의')
                   ),
                 ],
@@ -79,7 +83,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -111,18 +114,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   reverse: true,
                   itemCount: chatDocs.length,
                   itemBuilder: (ctx, index) {
-                    bool isMe =
-                        chatDocs[index]['sender'] == loggedInUser!.email;
+                    bool isMe = chatDocs[index]['sender'] == loggedInUser!.email;
                     return Row(
-                      mainAxisAlignment: isMe
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
+                      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
-                          margin:
-                          EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                           decoration: BoxDecoration(
                             color: isMe ? Colors.grey[300] : Colors.grey[500],
                             borderRadius: isMe
