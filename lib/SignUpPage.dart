@@ -104,11 +104,86 @@ class _SignUpFormState extends State<SignUpForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: '사용자 이름',
-                  border: OutlineInputBorder(),
+              SizedBox(height: 24.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('사용자 이름', style: TextStyle(fontSize: 16.0)),
+                    SizedBox(height: 8.0),
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        hintText: '닉네임',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리를 더 둥글게 만듭니다.
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return '닉네임을 입력하세요';
+                        } else if (value == 'admin') { // 예시로 "admin"이 중복된 닉네임으로 간주
+                          return '이미 사용 중인 닉네임입니다';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('아이디', style: TextStyle(fontSize: 16.0)),
+                    SizedBox(height: 8.0),
+                    TextFormField(
+                      controller: _idController,
+                      decoration: InputDecoration(
+                        hintText: 'ID',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return '아이디를 입력하세요';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('이메일', style: TextStyle(fontSize: 16.0)),
+                    SizedBox(height: 8.0),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: 'example@example.com',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '이메일을 입력하세요';
+                        } else if (!emailRegex.hasMatch(value)) {
+                          return '올바른 이메일 형식이 아닙니다';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -117,13 +192,37 @@ class _SignUpFormState extends State<SignUpForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: '이메일',
-                  hintText: 'example@pukyong.ac.kr',
-                  border: OutlineInputBorder(),
+              SizedBox(height: 8.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('비밀번호', style: TextStyle(fontSize: 16.0)),
+                    SizedBox(height: 8.0),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        hintText: '비밀번호',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return '비밀번호를 입력하세요';
+                        } else if (value!.length < 8) {
+                          return '비밀번호는 8자 이상이어야 합니다';
+                        } else if (!value.contains(RegExp(r'[0-9]'))) {
+                          return '숫자를 포함해야 합니다';
+                        } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                          return '특수 문자를 포함해야 합니다';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                    ),
+                  ],
                 ),
                 validator: validateEmail,
               ),
