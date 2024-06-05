@@ -42,19 +42,19 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('갤러리에서 열기'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _changeProfileImage(ImageSource.gallery);
-                },
-              ),
-              ListTile(
                 leading: Icon(Icons.camera_alt),
                 title: Text('카메라로 찍기'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _changeProfileImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('갤러리에서 열기'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _changeProfileImage(ImageSource.gallery);
                 },
               ),
             ],
