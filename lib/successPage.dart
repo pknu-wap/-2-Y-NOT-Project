@@ -4,7 +4,7 @@ import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
-import 'package:flutter_01/Book_SearchList.dart';
+import 'Book_SearchList.dart';
 import 'Book_db.dart';
 import 'MyPage.dart';
 
@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => GetBookDataTest()),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MakeBookList()),);
           },
           child: Icon(
             Icons.add,
@@ -76,7 +76,7 @@ class _MainPageState extends State<MainPage> {
                     MaterialPageRoute(
                         builder: (context) => BookList(
                             Searchresult: BookInfo(
-                                subject: inputText ?? '',
+                                title: inputText ?? '',
                                 author: '',
                                 publishing: ''))));
               case 2:
@@ -264,7 +264,7 @@ class _MainPageState extends State<MainPage> {
 
   void searchList(String query) {
     final results = searchResults
-        .where((product) => product.subject.contains(query))
+        .where((product) => product.title.contains(query))
         .toList();
     setState(() {
       searchResults = results;
@@ -287,7 +287,7 @@ class _MainPageState extends State<MainPage> {
               MaterialPageRoute(
                 builder: (context) => BookList(
                     Searchresult: BookInfo(
-                        subject: inputText ?? '', author: '', publishing: '')),
+                        title: inputText ?? '', author: '', publishing: '')),
               ),
             );
           }),

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
-import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+import 'package:flutter_01/Book_SearchList.dart';
 // 다른 곳에서 사용할 때는 BookSearch.BookInfo, BookSearch.BookList로 접근import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/WishList.dart';
@@ -72,7 +72,7 @@ class MyPage extends StatelessWidget {
           _buildPurchaseAndRentalSection(context), // 나의 구매 및 대여 섹션 추가
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
             case 0:
@@ -83,9 +83,9 @@ class MyPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BookSearch.BookList(
-                    Searchresult: BookSearch.BookInfo(
-                      subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
+                  builder: (context) => BookList(
+                    searchQuery: BookInfo(
+                      subject: inputText ?? '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
                       author: '',
                       publishing: '',
                     ),
@@ -121,7 +121,7 @@ class MyPage extends StatelessWidget {
               label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
-      ),
+      ),*/
     );
   }
 
