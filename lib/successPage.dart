@@ -5,6 +5,7 @@ import 'package:flutter_01/Alarm_space.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'Book_db.dart';
 import 'MyPage.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MakeBookList()),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => GetBookDataTest()),);
           },
           child: Icon(
             Icons.add,
@@ -210,23 +211,23 @@ class _MainPageState extends State<MainPage> {
         children: [
           Container(
               child:
-                  Image.asset('image/picture_1.png', height: 150, width: 150),
+              Image.asset('image/picture_1.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_2.png', height: 150, width: 150),
+              Image.asset('image/picture_2.png', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_3.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_4.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
           Container(
               child:
-                  Image.asset('image/picture_5.jpeg', height: 150, width: 150),
+              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
               padding: EdgeInsets.all(10)),
         ],
       ),
