@@ -13,17 +13,18 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _idController = TextEditingController(); // Added this line
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // 특정 학교 이메일 형식을 확인하는 정규 표현식
+  // Regular expression to check specific school email format
   RegExp emailRegex = RegExp(
     r'^[\w-\.]+@pukyong\.ac\.kr$',
     caseSensitive: false,
     multiLine: false,
   );
 
-  // 이메일 유효성 검사 함수
+  // Email validation function
   String? validateEmail(String? value) {
     if (value?.isEmpty ?? true) {
       return '이메일을 입력하세요';
@@ -41,13 +42,13 @@ class _SignUpFormState extends State<SignUpForm> {
           password: _passwordController.text,
         );
 
-        // Firestore에 사용자 정보 저장
+        // Save user information to Firestore
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
           'username': _usernameController.text,
           'email': _emailController.text,
         });
 
-        // 이메일 인증 요청
+        // Send email verification
         await userCredential.user?.sendEmailVerification();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -57,7 +58,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         );
 
-        // 회원가입 성공 시 로그인 페이지로 이동
+        // Navigate to login page on successful sign up
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
@@ -174,23 +175,10 @@ class _SignUpFormState extends State<SignUpForm> {
                           borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '이메일을 입력하세요';
-                        } else if (!emailRegex.hasMatch(value)) {
-                          return '올바른 이메일 형식이 아닙니다';
-                        }
-                        return null;
-                      },
+                      validator: validateEmail,
                     ),
                   ],
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return '사용자 이름을 입력하세요';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 8.0),
               Padding(
@@ -224,22 +212,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ],
                 ),
-                validator: validateEmail,
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return '비밀번호를 입력하세요';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 20),
               ElevatedButton(
