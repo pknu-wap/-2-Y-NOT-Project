@@ -45,6 +45,10 @@ class BookList extends StatelessWidget {
           .where('BookTitle', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
 
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+
       List<BookInfo> bookTitles = [];
       for (var doc in snapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
@@ -122,11 +126,12 @@ class BookList extends StatelessWidget {
                       return const Text('No results found');
                     } else {
                       return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(8),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
+                          var book = snapshot.data![index];
                           return Column(
                             children: [
                               Container(
@@ -136,14 +141,22 @@ class BookList extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        Image(
-                                          image: NetworkImage(
-                                            snapshot
-                                                .data![index].condition!.picture!,
+                                        if (book.condition?.picture != null &&
+                                            book.condition!.picture!.isNotEmpty)
+                                          Image(
+                                            image: NetworkImage(
+                                              book.condition!.picture!,
+                                            ),
+                                            width: 100,
+                                            height: 100,
+                                          )
+                                        else
+                                          Container(
+                                            width: 100,
+                                            height: 100,
+                                            color: Colors.grey,
+                                            child: const Icon(Icons.image_not_supported),
                                           ),
-                                          width: 100,
-                                          height: 100,
-                                        ),
                                         const SizedBox(
                                           width: 20,
                                         ),
@@ -151,38 +164,35 @@ class BookList extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              snapshot.data![index].title,
+                                              book.title,
                                               style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              snapshot.data![index].author,
+                                              book.author,
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              snapshot.data![index].publishing,
+                                              book.publishing,
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              snapshot.data![index].condition!.price! +
-                                                  "원" ??
-                                                  'No Price Available',
+                                              (book.condition?.price ?? 'No Price Available') + "원",
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 5),
-                                            if (snapshot.data![index].condition?.tags != null)
+                                            if (book.condition?.tags != null)
                                               SingleChildScrollView(
                                                 scrollDirection: Axis.horizontal,
                                                 child: Row(
-                                                  children: snapshot.data![index]
-                                                      .condition!.tags!
+                                                  children: book.condition!.tags!
                                                       .take(3)
                                                       .map((tag) {
                                                     return Container(
@@ -195,7 +205,7 @@ class BookList extends StatelessWidget {
                                                             color: Color(0xFFFE4D02),
                                                           ),
                                                         ),
-                                                        shape: StadiumBorder(
+                                                        shape: const StadiumBorder(
                                                           side: BorderSide(
                                                             color: Color(0xFFFE4D02),
                                                             width: 1.0, // Adjust this value for thickness
@@ -213,7 +223,7 @@ class BookList extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Divider(color: Colors.black26, thickness: 2.0),
+                              const Divider(color: Colors.black26, thickness: 2.0),
                             ],
                           );
                         },
