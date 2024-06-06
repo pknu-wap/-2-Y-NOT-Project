@@ -60,12 +60,12 @@ class _DetailPageState extends State<DetailPage> {
         backgroundColor: const Color(0xFFFFFFFF),
         title: const Text(
           '상세 정보',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
-        onPressed: () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
@@ -119,16 +119,19 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 매우 작은 높이로 우선 크기 설정
+          child: const Divider(
+            color: Colors.grey, // 회색 선 색상 설정
+            height: 1.0, // 선의 높이 설정
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              const Divider(
-                height: 1,
-                color: Colors.grey,
-              ),
               SizedBox(
                 height: 250.0,
                 child: PageView.builder(
@@ -155,13 +158,6 @@ class _DetailPageState extends State<DetailPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _dummyText[_currentPage],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
                   const SizedBox(height: 8),
                   Text(
                     '닉네임',
@@ -311,6 +307,7 @@ class _DetailPageState extends State<DetailPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          const SizedBox(width: 12), // 오른쪽으로 이동시킬 너비의 SizedBox 추가
           Text(
             '필기 여부',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -423,7 +420,8 @@ class _BookConditionState extends State<BookCondition> {
         Row(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-          Text(
+            const SizedBox(width: 15), // 오른쪽으로 이동시킬 너비의 SizedBox 추가
+            Text(
           '책 상태',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
