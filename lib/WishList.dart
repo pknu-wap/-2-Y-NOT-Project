@@ -3,6 +3,7 @@ import 'package:flutter_01/Book_SearchList.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'BookInfo.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
 class BookList extends StatelessWidget {

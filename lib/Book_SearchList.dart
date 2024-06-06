@@ -3,32 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
+import 'BookInfo.dart';
 
-class PlusCondition {
-  final String? price;
-  final String? picture;
-  List<String>? tags;
-
-  PlusCondition({
-    this.price,
-    this.picture,
-    this.tags,
-  });
-}
-
-class BookInfo {
-  final String title;
-  final String author;
-  final String publishing;
-  final PlusCondition? condition;
-
-  BookInfo({
-    required this.title,
-    required this.author,
-    required this.publishing,
-    this.condition,
-  });
-}
+void printlist(List<String>? parameter) {}
 
 void printlist(List<String>? parameter) {}
 
