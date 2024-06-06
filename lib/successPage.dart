@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 import 'DetailPage.dart';
+import 'dart:math';
 import 'BookInfo.dart';
 import 'MyPage.dart';
 
@@ -162,12 +163,17 @@ class _MainPageState extends State<MainPage> {
       stream: FirebaseFirestore.instance.collection('book').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
+
         var images = snapshot.data!.docs;
+        var random = Random();
+        var selectedImages = images..shuffle(random);
+        selectedImages = selectedImages.take(4).toList();
+
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
+            children: List.generate(selectedImages.length, (index) {
+              var image = selectedImages[index];
               var imageUrl = image['Image'];
               return GestureDetector(
                 onTap: () => Navigator.push(
@@ -231,15 +237,21 @@ class _MainPageState extends State<MainPage> {
 
   Widget Realtime_Activity() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('book').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('book')
+          .orderBy('timestamp', descending: true) // '등록한 시간' 필드를 기준으로 내림차순 정렬
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
+
         var images = snapshot.data!.docs;
+        var selectedImages = images.take(4).toList(); // 최신순으로 정렬된 데이터 중 상위 4개를 선택
+
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
+            children: List.generate(selectedImages.length, (index) {
+              var image = selectedImages[index];
               var imageUrl = image['Image'];
               return GestureDetector(
                 onTap: () => Navigator.push(
