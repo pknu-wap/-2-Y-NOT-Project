@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'loginPage.dart';
 import 'Book_db.dart';
 import 'package:flutter_01/DetailPage.dart';
+import 'package:flutter_01/Make_BookList.dart';
 
 
 void main() async {

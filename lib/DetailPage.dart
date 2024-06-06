@@ -40,15 +40,14 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  final List<String> _dummyText = [
-    '첫 번째',
-    '두 번째',
-    '세 번째',
-  ];
+  final List<String> _dummyText = [''];
 
   int _currentPage = 0;
 
   final PageController _pageController = PageController();
+
+  // 상태 변수 정의
+  List<bool> isSelected = [false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -192,24 +191,10 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   const SizedBox(height: 8),
                   const Divider(
-                    color: Colors.grey,
+                    color: Colors.grey, // 회색 경계선 여기에 상중하 옵션 넣기
                     thickness: 1,
-                  ),
-                  const SizedBox(height: 8), // Added extra space here
-                  const Text(
-                    '판매자의 말',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    '부경대 후문에서 거래 가능합니다.',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+                  ), // 상태 변경을 위한 위젯 추가
+                  BookCondition(),
                 ],
               ),
             ),
@@ -248,22 +233,22 @@ class _DetailPageState extends State<DetailPage> {
 
   Widget _buildPageIndicator() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(_dummyText.length, (index) {
-        return Container(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(_dummyText.length, (index) {
+      return Container(
           width: 8.0,
           height: 8.0,
           margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _currentPage == index
-                ? const Color(0xFFFE4D02)
-                : Colors.grey,
-          ),
-        );
-      }),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: _currentPage == index
+    ? const Color(0xFFFE4D02)
+        : Colors.grey,
+    )
+      );
+        }),
     );
-  } //dsd
+  }
 
   Widget _buildTag(String text) {
     return Container(
@@ -281,6 +266,50 @@ class _DetailPageState extends State<DetailPage> {
           color: Color(0xFFFE4D02),
           fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
+
+  // BookCondition 함수 추가
+  Widget BookCondition() {
+    const List<Widget> uml = <Widget>[
+      Text('상'),
+      Text('중'),
+      Text('하'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('책 상태',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(width: 50),
+          ToggleButtons(
+            onPressed: (int index) {
+              setState(() {
+                for (int i = 0; i < isSelected.length; i++) {
+                  if (i == index) {
+                    isSelected[i] = !isSelected[i];
+                  } else {
+                    isSelected[i] = false;
+                  }
+                }
+              });
+            },
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            selectedBorderColor: Colors.red[700],
+            selectedColor: Colors.white,
+            fillColor: Colors.red[200],
+            color: Colors.red[400],
+            constraints: const BoxConstraints(
+              minHeight: 40.0,
+              minWidth: 80.0,
+            ),
+            isSelected: isSelected,
+            children: uml,
+          ),
+        ],
       ),
     );
   }
