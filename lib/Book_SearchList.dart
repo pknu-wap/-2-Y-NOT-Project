@@ -176,7 +176,18 @@ class BookList extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Row(
-
+                                          children: [
+                                            // Row 안에 tags 데이터 리스트를 텍스트 형식으로 표시합니다.
+                                            for (var tag in tagData['tags'] ?? [])
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 8.0),
+                                                child: Text(
+                                                  tag,
+                                                  style: const TextStyle(
+                                                      fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                          ],
                                         ),
                                       ],
                                     ),
