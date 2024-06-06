@@ -9,22 +9,22 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _idController = TextEditingController(); // Added this line
+  final _formKey = GlobalKey<FormState>(); // 폼 키를 생성.
+  final TextEditingController _usernameController = TextEditingController(); // 사용자 이름을 입력하는 컨트롤러
+  final TextEditingController _emailController = TextEditingController(); // 이메일을 입력하는 컨트롤러
+  final TextEditingController _passwordController = TextEditingController(); // 비밀번호를 입력하는 컨트롤러
+  final TextEditingController _idController = TextEditingController(); // 아이디를 입력하는 컨트롤러 (추가)
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance; // FirebaseAuth 인스턴스 생성
 
-  // Regular expression to check specific school email format
+  // 학교 이메일 형식을 확인하기 위한 정규표현식
   RegExp emailRegex = RegExp(
     r'^[\w-\.]+@pukyong\.ac\.kr$',
     caseSensitive: false,
     multiLine: false,
   );
 
-  // Email validation function
+  // 이메일 유효성 검사 함수
   String? validateEmail(String? value) {
     if (value?.isEmpty ?? true) {
       return '이메일을 입력하세요';
@@ -34,6 +34,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return null;
   }
 
+  // 회원가입 함수
   Future<void> _signUp() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
@@ -42,13 +43,13 @@ class _SignUpFormState extends State<SignUpForm> {
           password: _passwordController.text,
         );
 
-        // Save user information to Firestore
+        // Firestore에 사용자 정보 저장
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
           'username': _usernameController.text,
           'email': _emailController.text,
         });
 
-        // Send email verification
+        // 이메일 인증 메일 전송
         await userCredential.user?.sendEmailVerification();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -58,7 +59,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         );
 
-        // Navigate to login page on successful sign up
+        // 회원가입 성공 시 로그인 페이지로 이동
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
@@ -98,8 +99,7 @@ class _SignUpFormState extends State<SignUpForm> {
       appBar: AppBar(
         title: Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
