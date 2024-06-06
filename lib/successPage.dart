@@ -17,6 +17,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+  Widget ChatListScreen() {
+    return Container(
+      child: Text('채팅 목록 화면'), // 채팅 목록을 나타내는 적절한 위젯을 반환하도록 수정할 수 있습니다.
+    );
+  }
+
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
     return MaterialApp(
