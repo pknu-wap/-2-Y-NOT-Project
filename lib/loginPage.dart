@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
-import 'package:flutter_01/SignUpPage.dart';
+import 'SignUpPage.dart';
+import 'splash.dart'; // Ensure this is the correct import
 
 class LoginController extends GetxController {
   final FirebaseAuth _authentication = FirebaseAuth.instance;
@@ -37,7 +37,6 @@ class LoginController extends GetxController {
       return true;
     } on FirebaseAuthException catch (e) {
       String errorMessage;
-      //honprint(e.code);
       switch (e.code) {
         case 'user-not-found':
           errorMessage = '사용자를 찾을 수 없습니다.';
@@ -73,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 300, left: 30, right: 30),
+        padding: const EdgeInsets.only(top: 250, left: 30, right: 30),
         child: Form(
           key: _key,
           child: Column(
@@ -88,12 +87,15 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 onSaved: (val) => _loginController.userEmail.value = val ?? '',
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
                   labelText: '이메일',
                   labelStyle: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.grey,
                   ),
                 ),
               ),
@@ -109,16 +111,19 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 onSaved: (val) => _loginController.userPassword.value = val ?? '',
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
                   labelText: '비밀번호',
                   labelStyle: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.grey,
                   ),
                 ),
               ),
-              const SizedBox(height: 150),
+              const SizedBox(height: 120),
               ElevatedButton(
                 onPressed: () async {
                   if (_key.currentState!.validate()) {
@@ -130,30 +135,50 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(13),
                   child: const Text(
                     "로그인",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
+                      color: Colors.white,
                     ),
                   ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFE4D02),
                 ),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpForm())),
+                    MaterialPageRoute(builder: (context) => MyApp())), // Navigate to the splash screen
                 child: Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(13),
                   child: const Text(
-                    "회원가입",
+                    "취소",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
+                      color: Colors.white,
                     ),
                   ),
                 ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFE4D02),
+                ),
               ),
-              const SizedBox(height: 10)
+              const SizedBox(height: 5),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
+                child: const Text(
+                  '로그인 없이 구경하기',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
             ],
           ),
         ),
