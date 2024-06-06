@@ -64,7 +64,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
           onPressed: () {
             Navigator.of(context).pop();
           },
