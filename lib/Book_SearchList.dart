@@ -30,6 +30,8 @@ class BookInfo {
   });
 }
 
+void printlist(List<String>? parameter) {}
+
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
@@ -121,71 +123,98 @@ class BookList extends StatelessWidget {
                     } else {
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        // 이 부분 추가
                         shrinkWrap: true,
-                        // 이 부분 추가
                         padding: const EdgeInsets.all(8),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Column(
-                              children: [
-                                Row(
+                          return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image(
-                                      image: NetworkImage(
-                                        snapshot
-                                            .data![index].condition!.picture!,
-                                      ),
-                                      width: 150,
-                                      height: 150,
-                                    ),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
                                       children: [
-                                        Text(
-                                          snapshot.data![index].title,
-                                          style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold),
+                                        Image(
+                                          image: NetworkImage(
+                                            snapshot
+                                                .data![index].condition!.picture!,
+                                          ),
+                                          width: 100,
+                                          height: 100,
                                         ),
-                                        Text(
-                                          snapshot.data![index].author,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                        const SizedBox(
+                                          width: 20,
                                         ),
-                                        Text(
-                                          snapshot.data![index].publishing,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          snapshot.data![index].condition!
-                                                      .price! +
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data![index].title,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              snapshot.data![index].author,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              snapshot.data![index].publishing,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              snapshot.data![index].condition!.price! +
                                                   "원" ??
-                                              'No Price Available',
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Row(
-
+                                                  'No Price Available',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            if (snapshot.data![index].condition?.tags != null)
+                                              SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: snapshot.data![index]
+                                                      .condition!.tags!
+                                                      .take(3)
+                                                      .map((tag) {
+                                                    return Container(
+                                                      margin: const EdgeInsets.symmetric(horizontal: 2),
+                                                      child: Chip(
+                                                        label: Text(
+                                                          '#$tag',
+                                                          style: const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Color(0xFFFE4D02),
+                                                          ),
+                                                        ),
+                                                        shape: StadiumBorder(
+                                                          side: BorderSide(
+                                                            color: Color(0xFFFE4D02),
+                                                            width: 1.0, // Adjust this value for thickness
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                                Container(width: 600,
-                                    child: Divider(color: Colors.black26, thickness: 2.0))
-                              ],
-                            ),
+                              ),
+                              Divider(color: Colors.black26, thickness: 2.0),
+                            ],
                           );
                         },
                       );
