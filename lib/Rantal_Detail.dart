@@ -45,6 +45,7 @@ class _DetailPageState extends State<DetailPage> {
   late final PageController _pageController;
   List<bool> isSelected = [false, false, false];
   List<bool> Written = [false, false];
+  bool isBookmarked = false;
 
   @override
   void initState() {
@@ -73,6 +74,31 @@ class _DetailPageState extends State<DetailPage> {
             padding: const EdgeInsets.only(right: 16.0),
             child: GestureDetector(
               onTap: () {
+                setState(() {
+                  isBookmarked = !isBookmarked;
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.transparent, // 테두리 색상 없음
+                  ),
+                ),
+                child: Icon(
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_border, // 북마크 상태에 따라 아이콘 변경
+                  color: const Color(0xFFFE4D02), // 아이콘 색상 설정
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AlarmPage()),
@@ -80,7 +106,7 @@ class _DetailPageState extends State<DetailPage> {
               },
               child: Container(
                 padding: const EdgeInsets.all(6.0),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
@@ -243,7 +269,7 @@ class _DetailPageState extends State<DetailPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(_dummyText.length, (index) {
         return Container(
-          width : 8.0,
+          width: 8.0,
           height: 8.0,
           margin: const EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
@@ -289,7 +315,7 @@ class _DetailPageState extends State<DetailPage> {
             '필기 여부',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 30),
+          const SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -345,7 +371,7 @@ class _BookVersionSelectorState extends State<BookVersionSelector> {
             '구판/신판',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 30),
+          const SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -401,14 +427,13 @@ class _BookConditionState extends State<BookCondition> {
                 '책 상태',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(width: 50),
+              const SizedBox(width: 50),
               ToggleButtons(
                 onPressed: (int index) {
                   setState(() {
                     for (int i = 0; i < selectedCondition.length; i++) {
                       selectedCondition[i] = i == index;
-                    }
-                  });
+                    }                  });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 selectedBorderColor: Colors.red[700],
@@ -424,12 +449,12 @@ class _BookConditionState extends State<BookCondition> {
               ),
             ],
           ),
-          SizedBox(height: 8), // Add SizedBox here
+          const SizedBox(height: 16),
           Container(
             height: 1,
             color: Colors.grey,
           ),
-          SizedBox(height: 8), // Add SizedBox here
+          const SizedBox(height: 16),
           Text(
             '판매자의 말',
             style: TextStyle(
@@ -437,22 +462,16 @@ class _BookConditionState extends State<BookCondition> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8), // Add SizedBox here
+          const SizedBox(height: 8),
           Text(
-            '이 책은 2023년도에 구입하여 사용한 책입니다. '
-                '약간의 사용감이 있으나 대체로 상태는 양호합니다.',
+            '부경대 후문에서 거래 가능합니다~',
             style: TextStyle(
               fontSize: 16,
             ),
           ),
-          SizedBox(height: 8), // Add SizedBox here
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
-          BookCondition(), // Add BookCondition widget
         ],
       ),
     );
   }
 }
+
