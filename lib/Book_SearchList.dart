@@ -7,7 +7,6 @@ import 'BookInfo.dart';
 
 void printlist(List<String>? parameter) {}
 
-void printlist(List<String>? parameter) {}
 
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
