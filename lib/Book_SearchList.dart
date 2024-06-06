@@ -3,9 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'BookInfo.dart';
 
-void printlist(List<String>? parameter) {}
+class PlusCondition {
+  final String? price;
+  final String? picture;
+  List<String>? tags;
+
+  PlusCondition({
+    this.price,
+    this.picture,
+    this.tags,
+  });
+}
+
+class BookInfo {
+  final String title;
+  final String author;
+  final String publishing;
+  final PlusCondition? condition;
+
+  BookInfo({
+    required this.title,
+    required this.author,
+    required this.publishing,
+    this.condition,
+  });
+}
 
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
@@ -19,10 +42,6 @@ class BookList extends StatelessWidget {
           .where('BookTitle', isGreaterThanOrEqualTo: query)
           .where('BookTitle', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
-
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
 
       List<BookInfo> bookTitles = [];
       for (var doc in snapshot.docs) {
@@ -101,105 +120,72 @@ class BookList extends StatelessWidget {
                       return const Text('No results found');
                     } else {
                       return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
+                        // 이 부분 추가
                         shrinkWrap: true,
+                        // 이 부분 추가
                         padding: const EdgeInsets.all(8),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          var book = snapshot.data![index];
-                          return Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
+                                    Image(
+                                      image: NetworkImage(
+                                        snapshot
+                                            .data![index].condition!.picture!,
+                                      ),
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
-                                        if (book.condition?.picture != null &&
-                                            book.condition!.picture!.isNotEmpty)
-                                          Image(
-                                            image: NetworkImage(
-                                              book.condition!.picture!,
-                                            ),
-                                            width: 100,
-                                            height: 100,
-                                          )
-                                        else
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            color: Colors.grey,
-                                            child: const Icon(Icons.image_not_supported),
-                                          ),
-                                        const SizedBox(
-                                          width: 20,
+                                        Text(
+                                          snapshot.data![index].title,
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              book.title,
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              book.author,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              book.publishing,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              (book.condition?.price ?? 'No Price Available') + "원",
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            if (book.condition?.tags != null)
-                                              SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
-                                                child: Row(
-                                                  children: book.condition!.tags!
-                                                      .take(3)
-                                                      .map((tag) {
-                                                    return Container(
-                                                      margin: const EdgeInsets.symmetric(horizontal: 2),
-                                                      child: Chip(
-                                                        label: Text(
-                                                          '#$tag',
-                                                          style: const TextStyle(
-                                                            fontSize: 14,
-                                                            color: Color(0xFFFE4D02),
-                                                          ),
-                                                        ),
-                                                        shape: const StadiumBorder(
-                                                          side: BorderSide(
-                                                            color: Color(0xFFFE4D02),
-                                                            width: 1.0, // Adjust this value for thickness
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                          ],
+                                        Text(
+                                          snapshot.data![index].author,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data![index].publishing,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data![index].condition!
+                                              .price! +
+                                              "원" ??
+                                              'No Price Available',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Row(
+
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ),
-                              const Divider(color: Colors.black26, thickness: 2.0),
-                            ],
+                                Container(width: 600,
+                                    child: Divider(color: Colors.black26, thickness: 2.0))
+                              ],
+                            ),
                           );
                         },
                       );

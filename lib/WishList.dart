@@ -6,6 +6,18 @@ import 'package:flutter_01/MyPage.dart';
 import 'BookInfo.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
+class BookInfo {
+  final String title;
+  final String author;
+  final String publishing;
+
+  BookInfo({
+    required this.title,
+    required this.author,
+    required this.publishing,
+  });
+}
+
 class BookList extends StatelessWidget {
   final BookInfo searchResult;
 

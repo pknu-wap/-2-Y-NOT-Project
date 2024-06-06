@@ -1,282 +1,219 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_01/Make_BookList.dart';
-import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
-import 'package:get/get.dart';
-import 'package:flutter_01/About Chat/ChatList.dart';
-import 'package:flutter_01/Book_SearchList.dart';
-import 'DetailPage.dart';
-import 'BookInfo.dart';
-import 'MyPage.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class PlusCondition {
+  final String? price;
+  final String? picture;
+  List<String>? tags;
 
-  @override
-  State<MainPage> createState() => _MainPageState();
+  PlusCondition({
+    this.price,
+    this.picture,
+    this.tags,
+  });
 }
 
-class _MainPageState extends State<MainPage> {
+class BookInfo {
+  final String title;
+  final String author;
+  final String publishing;
+  final PlusCondition? condition;
+
+  BookInfo({
+    required this.title,
+    required this.author,
+    required this.publishing,
+    this.condition,
+  });
+}
+
+class BookList extends StatelessWidget {
+  final BookInfo Searchresult;
+
+  const BookList({super.key, required this.Searchresult});
+
+  Future<List<BookInfo>> searchBooks(String query) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('book')
+          .where('BookTitle', isGreaterThanOrEqualTo: query)
+          .where('BookTitle', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      List<BookInfo> bookTitles = [];
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        String? bookTitle, author, publisher, picture, price;
+        List<String> tags = [];
+
+        data.forEach((key, value) {
+          if (key == "BookTitle") {
+            bookTitle = value;
+          } else if (key == "Author") {
+            author = value;
+          } else if (key == "Publisher") {
+            publisher = value;
+          } else if (key == "Image") {
+            picture = value;
+          } else if (key == "Price") {
+            price = value;
+          } else if (key == "Tag") {
+            if (value is String) {
+              tags.add(value);
+            } else {
+              for (var tag in value.values) {
+                tags.add(tag);
+              }
+            }
+          }
+        });
+
+        BookInfo book = BookInfo(
+          title: bookTitle ?? " ",
+          author: author ?? " ",
+          publishing: publisher ?? " ",
+          condition: PlusCondition(
+            price: price,
+            picture: picture,
+            tags: tags,
+          ),
+        );
+        bookTitles.add(book);
+      }
+      return bookTitles;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = ThemeData(useMaterial3: true);
     return MaterialApp(
-      theme: themeData,
+      theme: ThemeData(),
       home: Scaffold(
-        backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MakeBookList()),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            size: 30,
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.orangeAccent,
-        ),
-        body: SingleChildScrollView(
+        body: Container(
+          margin: const EdgeInsets.only(top: 50),
           padding: const EdgeInsets.all(10.0),
-          child: Column(children: [
-            Row(children: [
-              const SizedBox(width: 230),
-              SaveCon(),
-              const SizedBox(width: 1),
-              AlarmCon(),
-              const SizedBox(height: 20),
-            ]),
-            SearchB(),
-            const SizedBox(height: 10),
-            Row(children: [
-              Recent_text(),
-            ]),
-            Recent_Activity(),
-            Row(children: [
-              Find_text(),
-            ]),
-            Find_Activity(),
-            Row(children: [
-              Realtime_text(),
-            ]),
-            Realtime_Activity(),
-          ]),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    BackButton(context: context),
+                    const SizedBox(width: 230),
+                    AlarmCon(context: context),
+                  ],
+                ),
+                SearchB(),
+                FutureBuilder<List<BookInfo>>(
+                  future: searchBooks(Searchresult.title),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('No results found');
+                    } else {
+                      return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        // 이 부분 추가
+                        shrinkWrap: true,
+                        // 이 부분 추가
+                        padding: const EdgeInsets.all(8),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Image(
+                                      image: NetworkImage(
+                                        snapshot
+                                            .data![index].condition!.picture!,
+                                      ),
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          snapshot.data![index].title,
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data![index].author,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data![index].publishing,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data![index].condition!
+                                              .price! +
+                                              "원" ??
+                                              'No Price Available',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Row(
+
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Container(width: 600,
+                                    child: Divider(color: Colors.black26, thickness: 2.0))
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (int wants) {
-            switch (wants) {
-              case 0:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MainPage()));
-                break;
-              case 1:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BookList(
-                            Searchresult: BookInfo(
-                                title: inputText ?? '',
-                                author: '',
-                                publishing: ''))));
-              case 2:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatListScreen()),
-                );
-                break;
-              case 3:
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyPage()));
-                break;
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                ),
-                label: '홈'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.add_outlined,
-                ),
-                label: '판매'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.chat,
-                ),
-                label: '채팅'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle), label: '정보'),
-          ],
-          type: BottomNavigationBarType.fixed,
-        ),
       ),
     );
   }
 
-  Widget Recent_text() {
-    return const Text(
-      'User 활동 내역',
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
-        fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
-      ),
-    );
-  }
-
-  Widget Find_text() {
-    return const Text(
-      '찾고 계시는 책이 있나요?',
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
-        fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
-      ),
-    );
-  }
-
-  Widget Realtime_text() {
-    return const Text(
-      '실시간 최근 올라온 책들',
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
-        fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
-      ),
-    );
-  }
-
-  Widget Find_Activity() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('book').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-        var images = snapshot.data!.docs;
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
-              var imageUrl = image['Image'];
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailPage(imageUrl: imageUrl),
-                  ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
-                  child: Image.network(
-                    imageUrl,
-                    width: 150, // 이미지의 너비를 설정합니다.
-                    height: 200, // 이미지의 높이를 설정합니다.
-                  ),
-                ),
-              );
-            }),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget Recent_Activity() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('book').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-        var images = snapshot.data!.docs;
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
-              var imageUrl = image['Image'];
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailPage(imageUrl: imageUrl),
-                  ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
-                  child: Image.network(
-                    imageUrl,
-                    width: 150, // 이미지의 너비를 설정합니다.
-                    height: 200, // 이미지의 높이를 설정합니다.
-                  ),
-                ),
-              );
-            }),
-          ),
-        );
-      },
-    );
-  }
-
-
-
-  Widget Realtime_Activity() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('book').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-        var images = snapshot.data!.docs;
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
-              var imageUrl = image['Image'];
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailPage(imageUrl: imageUrl),
-                  ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
-                  child: Image.network(
-                    imageUrl,
-                    width: 150, // 이미지의 너비를 설정합니다.
-                    height: 200, // 이미지의 높이를 설정합니다.
-                  ),
-                ),
-              );
-            }),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget SaveCon() {
+  Widget BackButton({required BuildContext context}) {
     return IconButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SaveSpace()),
-          );
-        },
-        color: Colors.orangeAccent,
-        icon: const Icon(Icons.bookmark_outline_outlined));
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()),
+        );
+      },
+      iconSize: 30,
+      color: Colors.black,
+      icon: const Icon(Icons.arrow_back),
+    );
   }
 
-  Widget AlarmCon() {
+  Widget AlarmCon({required BuildContext context}) {
     return IconButton(
       onPressed: () {
         Navigator.push(
@@ -284,45 +221,32 @@ class _MainPageState extends State<MainPage> {
           MaterialPageRoute(builder: (context) => const AlarmSpace()),
         );
       },
-      icon: const Icon(Icons.notifications_none),
       iconSize: 30,
       color: Colors.orangeAccent,
+      icon: const Icon(Icons.notifications_none),
     );
   }
 
-  List<BookInfo> searchResults = [];
-
-  void searchList(String query) {
-    final results = searchResults
-        .where((product) => product.title.contains(query))
-        .toList();
-    setState(() {
-      searchResults = results;
-    });
-  }
-
-  String? inputText;
-
   Widget SearchB() {
-    return SearchBar(
-      onChanged: (value) {
-        setState(() => inputText = value);
-        //print('Input Text = $inputText');
-      },
-      leading: IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BookList(
-                    Searchresult: BookInfo(
-                        title: inputText ?? '', author: '', publishing: '')),
-              ),
-            );
-          }),
+    return const SearchBar(
+      leading: Icon(Icons.search),
       hintText: "검색어를 입력하세요",
-      backgroundColor: const MaterialStatePropertyAll(Colors.white70),
+      backgroundColor: MaterialStatePropertyAll(Colors.white70),
+    );
+  }
+}
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Main Page'),
+      ),
+      body: Center(
+        child: Text('This is the Main Page'),
+      ),
     );
   }
 }

@@ -1,12 +1,19 @@
+// 파베 스토리지 다운로드 코드 추가
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Import the dart:io library for File class
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
-import 'BookInfo.dart';
 import 'package:flutter_01/Book_SearchList.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
-void main() => runApp(MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,13 +32,37 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<void> _changeProfileImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
 
-    setState(() {
-      _imageFile = pickedFile;
-    });
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      await _uploadProfileImage(imageFile);
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
+  Future<void> _uploadProfileImage(File file) async {
+    try {
+      await storage.ref('profile_images/${file.path.split('/').last}').putFile(file);
+    } on FirebaseException catch (e) {
+      // Handle error
+      print(e);
+    }
+  }
+
+  Future<String?> _getProfileImageUrl() async {
+    try {
+      String downloadURL = await storage.ref('profile_images/${_imageFile?.name}').getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      // Handle error
+      return null;
+    }
   }
 
   void _showImageSourceActionSheet(BuildContext context) {
@@ -231,6 +262,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Text('1회', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
+            ElevatedButton(
+              onPressed: () async {
+                String? url = await _getProfileImageUrl();
+                if (url != null) {
+                  print('Profile Image URL: $url');
+                }
+              },
+              child: Text('Get Profile Image URL'),
+            ),
           ],
         ),
       ),
@@ -238,11 +278,11 @@ class _ProfilePageState extends State<ProfilePage> {
         onTap: (int index) {
           switch (index) {
             case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
               break;
             case 1:
               Navigator.push(
-                context,
+                  context,
                   MaterialPageRoute(
                       builder: (context) => BookList(
                           Searchresult: BookInfo(
@@ -353,6 +393,48 @@ class NotificationsPage extends StatelessWidget {
       ),
       body: const Center(
         child: Text(' '),
+      ),
+    );
+  }
+}
+
+class BookInfo {
+  final String title;
+  final String author;
+  final String publishing;
+
+  BookInfo({required this.title, required this.author, required this.publishing});
+}
+
+class BookList extends StatelessWidget {
+  final BookInfo Searchresult;
+
+  const BookList({Key? key, required this.Searchresult}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('도서 목록'),
+      ),
+      body: const Center(
+        child: Text('도서 목록 페이지'),
+      ),
+    );
+  }
+}
+
+class MyPage extends StatelessWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('내 정보'),
+      ),
+      body: const Center(
+        child: Text('내 정보 페이지'),
       ),
     );
   }
