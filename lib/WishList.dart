@@ -3,7 +3,7 @@ import 'package:flutter_01/Book_SearchList.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
-import 'package:flutter_01/Book_SearchList.dart';
+import 'package:flutter_01/Searchresult.dart';
 
 class BookList extends StatelessWidget {
   final BookInfo searchResult;
@@ -23,20 +23,6 @@ class BookList extends StatelessWidget {
   }
 }
 
-class ChatScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat Screen'),
-      ),
-      body: Center(
-        child: Text('This is the chat screen'),
-      ),
-    );
-  }
-}
-
 class WishListForm extends StatefulWidget {
   @override
   _WishListFormState createState() => _WishListFormState();
@@ -49,113 +35,182 @@ class _WishListFormState extends State<WishListForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '위시리스트',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFFFE4D02), // 상단바 배경색 설정
-      ),
-      body: Column(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+        child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _itemController,
-              decoration: InputDecoration(
-                labelText: '항목 추가',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    _addItemToList();
-                  },
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _wishList.where((item) => item.isBookmarked).length,
-              itemBuilder: (BuildContext context, int index) {
-                final bookmarkedItems =
-                    _wishList.where((item) => item.isBookmarked).toList();
-                return ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                  title: Center(
-                    child: Text(
-                      bookmarkedItems[index].name,
-                      style: TextStyle(
-                        color: Colors.black87, // 기본 텍스트 색상으로 수정
-                      ),
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      _removeItemFromList(bookmarkedItems[index]);
-                    },
-                  ),
-                  leading: IconButton(
-                    icon: Icon(bookmarkedItems[index].isBookmarked
-                        ? Icons.bookmark
-                        : Icons.bookmark_border),
-                    onPressed: () {
-                      _toggleBookmark(bookmarkedItems[index]);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MainPage()));
-              break;
-            case 1:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BookList(
-                              searchResult: BookInfo(
-                            title: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
-                            author: '',
-                            publishing: '',
-                          ))));
-              break; // break 추가
-            case 2:
-              Get.to(ChatScreen());
-              break;
-            case 3:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyPage()));
-              break;
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-              ),
-              label: '홈'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_outlined,
-              ),
-              label: '판매'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: '정보'),
-        ],
-        type: BottomNavigationBarType.fixed,
-      ),
+        const SizedBox(height: 16)
+    ,
+    Row
+    (
+    children
+    :
+    [
+    const
+    SizedBox
+    (
+    width
+    :
+    16
+    )
+    ,
+    GestureDetector
+    (
+    child
+    :
+    const
+    Icon
+    (
+    Icons
+    .
+    arrow_back_ios_new
+    ,
+    color
+    :
+    Colors
+    .
+    grey
+    ,
+    size
+    :
+    24
+    )
+    ,
+    onTap
+    :
+    (
+    ) {
+    Navigator.pop(context);
+    // Handle back button
+    },
+    ),
+    const Expanded(child: SizedBox()),
+    const Text(
+    '프로필',
+    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+    ),
+    IconButton(
+    icon: Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+    onPressed: () {
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => NotificationsPage()),
+    );
+    },
+    ),
+    ],
+    ),
+    body: SafeArea(
+    child: SingleChildScrollView(
+    child: Column(
+    children: [
+    const SizedBox(height: 8), // 상단바 위 여백을 늘리기 위해 추가
+    Container(
+    width: MediaQuery.of(context).size.width,
+    height: 1,
+    color: Colors.grey,
+    ),
+    Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: TextField(
+    controller: _itemController,
+    decoration: InputDecoration(
+    labelText: '항목 추가',
+    suffixIcon: IconButton(
+    icon: Icon(Icons.add),
+    onPressed: () {
+    _addItemToList();
+    },
+    ),
+    ),
+    ),
+    ),
+    ListView.builder(
+    shrinkWrap: true,
+    itemCount: _wishList.where((item) => item.isBookmarked).length,
+    itemBuilder: (BuildContext context, int index) {
+    final bookmarkedItems =
+    _wishList.where((item) => item.isBookmarked).toList();
+    return ListTile(
+    contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+    title: Center(
+    child: Text(
+    bookmarkedItems[index].name,
+    style: TextStyle(
+    color: Colors.black87, // 기본 텍스트 색상으로 수정
+    ),
+    ),
+    ),
+    trailing: IconButton(
+    icon: Icon(Icons.delete),
+    onPressed: () {
+    _removeItemFromList(bookmarkedItems[index]);
+    },
+    ),
+    leading: IconButton(
+    icon: Icon(bookmarkedItems[index].isBookmarked
+    ? Icons.bookmark
+        : Icons.bookmark_border),
+    onPressed: () {
+    _toggleBookmark(bookmarkedItems[index]);
+    },
+    ),
+    );
+    },
+    ),
+    ],
+    ),
+    ),
+    ),
+    bottomNavigationBar: BottomNavigationBar(
+    onTap: (int index) {
+    switch (index) {
+    case 0:
+    Navigator.push(
+    context, MaterialPageRoute(builder: (context) => MainPage()));
+    break;
+    case 1:
+    case 1:
+    case 1:
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => BookList(
+    searchResult: BookInfo(
+    title: '', // 필요한 정보를 여기에 제공하세요
+    author: '',
+    publishing: '',
+    ),
+    ),
+    ),
+    );
+    break;
+    case 2:
+    Get.to(ChatScreen());
+    break;
+    case 3:
+    Navigator.push(
+    context, MaterialPageRoute(builder: (context) => MyPage()));
+    break;
+    }
+    },
+    items: [
+    BottomNavigationBarItem(
+    icon: Icon(
+    Icons.home_outlined,
+    ),
+    label: '홈'),
+    BottomNavigationBarItem(
+    icon: Icon(
+    Icons.add_outlined,
+    ),
+    label: '판매'),
+    BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
+    BottomNavigationBarItem(
+    icon: Icon(Icons.account_circle), label: '정보'),
+    ],
+    type: BottomNavigationBarType.fixed,
+    ),
     );
   }
 
