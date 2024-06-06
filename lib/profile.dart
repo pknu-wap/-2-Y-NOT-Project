@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Import the dart:io library for File class
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
 import 'BookInfo.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
-void main() => runApp(MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,6 +40,42 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _imageFile = pickedFile;
     });
+
+    // Firebase에 이미지 업로드
+    await _uploadImageToFirebase(pickedFile);
+  }
+
+  Future<void> _uploadImageToFirebase(XFile? image) async {
+    if (image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('이미지 선택을 취소하였습니다.'))
+      );
+      return;
+    }
+
+    File file = File(image.path);
+    try {
+      String filePath = 'profile_images/${DateTime.now()}.png';
+      var storageRef = firebase_storage.FirebaseStorage.instance.ref().child(filePath);
+      var uploadTask = storageRef.putFile(file);
+      var taskSnapshot = await uploadTask.whenComplete(() {});
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      // Firestore에 이미지 URL 저장
+      await FirebaseFirestore.instance.collection('user_profiles').doc('your_user_id').set({
+        'imageUrl': imageUrl,
+        'updatedAt': FieldValue.serverTimestamp(), // 서버 시간 기준으로 시간을 기록
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('프로필 이미지가 업로드되고 저장되었습니다!'))
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('이미지 업로드 실패: $e'))
+      );
+    }
   }
 
   void _showImageSourceActionSheet(BuildContext context) {
@@ -80,7 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
                   onTap: () {
                     Navigator.pop(context);
-                    // Handle back button
                   },
                 ),
                 const Expanded(child: SizedBox()),
@@ -101,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 16),
               ],
             ),
-            const SizedBox(height: 8), // 상단바 위 여백을 늘리기 위해 추가
+            const SizedBox(height: 8),
             Container(
               width: MediaQuery.of(context).size.width,
               height: 1,
@@ -242,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
               break;
             case 1:
               Navigator.push(
-                context,
+                  context,
                   MaterialPageRoute(
                       builder: (context) => BookList(
                           Searchresult: BookInfo(
@@ -349,10 +392,44 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('알림페이지'),
+        title: const Text('알림 페이지'),
       ),
       body: const Center(
         child: Text(' '),
+      ),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('메인 페이지'),
+      ),
+      body: const Center(
+        child: Text('메인 페이지 내용'),
+      ),
+    );
+  }
+}
+
+class BookList extends StatelessWidget {
+  final BookInfo Searchresult;
+
+  const BookList({Key? key, required this.Searchresult}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('도서 리스트'),
+      ),
+      body: Center(
+        child: Text('도서 제목: ${Searchresult.title}'),
       ),
     );
   }
