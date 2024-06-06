@@ -170,7 +170,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        hintText: 'example@example.com',
+                        hintText: 'example@pukyong.ac.kr',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.0), // 입력 창 테두리
                         ),
