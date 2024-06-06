@@ -5,6 +5,7 @@ import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:get/get.dart';
 import 'loginPage.dart';
 import 'Book_db.dart';
+import 'package:flutter_01/profile.dart';
 
 
 void main() async {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: LoginPage(),
+      home: ProfilePage(),
     );
   }
 }

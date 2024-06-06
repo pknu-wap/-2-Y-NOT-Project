@@ -3,35 +3,12 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Import the dart:io library for File class
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
 import 'package:flutter_01/Book_SearchList.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 void main() => runApp(MyApp());
-
-class ImageService {
-  final _storage = FirebaseStorage.instance;
-
-  Future<String> uploadImage(File imageFile) async {
-    try {
-      var snapshot = await _storage.ref().child('profile_images/${imageFile.path}').putFile(imageFile);
-      var downloadUrl = await snapshot.ref.getDownloadURL();
-      return downloadUrl;
-    } catch (e) {
-      print('Error uploading image: $e');
-      return '';
-    }
-  }
-
-  Future<String> getImageUrl(String imagePath) async {
-    try {
-      var downloadUrl = await _storage.ref().child(imagePath).getDownloadURL();
-      return downloadUrl;
-    } catch (e) {
-      print('Error getting image URL: $e');
-      return '';
-    }
-  }
-}
 
 class MyApp extends StatelessWidget {
   @override
@@ -51,22 +28,35 @@ class _ProfilePageState extends State<ProfilePage> {
   final ImageService _imageService = ImageService();
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
-  String? _profileImageUrl; // 추가: 사용자의 프로필 이미지 URL
+  String? _profileImageUrl;
+  final String userId = 'user_unique_id'; // 사용자 고유 ID
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    String imageUrl = await _imageService.getImageUrl(userId);
+    if (imageUrl.isNotEmpty) {
+      setState(() {
+        _profileImageUrl = imageUrl;
+      });
+    }
+  }
 
   Future<void> _changeProfileImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      // 이미지를 선택한 경우에만 업로드를 시도합니다.
       setState(() {
         _imageFile = pickedFile;
       });
 
-      // 이미지를 업로드하고 다운로드 URL을 받아옵니다.
-      final imageUrl = await _imageService.uploadImage(File(_imageFile!.path));
+      final imageUrl = await _imageService.uploadImage(File(_imageFile!.path), userId);
 
       if (imageUrl.isNotEmpty) {
-        // 다운로드 URL이 비어있지 않은 경우에만 저장합니다.
         setState(() {
           _profileImageUrl = imageUrl;
         });
@@ -105,7 +95,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +110,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
                   onTap: () {
                     Navigator.pop(context);
-                    // Handle back button
                   },
                 ),
                 const Expanded(child: SizedBox()),
@@ -142,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 16),
               ],
             ),
-            const SizedBox(height: 8), // 상단바 위 여백을 늘리기 위해 추가
+            const SizedBox(height: 8),
             Container(
               width: MediaQuery.of(context).size.width,
               height: 1,
@@ -160,10 +148,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: CircleAvatar(
                         backgroundColor: Colors.grey,
                         radius: 50,
-                        backgroundImage: _imageFile == null
-                            ? null
-                            : FileImage(File(_imageFile!.path)),
-                        child: _imageFile == null
+                        backgroundImage: _profileImageUrl != null
+                            ? NetworkImage(_profileImageUrl!)
+                            : null,
+                        child: _profileImageUrl == null
                             ? Icon(Icons.person, color: Colors.white, size: 50)
                             : null,
                       ),
@@ -260,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Row(
               children: [
                 const SizedBox(width: 36),
-                const Text('판매도서 ', style: TextStyle(color: Colors.black, fontSize: 18,)),
+                const Text('판매도서 ', style: TextStyle(color: Colors.black, fontSize: 18)),
                 const Text('2권', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -268,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Row(
               children: [
                 const SizedBox(width: 36),
-                const Text('받은 거래 후기 ', style: TextStyle(color: Colors.black, fontSize: 18,)),
+                const Text('받은 거래 후기 ', style: TextStyle(color: Colors.black, fontSize: 18)),
                 const Text('1회', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -284,12 +272,12 @@ class _ProfilePageState extends State<ProfilePage> {
             case 1:
               Navigator.push(
                 context,
-                  MaterialPageRoute(
-                      builder: (context) => BookList(
-                          Searchresult: BookInfo(
-                              title:'',
-                              author: '',
-                              publishing: '')))
+                MaterialPageRoute(
+                    builder: (context) => BookList(
+                        Searchresult: BookInfo(
+                            title: '',
+                            author: '',
+                            publishing: ''))),
               );
               break;
             case 2:
@@ -396,5 +384,40 @@ class NotificationsPage extends StatelessWidget {
         child: Text(' '),
       ),
     );
+  }
+}
+
+class ImageService {
+  final _storage = FirebaseStorage.instance;
+  final _firestore = FirebaseFirestore.instance;
+
+  Future<String> uploadImage(File imageFile, String userId) async {
+    try {
+      var snapshot = await _storage
+          .ref()
+          .child('profile_images/$userId')
+          .putFile(imageFile);
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+
+      // Firestore에 이미지 URL 저장
+      await _firestore.collection('users').doc(userId).set({
+        'profileImageUrl': downloadUrl,
+      });
+
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return '';
+    }
+  }
+
+  Future<String> getImageUrl(String userId) async {
+    try {
+      var doc = await _firestore.collection('users').doc(userId).get();
+      return doc.data()?['profileImageUrl'] ?? '';
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return '';
+    }
   }
 }

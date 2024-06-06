@@ -146,7 +146,7 @@ class BookList extends StatelessWidget {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           snapshot.data![index].title,
@@ -168,8 +168,8 @@ class BookList extends StatelessWidget {
                                         ),
                                         Text(
                                           snapshot.data![index].condition!
-                                                      .price! +
-                                                  "원" ??
+                                              .price! +
+                                              "원" ??
                                               'No Price Available',
                                           style: const TextStyle(
                                               fontSize: 20,

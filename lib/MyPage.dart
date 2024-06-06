@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
-import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/WishList.dart';
 import 'package:flutter_01/profile.dart';
 
@@ -12,7 +11,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Screen'),
+        title: Text('Chat Screen'), // title 속성 추가
       ),
       body: Center(
         child: Text('This is the chat screen'),
@@ -20,6 +19,7 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }
+
 
 class MyPage extends StatefulWidget {
   final String inputText;
@@ -80,13 +80,13 @@ class _MyPageState extends State<MyPage> {
           _buildPurchaseAndRentalSection(context),
         ],
       ),
-      /*bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MainPage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
               break;
             case 1:
@@ -95,7 +95,7 @@ class _MyPageState extends State<MyPage> {
                 MaterialPageRoute(
                   builder: (context) => BookSearch.BookList(
                     Searchresult: BookSearch.BookInfo(
-                      subject: '',
+                      title: '',
                       author: '',
                       publishing: '',
                     ),
@@ -116,14 +116,10 @@ class _MyPageState extends State<MyPage> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-              ),
+              icon: Icon(Icons.home_outlined),
               label: '홈'),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_outlined,
-              ),
+              icon: Icon(Icons.add_outlined),
               label: '판매'),
           BottomNavigationBarItem(
               icon: Icon(Icons.chat),
@@ -133,7 +129,7 @@ class _MyPageState extends State<MyPage> {
               label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
-      ),*/
+      ),
     );
   }
 
