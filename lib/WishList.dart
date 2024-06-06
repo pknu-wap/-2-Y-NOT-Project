@@ -1,9 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 import 'package:get/get.dart'; // GetX 패키지를 사용하는 경우 추가
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/chat.dart';
-import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'package:flutter_01/Book_SearchList.dart';
+
+class BookList extends StatelessWidget {
+  final BookInfo searchResult;
+
+  BookList({required this.searchResult});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Book List'),
+      ),
+      body: Center(
+        child: Text('Displaying books based on search result'),
+      ),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Screen'),
+      ),
+      body: Center(
+        child: Text('This is the chat screen'),
+      ),
+    );
+  }
+}
 
 class WishListForm extends StatefulWidget {
   @override
@@ -49,7 +81,7 @@ class _WishListFormState extends State<WishListForm> {
               itemCount: _wishList.where((item) => item.isBookmarked).length,
               itemBuilder: (BuildContext context, int index) {
                 final bookmarkedItems =
-                _wishList.where((item) => item.isBookmarked).toList();
+                    _wishList.where((item) => item.isBookmarked).toList();
                 return ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                   title: Center(
@@ -92,10 +124,11 @@ class _WishListFormState extends State<WishListForm> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => BookList(
-                          searchResult: BookInfo(
-                              subject: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
-                              author: '',
-                              publishing: ''))));
+                              searchResult: BookInfo(
+                            title: '', // 검색어를 빈 문자열로 설정 (필요에 따라 수정)
+                            author: '',
+                            publishing: '',
+                          ))));
               break; // break 추가
             case 2:
               Get.to(ChatScreen());
@@ -117,12 +150,9 @@ class _WishListFormState extends State<WishListForm> {
                 Icons.add_outlined,
               ),
               label: '판매'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: '채팅'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: '정보'),
+              icon: Icon(Icons.account_circle), label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
       ),

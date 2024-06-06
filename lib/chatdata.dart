@@ -1,4 +1,4 @@
-import 'package:chatview/chatview.dart';
+/*import 'package:chatview/chatview.dart';
 
 class Data {
   static const profileImage =
@@ -114,4 +114,4 @@ class Data {
       status: MessageStatus.read,
     ),
   ];
-}
+} */

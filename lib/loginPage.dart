@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/user.dart' as myapp;
+import 'package:flutter_01/user.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/SignUpPage.dart';
-
 
 class LoginController extends GetxController {
   final FirebaseAuth _authentication = FirebaseAuth.instance;
@@ -68,9 +68,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _key = GlobalKey<FormState>();
   final LoginController _loginController = Get.put(LoginController());
-
-  String? _username; // username 변수 추가
-  String? _pwd; // pwd 변수 추가
 
   @override
   Widget build(BuildContext context) {
@@ -158,88 +155,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10)
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget usernameInput() {
-    return TextFormField(
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return '이메일을 입력해주세요.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (username) => _username = username as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: '이메일',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget pwdInput() {
-    return TextFormField(
-      obscureText: true,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return '비밀번호를 입력해주세요.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (email) => _pwd = email as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: '비밀번호',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget loginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_key.currentState!.validate()) {
-          _key.currentState!.save();
-          myapp.User user = myapp.User(_username, _pwd); // 사용자 객체 생성
-          Navigator.pushNamed(context, '/success',
-              arguments: user); // 생성된 사용자 객체를 arguments로 전달
-
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text(
-          "로그인",
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-      ),
-    );
-  }
-  Widget submitButton() {
-    return ElevatedButton(
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder:(context) => SignUpForm())),
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text(
-          "회원가입",
-          style: TextStyle(
-            fontSize: 18,
           ),
         ),
       ),

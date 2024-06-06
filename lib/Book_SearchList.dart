@@ -1,62 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/Alarm_space.dart';
 
-class BookInfo{
-  final String subject;
-  final String author;
-  final String publishing;
+class PlusCondition {
+  final String? price;
+  final String? picture;
+  List<String>? tags;
 
-  BookInfo({
-    required this.subject,
-    required this.author,
-    required this.publishing,
+  PlusCondition({
+    this.price,
+    this.picture,
+    this.tags,
   });
 }
 
-final List<BookInfo> bookDatas =[
-  BookInfo(
-      subject: "공학경제개론",
-      author: "박찬성",
-      publishing: "청람"
-  ),
-  BookInfo(
-      subject: "대학물리학",
-      author: "Raymond A.Serway",
-      publishing: "북스힐"
-  ),
-  BookInfo(
-      subject: "해도의 세계사",
-      author: "미아자키 마사카츠",
-      publishing: "어문학사"
-  ),
-  BookInfo(
-      subject: "기초공학수학",
-      author: "김동식",
-      publishing: "생능"
-  ),
-  BookInfo(
-      subject: "선형대수학과 응용",
-      author: "이재진",
-      publishing: "경문사"
-  ),
-  BookInfo(
-      subject: "스튜어트 미분적분학",
-      author: "James Stewart",
-      publishing: "북스힐"
-  ),
-];
+class BookInfo {
+  final String title;
+  final String author;
+  final String publishing;
+  final PlusCondition? condition;
+
+  BookInfo({
+    required this.title,
+    required this.author,
+    required this.publishing,
+    this.condition,
+  });
+}
+
+void printlist(List<String>? parameter) {}
 
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
   const BookList({super.key, required this.Searchresult});
 
+  Future<List<BookInfo>> searchBooks(String query) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('book')
+          .where('BookTitle', isGreaterThanOrEqualTo: query)
+          .where('BookTitle', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+
+      List<BookInfo> bookTitles = [];
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        String? bookTitle, author, publisher, picture, price;
+        List<String> tags = [];
+
+        data.forEach((key, value) {
+          if (key == "BookTitle") {
+            bookTitle = value;
+          } else if (key == "Author") {
+            author = value;
+          } else if (key == "Publisher") {
+            publisher = value;
+          } else if (key == "Image") {
+            picture = value;
+          } else if (key == "Price") {
+            price = value;
+          } else if (key == "Tag") {
+            if (value is String) {
+              tags.add(value);
+            } else {
+              for (var tag in value.values) {
+                tags.add(tag);
+              }
+            }
+          }
+        });
+
+        BookInfo book = BookInfo(
+          title: bookTitle ?? " ",
+          author: author ?? " ",
+          publishing: publisher ?? " ",
+          condition: PlusCondition(
+            price: price,
+            picture: picture,
+            tags: tags,
+          ),
+        );
+        bookTitles.add(book);
+      }
+      return bookTitles;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = ThemeData(useMaterial3: true);
-    final data = GetBookListContainsInputSubject();
-    debugPrint(Searchresult.subject);
     return MaterialApp(
       theme: ThemeData(),
       home: Scaffold(
@@ -69,18 +110,125 @@ class BookList extends StatelessWidget {
                 Row(
                   children: [
                     BackButton(context: context),
-                    const SizedBox(width: 250),
+                    const SizedBox(width: 230),
                     AlarmCon(context: context),
                   ],
                 ),
                 SearchB(),
-                const SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return Example(data[index]);
+                FutureBuilder<List<BookInfo>>(
+                  future: searchBooks(Searchresult.title),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('No results found');
+                    } else {
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          var book = snapshot.data![index];
+                          return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        if (book.condition?.picture != null &&
+                                            book.condition!.picture!.isNotEmpty)
+                                          Image(
+                                            image: NetworkImage(
+                                              book.condition!.picture!,
+                                            ),
+                                            width: 100,
+                                            height: 100,
+                                          )
+                                        else
+                                          Container(
+                                            width: 100,
+                                            height: 100,
+                                            color: Colors.grey,
+                                            child: const Icon(Icons.image_not_supported),
+                                          ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              book.title,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              book.author,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              book.publishing,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              (book.condition?.price ?? 'No Price Available') + "원",
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            if (book.condition?.tags != null)
+                                              SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: book.condition!.tags!
+                                                      .take(3)
+                                                      .map((tag) {
+                                                    return Container(
+                                                      margin: const EdgeInsets.symmetric(horizontal: 2),
+                                                      child: Chip(
+                                                        label: Text(
+                                                          '#$tag',
+                                                          style: const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Color(0xFFFE4D02),
+                                                          ),
+                                                        ),
+                                                        shape: const StadiumBorder(
+                                                          side: BorderSide(
+                                                            color: Color(0xFFFE4D02),
+                                                            width: 1.0, // Adjust this value for thickness
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(color: Colors.black26, thickness: 2.0),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ],
@@ -121,90 +269,9 @@ class BookList extends StatelessWidget {
 
   Widget SearchB() {
     return const SearchBar(
-        leading: Icon(Icons.search),
-        hintText: "검색어를 입력하세요",
-        backgroundColor: MaterialStatePropertyAll(Colors.white70));
-  }
-
-
-  List<BookInfo> GetBookListContainsInputSubject() {
-    List<BookInfo> findBookList = [];
-    for(BookInfo bookInfo in bookDatas) {
-      if (bookInfo.subject.contains(Searchresult.subject)){
-        findBookList.add(bookInfo);
-      }
-    }
-    return findBookList;
-  }
-
-
-  Widget Example(data) {
-    return Container(
-      child: Column(
-        children: [
-          Text(
-            '${data.subject}',
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            '${data.author}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            '${data.publishing}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-          const Text(
-            '29,000원',
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-}
-
-/*
-class SearchIf extends StatefulWidget {
-  const SearchIf({super.key, required this.books});
-  final Books books;
-  @override
-  State<SearchIf> createState() => _SearchIfState();
-}
-
-class _SearchIfState extends State<SearchIf> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-          itemCount: Books.length,
-          itemBuilder: (context, index){
-            return Card(
-              child: ListTile(
-                title: Text(bookData[index].subject),
-                leading: SizedBox(
-                  child: Text(bookData[index].author),
-                ),
-              ),
-            );
-          }
-      ),
+      leading: Icon(Icons.search),
+      hintText: "검색어를 입력하세요",
+      backgroundColor: MaterialStatePropertyAll(Colors.white70),
     );
   }
 }
-*/
