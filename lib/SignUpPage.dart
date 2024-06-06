@@ -99,8 +99,7 @@ class _SignUpFormState extends State<SignUpForm> {
       appBar: AppBar(
         title: Center(child: Text('회원 가입', style: TextStyle(color: Colors.white))),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(

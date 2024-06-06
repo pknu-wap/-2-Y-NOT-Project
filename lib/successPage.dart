@@ -163,17 +163,12 @@ class _MainPageState extends State<MainPage> {
       stream: FirebaseFirestore.instance.collection('book').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
-
         var images = snapshot.data!.docs;
-        var random = Random();
-        var selectedImages = images..shuffle(random);
-        selectedImages = selectedImages.take(4).toList();
-
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(selectedImages.length, (index) {
-              var image = selectedImages[index];
+            children: List.generate(4, (index) {
+              var image = images[index];
               var imageUrl = image['Image'];
               return GestureDetector(
                 onTap: () => Navigator.push(
