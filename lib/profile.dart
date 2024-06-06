@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Import the dart:io library for File class
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
+import 'BookInfo.dart';
 import 'package:flutter_01/Book_SearchList.dart';
 
 void main() => runApp(MyApp());
