@@ -110,7 +110,7 @@ class _MakeBookListState extends State<MakeBookList> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Get.to(MainPage());
+              Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back),
           ),

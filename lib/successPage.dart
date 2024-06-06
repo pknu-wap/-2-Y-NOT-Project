@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_01/DetailPage.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
-import 'Book_db.dart';
 import 'MyPage.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,6 +19,64 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+
+  _MainPageState();
+
+  Future<List<BookInfo>> searchBooks(String query) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('book')
+          .where('BookTitle', isGreaterThanOrEqualTo: query)
+          .where('BookTitle', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      List<BookInfo> bookTitles = [];
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        String? bookTitle, author, publisher, picture, price;
+        List<String> tags = [];
+
+        data.forEach((key, value) {
+          if (key == "BookTitle") {
+            bookTitle = value;
+          } else if (key == "Author") {
+            author = value;
+          } else if (key == "Publisher") {
+            publisher = value;
+          } else if (key == "Image") {
+            picture = value;
+          } else if (key == "Price") {
+            price = value;
+          } else if (key == "Tag") {
+            if (value is String) {
+              tags.add(value);
+            } else {
+              for (var tag in value.values) {
+                tags.add(tag);
+              }
+            }
+          }
+        });
+
+        BookInfo book = BookInfo(
+          title: bookTitle ?? " ",
+          author: author ?? " ",
+          publishing: publisher ?? " ",
+          condition: PlusCondition(
+            price: price,
+            picture: picture,
+            tags: tags,
+          ),
+        );
+        bookTitles.add(book);
+      }
+      return bookTitles;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(useMaterial3: true);
     return MaterialApp(
@@ -25,44 +85,127 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MakeBookList()),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MakeBookList()),
+            );
           },
           child: Icon(
             Icons.add,
             size: 30,
           ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           foregroundColor: Colors.white,
           backgroundColor: Colors.orangeAccent,
         ),
-        body: Container(
-          padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Row(children: [
-                const SizedBox(width: 300),
-                SaveCon(),
-                const SizedBox(width: 1),
-                AlarmCon(),
-                const SizedBox(height: 20),
-              ]),
-              SearchB(),
-              const SizedBox(height: 10),
-              Row(children: [
-                Recent_text(),
-              ]),
-              Recent_Activity(),
-              Row(children: [
-                Find_text(),
-              ]),
-              Find_Activity(),
-              Row(children: [
-                Realtime_text(),
-              ]),
-              Realtime_Activity(),
-            ]),
-          ),
-        ),
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('book').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData)
+                return Center(child: CircularProgressIndicator());
+              var images = snapshot.data!.docs;
+              var Searchresult;
+              return Container(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    Row(children: [
+                      const SizedBox(width: 200),
+                      SaveCon(),
+                      const SizedBox(width: 1),
+                      AlarmCon(),
+                      const SizedBox(height: 20),
+                    ]),
+                    SearchB(),
+                    const SizedBox(height: 10),
+                    FutureBuilder<List<BookInfo>>(
+                      future: searchBooks(Searchresult.title),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return const Text('No results found');
+                        } else {
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(8),
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  children: [
+                                    Row(children: [
+                                      Recent_text(),
+                                    ]),
+                                    Recent_Activity(),
+                                    Row(children: [
+                                      Find_text(),
+                                    ]),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      physics:
+                                          const RangeMaintainingScrollPhysics(),
+                                      child: StreamBuilder(
+                                        stream: FirebaseFirestore.instance
+                                            .collection('book')
+                                            .snapshots(),
+                                        builder: (context, snapshot) {
+                                          if (!snapshot.hasData)
+                                            return CircularProgressIndicator();
+                                          var images = snapshot.data!.docs;
+                                          return GridView.builder(
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2),
+                                            itemCount: images.length,
+                                            itemBuilder: (context, index) {
+                                              var image = images[index];
+                                              return GestureDetector(
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailPage(
+                                                            imageId: image.id),
+                                                  ),
+                                                ),
+                                                child: Image.network(
+                                                    images[index]['condition']['picture']),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Row(children: [
+                                      Realtime_text(),
+                                    ]),
+                                    Realtime_Activity(),
+                                    Container(
+                                        width: 600,
+                                        child: Divider(
+                                            color: Colors.black26,
+                                            thickness: 2.0))
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ]),
+                ),
+              );
+            }),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (int wants) {
             switch (wants) {
@@ -79,6 +222,7 @@ class _MainPageState extends State<MainPage> {
                                 title: inputText ?? '',
                                 author: '',
                                 publishing: ''))));
+                break;
               case 2:
                 Navigator.push(
                   context,
@@ -108,8 +252,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 label: '채팅'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: '정보'),
+                icon: Icon(Icons.account_circle), label: '정보'),
           ],
           type: BottomNavigationBarType.fixed,
         ),
@@ -149,32 +292,6 @@ class _MainPageState extends State<MainPage> {
         fontSize: 15, // 폰트 크기
         fontWeight: FontWeight.bold, // 폰트 두께
         color: Colors.black, // 폰트 색상
-      ),
-    );
-  }
-
-  Widget Find_Activity() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const RangeMaintainingScrollPhysics(),
-      child: Row(
-        children: [
-          Container(
-              child: Image.asset('image/pknu_5.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_6.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-        ],
       ),
     );
   }

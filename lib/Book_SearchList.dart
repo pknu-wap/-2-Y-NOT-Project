@@ -30,6 +30,8 @@ class BookInfo {
   });
 }
 
+void printlist(List<String>? parameter) {}
+
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
@@ -121,9 +123,7 @@ class BookList extends StatelessWidget {
                     } else {
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        // 이 부분 추가
                         shrinkWrap: true,
-                        // 이 부분 추가
                         padding: const EdgeInsets.all(8),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
@@ -175,15 +175,26 @@ class BookList extends StatelessWidget {
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Row(
-
-                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
-                                Container(width: 600,
-                                    child: Divider(color: Colors.black26, thickness: 2.0))
+                                Container(
+                                    width: 600,
+                                    child: Divider(
+                                        color: Colors.black26, thickness: 2.0)),
+                                if (snapshot.data![index].condition?.tags != null)
+                                  Wrap(
+                                    spacing: 8.0,
+                                    runSpacing: 4.0,
+                                    children: snapshot
+                                        .data![index].condition!.tags!
+                                        .map((tag) {
+                                      return Chip(
+                                        label: Text(tag),
+                                      );
+                                    }).toList(),
+                                  )
                               ],
                             ),
                           );
