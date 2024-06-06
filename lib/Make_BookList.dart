@@ -1,4 +1,4 @@
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +18,7 @@ class _MakeBookListState extends State<MakeBookList> {
   final _controller = TextEditingController();
   final _auth = FirebaseAuth.instance;
   User? loggedInUser;
-  String? _Bookname; //책이름
+  String? _BookTitle; //책이름
   String? _Bookauthor; //저자
   String? _Publisher; //출판사
   String? _Subject; //과목명
@@ -28,7 +28,6 @@ class _MakeBookListState extends State<MakeBookList> {
   String? _Price; //가격
   String? _Detail; //자세한 설명
   String? _MeetingPlace; //거래희망장소
-  String? _Tag; //해시태그맵
   String? _Tag1; //해시태그1
   String? _Tag2; //해시태그2
   String? _Tag3; //해시태그3
@@ -81,8 +80,8 @@ class _MakeBookListState extends State<MakeBookList> {
     if (_controller.text.isNotEmpty) {
       DivideTag();
       FirebaseFirestore.instance.collection('book').add({
-        'Bookname': _Bookname,
-        'Bookauther': _Bookauthor,
+        'BookTitle': _BookTitle,
+        'Author': _Bookauthor,
         'Publisher': _Publisher,
         'Subject': _Subject,
         'Quality': _Quality,
@@ -111,7 +110,7 @@ class _MakeBookListState extends State<MakeBookList> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Get.to(MainPage());
+              Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -219,7 +218,7 @@ class _MakeBookListState extends State<MakeBookList> {
       child: TextFormField(
         controller: _controller,
         onChanged: (value) {
-          setState(() => _Bookname = value);
+          setState(() => _BookTitle = value);
           //print('Input Text = $inputText');
         },
       ),

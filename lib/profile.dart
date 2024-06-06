@@ -3,7 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Import the dart:io library for File class
 import 'package:flutter_01/successPage.dart';
 import 'package:flutter_01/MyPage.dart';
-import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+import 'BookInfo.dart';
+import 'package:flutter_01/Book_SearchList.dart';
 
 void main() => runApp(MyApp());
 
@@ -242,15 +243,12 @@ class _ProfilePageState extends State<ProfilePage> {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => BookSearch.BookList(
-                    Searchresult: BookSearch.BookInfo(
-                      subject: '',
-                      author: '',
-                      publishing: '',
-                    ),
-                  ),
-                ),
+                  MaterialPageRoute(
+                      builder: (context) => BookList(
+                          Searchresult: BookInfo(
+                              title:'',
+                              author: '',
+                              publishing: '')))
               );
               break;
             case 2:

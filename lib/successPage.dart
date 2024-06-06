@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/Make_BookList.dart';
 import 'package:flutter_01/Save_space.dart';
 import 'package:flutter_01/Alarm_space.dart';
 import 'package:get/get.dart';
 import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:flutter_01/Book_SearchList.dart';
-import 'Book_db.dart';
+import 'DetailPage.dart';
+import 'BookInfo.dart';
 import 'MyPage.dart';
 
 class MainPage extends StatefulWidget {
@@ -25,43 +28,45 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => GetBookDataTest()),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MakeBookList()),
+            );
           },
           child: Icon(
             Icons.add,
             size: 30,
           ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           foregroundColor: Colors.white,
           backgroundColor: Colors.orangeAccent,
         ),
-        body: Container(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Row(children: [
-                const SizedBox(width: 300),
-                SaveCon(),
-                const SizedBox(width: 1),
-                AlarmCon(),
-                const SizedBox(height: 20),
-              ]),
-              SearchB(),
-              const SizedBox(height: 10),
-              Row(children: [
-                Recent_text(),
-              ]),
-              Recent_Activity(),
-              Row(children: [
-                Find_text(),
-              ]),
-              Find_Activity(),
-              Row(children: [
-                Realtime_text(),
-              ]),
-              Realtime_Activity(),
+          child: Column(children: [
+            Row(children: [
+              const SizedBox(width: 230),
+              SaveCon(),
+              const SizedBox(width: 1),
+              AlarmCon(),
+              const SizedBox(height: 20),
             ]),
-          ),
+            SearchB(),
+            const SizedBox(height: 10),
+            Row(children: [
+              Recent_text(),
+            ]),
+            Recent_Activity(),
+            Row(children: [
+              Find_text(),
+            ]),
+            Find_Activity(),
+            Row(children: [
+              Realtime_text(),
+            ]),
+            Realtime_Activity(),
+          ]),
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (int wants) {
@@ -76,7 +81,7 @@ class _MainPageState extends State<MainPage> {
                     MaterialPageRoute(
                         builder: (context) => BookList(
                             Searchresult: BookInfo(
-                                subject: inputText ?? '',
+                                title: inputText ?? '',
                                 author: '',
                                 publishing: ''))));
               case 2:
@@ -108,8 +113,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 label: '채팅'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: '정보'),
+                icon: Icon(Icons.account_circle), label: '정보'),
           ],
           type: BottomNavigationBarType.fixed,
         ),
@@ -154,83 +158,109 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget Find_Activity() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const RangeMaintainingScrollPhysics(),
-      child: Row(
-        children: [
-          Container(
-              child: Image.asset('image/pknu_5.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_6.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-        ],
-      ),
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('book').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+        var images = snapshot.data!.docs;
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(4, (index) {
+              var image = images[index];
+              var imageUrl = image['Image'];
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(imageUrl: imageUrl),
+                  ),
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
+                  child: Image.network(
+                    imageUrl,
+                    width: 150, // 이미지의 너비를 설정합니다.
+                    height: 200, // 이미지의 높이를 설정합니다.
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
     );
   }
 
   Widget Recent_Activity() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          Container(
-              child: Image.asset('image/pknu_0.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_1.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_2.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_3.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child: Image.asset('image/pknu_4.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-        ],
-      ),
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('book').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+        var images = snapshot.data!.docs;
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(4, (index) {
+              var image = images[index];
+              var imageUrl = image['Image'];
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(imageUrl: imageUrl),
+                  ),
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
+                  child: Image.network(
+                    imageUrl,
+                    width: 150, // 이미지의 너비를 설정합니다.
+                    height: 200, // 이미지의 높이를 설정합니다.
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
     );
   }
 
+
+
   Widget Realtime_Activity() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          Container(
-              child:
-              Image.asset('image/picture_1.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child:
-              Image.asset('image/picture_2.png', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child:
-              Image.asset('image/picture_3.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child:
-              Image.asset('image/picture_4.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-          Container(
-              child:
-              Image.asset('image/picture_5.jpeg', height: 150, width: 150),
-              padding: EdgeInsets.all(10)),
-        ],
-      ),
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('book').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+        var images = snapshot.data!.docs;
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(4, (index) {
+              var image = images[index];
+              var imageUrl = image['Image'];
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(imageUrl: imageUrl),
+                  ),
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(8.0), // 여백을 추가하여 이미지 간격 조정
+                  child: Image.network(
+                    imageUrl,
+                    width: 150, // 이미지의 너비를 설정합니다.
+                    height: 200, // 이미지의 높이를 설정합니다.
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
     );
   }
 
@@ -264,7 +294,7 @@ class _MainPageState extends State<MainPage> {
 
   void searchList(String query) {
     final results = searchResults
-        .where((product) => product.subject.contains(query))
+        .where((product) => product.title.contains(query))
         .toList();
     setState(() {
       searchResults = results;
@@ -287,7 +317,7 @@ class _MainPageState extends State<MainPage> {
               MaterialPageRoute(
                 builder: (context) => BookList(
                     Searchresult: BookInfo(
-                        subject: inputText ?? '', author: '', publishing: '')),
+                        title: inputText ?? '', author: '', publishing: '')),
               ),
             );
           }),
