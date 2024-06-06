@@ -41,13 +41,16 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   final List<String> _dummyText = [''];
-
   int _currentPage = 0;
-
-  final PageController _pageController = PageController();
-
-  // 상태 변수 정의
+  late final PageController _pageController;
   List<bool> isSelected = [false, false, false];
+  List<bool> Written = [false, false];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,38 +95,38 @@ class _DetailPageState extends State<DetailPage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const Divider(
-              height: 1,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              height: 250.0,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _dummyText.length,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      'https://via.placeholder.com/350',
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              const Divider(
+                height: 1,
+                color: Colors.grey,
               ),
-            ),
-            const SizedBox(height: 16),
-            _buildPageIndicator(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+              SizedBox(
+                height: 250.0,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _dummyText.length,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      _currentPage = page;
+                    });
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        'https://via.placeholder.com/350',
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildPageIndicator(),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -191,14 +194,18 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   const SizedBox(height: 8),
                   const Divider(
-                    color: Colors.grey, // 회색 경계선 여기에 상중하 옵션 넣기
+                    color: Colors.grey,
                     thickness: 1,
-                  ), // 상태 변경을 위한 위젯 추가
+                  ),
+                  BookVersionSelector(),
+                  const SizedBox(height: 8),
+                  Handwritten(),
+                  const SizedBox(height: 16),
                   BookCondition(),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -236,15 +243,13 @@ class _DetailPageState extends State<DetailPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(_dummyText.length, (index) {
       return Container(
-          width: 8.0,
-          height: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle,
-    color: _currentPage == index
-    ? const Color(0xFFFE4D02)
-        : Colors.grey,
-    )
+          width : 8.0,
+        height: 8.0,
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
+        ),
       );
         }),
     );
@@ -270,29 +275,29 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  // BookCondition 함수 추가
-  Widget BookCondition() {
+  Widget Handwritten() {
     const List<Widget> uml = <Widget>[
-      Text('상'),
-      Text('중'),
-      Text('하'),
+      Text('있음'),
+      Text('없음'),
     ];
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('책 상태',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(width: 50),
+          Text(
+            '필기 여부',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
-                for (int i = 0; i < isSelected.length; i++) {
+                for (int i = 0; i < Written.length; i++) {
                   if (i == index) {
-                    isSelected[i] = !isSelected[i];
+                    Written[i] = !Written[i];
                   } else {
-                    isSelected[i] = false;
+                    Written[i] = false;
                   }
                 }
               });
@@ -306,9 +311,146 @@ class _DetailPageState extends State<DetailPage> {
               minHeight: 40.0,
               minWidth: 80.0,
             ),
-            isSelected: isSelected,
+            isSelected: Written,
             children: uml,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class BookVersionSelector extends StatefulWidget {
+  const BookVersionSelector({Key? key}) : super(key: key);
+
+  @override
+  _BookVersionSelectorState createState() => _BookVersionSelectorState();
+}
+
+class _BookVersionSelectorState extends State<BookVersionSelector> {
+  List<bool> selectedVersion = [false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    const List<Widget> versions = [
+      Text('구판'),
+      Text('신판'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '구판/신판',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 30),
+          ToggleButtons(
+            onPressed: (int index) {
+              setState(() {
+                for (int i = 0; i < selectedVersion.length; i++) {
+                  selectedVersion[i] = i == index;
+                }
+              });
+            },
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            selectedBorderColor: Colors.red[700],
+            selectedColor: Colors.white,
+            fillColor: Colors.red[200],
+            color: Colors.red[400],
+            constraints: const BoxConstraints(
+              minHeight: 40.0,
+              minWidth: 80.0,
+            ),
+            isSelected: selectedVersion,
+            children: versions,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BookCondition extends StatefulWidget {
+  const BookCondition({Key? key}) : super(key: key);
+
+  @override
+  _BookConditionState createState() => _BookConditionState();
+}
+
+class _BookConditionState extends State<BookCondition> {
+  List<bool> selectedCondition = [false, false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    const List<Widget> conditions = [
+      Text('상'),
+      Text('중'),
+      Text('하'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '책 상태',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 50),
+              ToggleButtons(
+                onPressed: (int index) {
+                  setState(() {
+                    for (int i = 0; i < selectedCondition.length; i++) {
+                      selectedCondition[i] = i == index;
+                    }
+                  });
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                selectedBorderColor: Colors.red[700],
+                selectedColor: Colors.white,
+                fillColor: Colors.red[200],
+                color: Colors.red[400],
+                constraints: const BoxConstraints(
+                  minHeight: 40.0,
+                  minWidth: 80.0,
+                ),
+                isSelected: selectedCondition,
+                children: conditions,
+              ),
+            ],
+          ),
+          SizedBox(height: 8), // Add SizedBox here
+          Container(
+            height: 1,
+            color: Colors.grey,
+          ),
+          SizedBox(height: 8), // Add SizedBox here
+          Text(
+            '판매자의 말',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8), // Add SizedBox here
+          Text(
+            '이 책은 2023년도에 구입하여 사용한 책입니다. '
+                '약간의 사용감이 있으나 대체로 상태는 양호합니다.',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 8), // Add SizedBox here
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          BookCondition(), // Add BookCondition widget
         ],
       ),
     );
