@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/MyPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class BookInfo {
   final String title;
@@ -21,8 +20,12 @@ class BookList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Book List'),
       ),
-      body: Center(
-        child: Text('Displaying books based on search result'),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 위젯 추가 가능
+          ],
+        ),
       ),
     );
   }
@@ -34,8 +37,33 @@ class WishListForm extends StatefulWidget {
 }
 
 class _WishListFormState extends State<WishListForm> {
-  final TextEditingController _itemController = TextEditingController();
-  List<WishItem> _wishList = [];
+  TextEditingController _itemController = TextEditingController();
+  List<BookInfo> _bookmarkedBooks = []; // 북마크된 책 목록
+
+  // 위시리스트에 북마크된 책을 추가하는 메서드
+  void addToWishList(List<BookInfo> books) {
+    setState(() {
+      _bookmarkedBooks.addAll(books); // 북마크된 책 목록에 추가
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBookmarkedBooks(); // 위시리스트 초기화 시 북마크된 데이터 로드
+  }
+
+  Future<void> _loadBookmarkedBooks() async {
+    try {
+      // Firebase 초기화 코드
+      // QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('bookmark').get();
+      // setState(() {
+      //   _bookmarkedBooks = snapshot.docs.map((doc) => BookInfo.fromMap(doc.data())).toList();
+      // });
+    } catch (error) {
+      print("Error loading bookmarked books: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,29 +116,16 @@ class _WishListFormState extends State<WishListForm> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: _wishList.where((item) => item.isBookmarked).length,
+                itemCount: _bookmarkedBooks.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final bookmarkedItems = _wishList.where((item) => item.isBookmarked).toList();
+                  final bookmarkedBook = _bookmarkedBooks[index];
                   return ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                    title: Center(
-                      child: Text(
-                        bookmarkedItems[index].name,
-                        style: TextStyle(color: Colors.black87),
-                      ),
-                    ),
+                    title: Text(bookmarkedBook.title),
+                    subtitle: Text('${bookmarkedBook.author}, ${bookmarkedBook.publishing}'),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _removeItemFromList(bookmarkedItems[index]);
-                      },
-                    ),
-                    leading: IconButton(
-                      icon: Icon(bookmarkedItems[index].isBookmarked
-                          ? Icons.bookmark
-                          : Icons.bookmark_border),
-                      onPressed: () {
-                        _toggleBookmark(bookmarkedItems[index]);
+                      onPressed: () async {
+                        await _removeBookmarkedBook(bookmarkedBook);
                       },
                     ),
                   );
@@ -125,7 +140,6 @@ class _WishListFormState extends State<WishListForm> {
           switch (index) {
             case 0:
               Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-              // Navigate to main page
               break;
             case 1:
               Navigator.push(
@@ -146,7 +160,6 @@ class _WishListFormState extends State<WishListForm> {
               break;
             case 3:
               Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage()));
-              // Navigate to MyPage
               break;
           }
         },
@@ -161,51 +174,110 @@ class _WishListFormState extends State<WishListForm> {
     );
   }
 
-  void _addItemToList() {
-    setState(() {
-      String newItem = _itemController.text.trim();
-      if (newItem.isNotEmpty) {
-        _wishList.add(WishItem(name: newItem));
-        _itemController.clear();
-      }
-    });
-  }
-
-  void _removeItemFromList(WishItem item) {
-    setState(() {
-      _wishList.remove(item);
-    });
-  }
-
-  void _toggleBookmark(WishItem item) {
-    setState(() {
-      item.isBookmarked = !item.isBookmarked;
-    });
-  }
-
-  @override
-  void dispose() {
-    _itemController.dispose();
-    super.dispose();
+  Future<void> _removeBookmarkedBook(BookInfo book) async {
+    try {
+      // Firebase 삭제 코드
+      // await FirebaseFirestore.instance.collection('bookmark').doc(book.id).delete();
+      setState(() {
+        _bookmarkedBooks.remove(book);
+      });
+      // 삭제 완료 메시지 등 추가할 수 있음
+    } catch (error) {
+      print("Error removing bookmarked book: $error");
+      // 오류 메시지 표시 등의 처리 추가 가능
+    }
   }
 }
 
-class WishItem {
-  String name;
-  bool isBookmarked;
-
-  WishItem({required this.name, this.isBookmarked = false});
-}
-
-class ChatScreen extends StatelessWidget {
+// 임시 페이지 클래스 정의
+class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Screen'),
+        title: Text('Notifications'),
       ),
       body: Center(
-        child: Text('Chat with others here'),
+        child: Text('Notifications Page'),
+      ),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Main Page'),
+      ),
+      body: Center(
+        child: Text('Main Page'),
+      ),
+    );
+  }
+}
+
+class ChatPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Page'),
+      ),
+      body: Center(
+        child: Text('Chat Page'),
+      ),
+    );
+  }
+}
+
+class MyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Page'),
+      ),
+      body: Center(
+        child: Text('My Page'),
+      ),
+    );
+  }
+}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // 위시리스트 폼의 상태 인스턴스 생성
+  _WishListFormState wishListFormState = _WishListFormState();
+
+  // 북마크된 책 정보를 가져옵니다.
+  List<BookInfo> bookmarkedBooks = await getBookmarkedBooks();
+
+  // 위시리스트에 북마크된 책을 추가합니다.
+  wishListFormState.addToWishList(bookmarkedBooks);
+
+  runApp(MyApp());
+}
+
+Future<List<BookInfo>> getBookmarkedBooks() async {
+  // 북마크된 책 정보를 가져오는 비동기 로직을 구현합니다.
+  // 이 예시에서는 임시적으로 빈 리스트를 반환합니다.
+  return [];
+}
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My App',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('My App'),
+        ),
+        body: Center(
+          child: Text('Welcome to my app!'),
+        ),
       ),
     );
   }
