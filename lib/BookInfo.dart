@@ -5,6 +5,8 @@ class PlusCondition {
   final String? subject;
   final String? postname;
   final String? detail;
+  final String? quality;
+  final bool? takenote;
   List<String>? tags;
 
   PlusCondition({
@@ -13,7 +15,9 @@ class PlusCondition {
     this.time,
     this.subject,
     this.postname,
+    this.quality,
     this.detail,
+    this.takenote,
     this.tags,
   });
 }
