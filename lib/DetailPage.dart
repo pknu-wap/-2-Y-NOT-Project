@@ -51,10 +51,14 @@ class _DetailPageState extends State<DetailPage> {
   final List<String> _dummyText = [''];
   int _currentPage = 0;
   late final PageController _pageController;
+  List<Widget> uml = <Widget>[
+    Text('있음'),
+    Text('없음'),
+  ];
   List<bool> isSelected = [false, false, false];
-  List<bool> Written = [true, false];
+  List<bool> Written = [false, false];
   bool isBookmarked = false;
-  List<bool> selectedCondition = [true, false, false];
+  List<bool> selectedCondition = [false, false, false];
 
   List<Widget> conditions = [
     Text('상'),
@@ -79,8 +83,10 @@ class _DetailPageState extends State<DetailPage> {
             postname,
             picture,
             price,
+            quality,
             detail,
             subject;
+        bool? takenote;
         Timestamp? time;
         List<String> tags = [];
 
@@ -99,6 +105,10 @@ class _DetailPageState extends State<DetailPage> {
             subject = value;
           } else if (key == "timestamp") {
             time = value;
+          } else if (key == "Quality") {
+            quality = value;
+          } else if (key == "TakeNote") {
+            takenote = value;
           } else if (key == "Detail") {
             detail = value;
           } else if (key == "Postname") {
@@ -124,6 +134,8 @@ class _DetailPageState extends State<DetailPage> {
             subject: subject,
             postname: postname,
             detail: detail,
+            quality: quality,
+            takenote: takenote,
             time: time?.toDate().toString(),
             tags: tags,
           ),
@@ -173,7 +185,8 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 child: Icon(
-                  isBookmarked ? Icons.bookmark : Icons.bookmark_border, // 북마크 상태에 따라 아이콘 변경
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                  // 북마크 상태에 따라 아이콘 변경
                   color: const Color(0xFFFE4D02), // 아이콘 색상 설정
                   size: 24,
                 ),
@@ -233,6 +246,20 @@ class _DetailPageState extends State<DetailPage> {
                     padding: const EdgeInsets.all(8),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
+                      List<bool> selectedToggleBtns = [
+                        snapshot.data![index].condition!.takenote!,
+                        !snapshot.data![index].condition!.takenote!
+                      ];
+                      List<bool> selectedQuality=[false, false, false];
+                      switch(snapshot.data![index].condition!.quality){
+                        case "상": selectedQuality[0] = true;
+                        break;
+                        case "중": selectedQuality[1] = true;
+                        break;
+                        case "하": selectedQuality[2] = true;
+                        break;
+                      }
+
                       return SingleChildScrollView(
                         child: Column(
                           children: [
@@ -309,8 +336,7 @@ class _DetailPageState extends State<DetailPage> {
                                       width: 200,
                                     ),
                                     Text(
-                                      snapshot.data![index].condition!.price! +
-                                          "원",
+                                      "${snapshot.data![index].condition!.price!}원",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -320,7 +346,8 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 const SizedBox(height: 16),
                                 Row(
-                                  children: snapshot.data![index].condition!.tags!
+                                  children: snapshot
+                                      .data![index].condition!.tags!
                                       .take(5)
                                       .map((tag) {
                                     return Container(
@@ -337,7 +364,8 @@ class _DetailPageState extends State<DetailPage> {
                                         shape: const StadiumBorder(
                                           side: BorderSide(
                                             color: Color(0xFFFE4D02),
-                                            width: 1.0, // Adjust this value for thickness
+                                            width:
+                                                1.0, // Adjust this value for thickness
                                           ),
                                         ),
                                       ),
@@ -349,15 +377,42 @@ class _DetailPageState extends State<DetailPage> {
                                   color: Colors.grey,
                                   thickness: 1,
                                 ),
-                                BookVersionSelector(),
-                                const SizedBox(height: 8),
-                                Handwritten(),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      '필기 여부',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 30),
+                                    ToggleButtons(
+                                      onPressed: (int index) {
+                                        setState(() {});
+                                      },
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8)),
+                                      selectedBorderColor: Colors.red[700],
+                                      selectedColor: Colors.white,
+                                      fillColor: Colors.red[200],
+                                      color: Colors.red[400],
+                                      constraints: const BoxConstraints(
+                                        minHeight: 40.0,
+                                        minWidth: 80.0,
+                                      ),
+                                      isSelected: selectedToggleBtns,
+                                      children: uml,
+                                    ),
+                                  ],
+                                ),
                                 const SizedBox(height: 16),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           '책 상태',
@@ -368,13 +423,7 @@ class _DetailPageState extends State<DetailPage> {
                                         SizedBox(width: 50),
                                         ToggleButtons(
                                           onPressed: (int index) {
-                                            setState(() {
-                                              for (int i = 0;
-                                              i < selectedCondition.length;
-                                              i++) {
-                                                selectedCondition[i] = i == index;
-                                              }
-                                            });
+                                            setState(() {});
                                           },
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(8)),
@@ -386,7 +435,7 @@ class _DetailPageState extends State<DetailPage> {
                                             minHeight: 40.0,
                                             minWidth: 80.0,
                                           ),
-                                          isSelected: selectedCondition,
+                                          isSelected: selectedQuality,
                                           children: conditions,
                                         ),
                                       ],
@@ -427,7 +476,7 @@ class _DetailPageState extends State<DetailPage> {
                                             },
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
-                                                Color(0xFFFE8653),
+                                                    Color(0xFFFE8653),
                                                 textStyle: const TextStyle(
                                                     color: Colors.white),
                                                 padding: EdgeInsets.only(
@@ -463,109 +512,15 @@ class _DetailPageState extends State<DetailPage> {
           margin: const EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
+            color:
+                _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
           ),
         );
       }),
     );
   }
-
-  Widget Handwritten() {
-    const List<Widget> uml = <Widget>[
-      Text('있음'),
-      Text('없음'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            '필기 여부',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(width: 30),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < Written.length; i++) {
-                  if (i == index) {
-                    Written[i] = !Written[i];
-                  } else {
-                    Written[i] = false;
-                  }
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: Written,
-            children: uml,
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-class BookVersionSelector extends StatefulWidget {
-  const BookVersionSelector({Key? key}) : super(key: key);
-
-  @override
-  _BookVersionSelectorState createState() => _BookVersionSelectorState();
-}
-
-class _BookVersionSelectorState extends State<BookVersionSelector> {
-  List<bool> selectedVersion = [true, false];
-
-  @override
-  Widget build(BuildContext context) {
-    const List<Widget> versions = [
-      Text('구판'),
-      Text('신판'),
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            '구판/신판',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(width: 30),
-          ToggleButtons(
-            onPressed: (int index) {
-              setState(() {
-                for (int i = 0; i < selectedVersion.length; i++) {
-                  selectedVersion[i] = i == index;
-                }
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: Colors.red[700],
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: selectedVersion,
-            children: versions,
-          ),
-        ],
-      ),
-    );
-  }
-}
 void addBookmarkedBook(BookInfo book) async {
   try {
     // Firestore에 북마크된 책 정보를 저장합니다.
@@ -579,12 +534,14 @@ void addBookmarkedBook(BookInfo book) async {
     print('Error adding bookmarked book: $error');
   }
 }
+
 Future<List<BookInfo>> getBookmarkedBooks() async {
   List<BookInfo> bookmarkedBooks = [];
 
   try {
     // Firestore에서 북마크된 책 정보를 가져옵니다.
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('bookmarks').get();
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('bookmarks').get();
 
     // 가져온 데이터를 BookInfo 객체로 변환하여 리스트에 추가합니다.
     snapshot.docs.forEach((doc) {
