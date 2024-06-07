@@ -618,10 +618,10 @@ class _MakeBookListState extends State<MakeBookList> {
               context, MaterialPageRoute(builder: (context) => MainPage()));
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orangeAccent,
+            backgroundColor: Color(0xFFFE8653),
             textStyle: const TextStyle(color: Colors.white),
             padding: EdgeInsets.only(left: 100, right: 100)),
-        child: const Text('등록완료'));
+        child: const Text('등록완료',style: TextStyle(color: Colors.white)));
   }
 }
 /*Widget ShowPicture() {

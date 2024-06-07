@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_01/successPage.dart';
+import 'About Chat/ChatList.dart';
 import 'BookInfo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,14 @@ class DetailPage extends StatelessWidget {
       List<BookInfo> bookTitles = [];
       for (var doc in snapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
-        String? bookTitle, author, publisher, postname, picture, price, detail, subject;
+        String? bookTitle,
+            author,
+            publisher,
+            postname,
+            picture,
+            price,
+            detail,
+            subject;
         Timestamp? time;
         List<String> tags = [];
 
@@ -81,13 +89,13 @@ class DetailPage extends StatelessWidget {
             picture = value;
           } else if (key == "Price") {
             price = value;
-          } else if(key == "Subject"){
+          } else if (key == "Subject") {
             subject = value;
           } else if (key == "timestamp") {
             time = value;
           } else if (key == "Detail") {
             detail = value;
-          }else if (key == "Postname") {
+          } else if (key == "Postname") {
             postname = value;
           } else if (key == "Tag") {
             if (value is String) {
@@ -107,7 +115,7 @@ class DetailPage extends StatelessWidget {
           condition: PlusCondition(
             price: price,
             picture: picture,
-            subject:subject,
+            subject: subject,
             postname: postname,
             detail: detail,
             time: time?.toDate().toString(),
@@ -239,10 +247,11 @@ class DetailPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                snapshot.data![index].condition?.subject ?? 'No subject available',
+                                snapshot.data![index].condition?.subject ??
+                                    'No subject available',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -250,16 +259,31 @@ class DetailPage extends StatelessWidget {
                                 snapshot.data![index].author,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              Text(
-                                snapshot.data![index].publishing,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    snapshot.data![index].publishing,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 200,
+                                  ),
+                                  Text(
+                                    snapshot.data![index].condition!.price! +
+                                        "원",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 16),
                               Row(
@@ -267,7 +291,8 @@ class DetailPage extends StatelessWidget {
                                     .take(5)
                                     .map((tag) {
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
                                     child: Chip(
                                       label: Text(
                                         '#$tag',
@@ -279,7 +304,8 @@ class DetailPage extends StatelessWidget {
                                       shape: const StadiumBorder(
                                         side: BorderSide(
                                           color: Color(0xFFFE4D02),
-                                          width: 1.0, // Adjust this value for thickness
+                                          width:
+                                              1.0, // Adjust this value for thickness
                                         ),
                                       ),
                                     ),
@@ -299,22 +325,28 @@ class DetailPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         '책 상태',
-                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(width: 50),
                                       ToggleButtons(
                                         onPressed: (int index) {
                                           setState(() {
-                                            for (int i = 0; i < selectedCondition.length; i++) {
+                                            for (int i = 0;
+                                                i < selectedCondition.length;
+                                                i++) {
                                               selectedCondition[i] = i == index;
                                             }
                                           });
                                         },
-                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
                                         selectedBorderColor: Colors.red[700],
                                         selectedColor: Colors.white,
                                         fillColor: Colors.red[200],
@@ -353,6 +385,21 @@ class DetailPage extends StatelessWidget {
                                     color: Colors.grey,
                                     thickness: 1,
                                   ),
+                                  Center(child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChatListScreen()));
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFFFE8653),
+                                          textStyle: const TextStyle(
+                                              color: Colors.white),
+                                          padding: EdgeInsets.only(
+                                              left: 100, right: 100)),
+                                      child: const Text('채팅하기',style: TextStyle(color: Colors.white))))
                                 ],
                               ),
                             ],

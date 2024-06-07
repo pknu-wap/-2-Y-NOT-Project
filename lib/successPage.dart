@@ -281,7 +281,15 @@ class _MainPageState extends State<MainPage> {
       },
     );
   }
+  Color blendWithWhite(Color color, double factor) {
+    assert(factor >= 0.0 && factor <= 1.0);
 
+    int red = (color.red + (255 - color.red) * factor).toInt();
+    int green = (color.green + (255 - color.green) * factor).toInt();
+    int blue = (color.blue + (255 - color.blue) * factor).toInt();
+
+    return Color.fromARGB(color.alpha, red, green, blue);
+  }
   Widget SaveCon() {
     return IconButton(
         onPressed: () {
@@ -340,7 +348,7 @@ class _MainPageState extends State<MainPage> {
             );
           }),
       hintText: "검색어를 입력하세요",
-      backgroundColor: const MaterialStatePropertyAll(Colors.white70),
+      backgroundColor: MaterialStateProperty.all(blendWithWhite(Color(0xFFFE4D02), 0.7)),
     );
   }
 }
