@@ -98,7 +98,7 @@ class BookList extends StatelessWidget {
                     AlarmCon(context: context),  // 알람 버튼
                   ],
                 ),
-                SearchB(),  // 검색 바
+                SearchB(),
                 FutureBuilder<List<BookInfo>>(
                   future: searchBooks(Searchresult.title),  // FutureBuilder를 사용하여 비동기적으로 책 목록 검색
                   builder: (context, snapshot) {
