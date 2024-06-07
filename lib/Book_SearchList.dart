@@ -7,7 +7,6 @@ import 'BookInfo.dart';
 
 void printlist(List<String>? parameter) {}
 
-
 class BookList extends StatelessWidget {
   final BookInfo Searchresult;
 
@@ -91,6 +90,7 @@ class BookList extends StatelessWidget {
                   ],
                 ),
                 SearchB(),
+
                 FutureBuilder<List<BookInfo>>(
                   future: searchBooks(Searchresult.title),
                   builder: (context, snapshot) {

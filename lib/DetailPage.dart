@@ -44,6 +44,7 @@ class DetailPage extends StatelessWidget {
   late final PageController _pageController;
   List<bool> isSelected = [false, false, false];
   List<bool> Written = [false, false];
+  bool isBookmarked = false;
 
   DetailPage({required this.imageUrl});
 
@@ -58,7 +59,8 @@ class DetailPage extends StatelessWidget {
       List<BookInfo> bookTitles = [];
       for (var doc in snapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
-        String? bookTitle, author, publisher, picture, price;
+        String? bookTitle, author, publisher, postname, picture, price, subject;
+        Timestamp? time;
         List<String> tags = [];
 
         data.forEach((key, value) {
@@ -72,6 +74,12 @@ class DetailPage extends StatelessWidget {
             picture = value;
           } else if (key == "Price") {
             price = value;
+          } else if(key == "Subject"){
+            subject = value;
+          } else if (key == "timestamp") {
+            time = value;
+          }else if (key == "Postname") {
+            postname = value;
           } else if (key == "Tag") {
             if (value is String) {
               tags.add(value);
@@ -90,6 +98,9 @@ class DetailPage extends StatelessWidget {
           condition: PlusCondition(
             price: price,
             picture: picture,
+            subject:subject,
+            postname: postname,
+            time: time?.toDate().toString(),
             tags: tags,
           ),
         );
@@ -167,72 +178,118 @@ class DetailPage extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Image(
-                                  image: NetworkImage(
-                                    snapshot.data![index].condition!.picture!,
-                                  ),
-                                  width: 150,
-                                  height: 150,
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data![index].title,
-                                      style: const TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      snapshot.data![index].author,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      snapshot.data![index].publishing,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "${snapshot.data![index].condition!.price!}원" ??
-                                          'No Price Available',
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                      return SingleChildScrollView(
+                          child: Column(
+                        children: [
+                          const Divider(
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 250.0,
+                            child: Image.network(
+                              snapshot.data![index].condition!.picture!,
+                              fit: BoxFit.cover,
                             ),
-                            if (snapshot.data![index].condition?.tags != null)
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 4.0,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildPageIndicator(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _dummyText[_currentPage],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                snapshot.data![index].title,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                              Text(
+                                snapshot.data![index].condition!.time!,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.grey),
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                snapshot.data![index].condition!.postname!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                height: 2,
+                                color: const Color(0xFFFE4D02),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                snapshot.data![index].condition?.subject ?? 'No subject available',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                snapshot.data![index].author,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                snapshot.data![index].publishing,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
                                 children: snapshot.data![index].condition!.tags!
+                                    .take(5)
                                     .map((tag) {
-                                  return Chip(
-                                    label: Text(tag),
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                                    child: Chip(
+                                      label: Text(
+                                        '#$tag',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFFFE4D02),
+                                        ),
+                                      ),
+                                      shape: const StadiumBorder(
+                                        side: BorderSide(
+                                          color: Color(0xFFFE4D02),
+                                          width: 1.0, // Adjust this value for thickness
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 }).toList(),
                               ),
-                            Container(
-                                width: 600,
-                                child: Divider(
-                                    color: Colors.black26, thickness: 2.0)),
-                          ],
-                        ),
-                      );
+                              const SizedBox(height: 8),
+                              const Divider(
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              BookVersionSelector(),
+                              const SizedBox(height: 8),
+                              /*Handwritten(),
+                              const SizedBox(height: 16),
+                              BookCondition(),*/
+                            ],
+                          )
+                        ],
+                      ));
                     },
                   );
                 }
@@ -244,23 +301,21 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(
-          color: const Color(0xFFFE4D02),
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color(0xFFFE4D02),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+  Widget _buildPageIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(_dummyText.length, (index) {
+        return Container(
+          width: 8.0,
+          height: 8.0,
+          margin: const EdgeInsets.symmetric(horizontal: 4.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color:
+                _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
+          ),
+        );
+      }),
     );
   }
 
@@ -371,7 +426,7 @@ class BookCondition extends StatefulWidget {
 }
 
 class _BookConditionState extends State<BookCondition> {
-  List<bool> selectedCondition = [false, false, false];
+  List<bool> selectedCondition = [true, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -431,7 +486,7 @@ class _BookConditionState extends State<BookCondition> {
           SizedBox(height: 8), // Add SizedBox here
           Text(
             '이 책은 2023년도에 구입하여 사용한 책입니다. '
-                '약간의 사용감이 있으나 대체로 상태는 양호합니다.',
+            '약간의 사용감이 있으나 대체로 상태는 양호합니다.',
             style: TextStyle(
               fontSize: 16,
             ),
