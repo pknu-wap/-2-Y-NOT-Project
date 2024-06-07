@@ -1,9 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_01/successPage.dart';
+import 'About Chat/ChatList.dart';
+import 'BookInfo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -32,26 +38,100 @@ class AlarmPage extends StatelessWidget {
   }
 }
 
-class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
-
-  @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
+class DetailPage extends StatelessWidget {
+  final String imageUrl;
   final List<String> _dummyText = [''];
   int _currentPage = 0;
   late final PageController _pageController;
   List<bool> isSelected = [false, false, false];
-  List<bool> Written = [false, false];
+  List<bool> Written = [true, false];
   bool isBookmarked = false;
+  List<bool> selectedCondition = [true, false, false];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
+  List<Widget> conditions = [
+    Text('상'),
+    Text('중'),
+    Text('하'),
+  ];
+
+  DetailPage({required this.imageUrl});
+
+  Future<List<BookInfo>> searchBooksByImage(String query) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('book')
+          .where('Image', isEqualTo: query)
+          .where('Image', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      List<BookInfo> bookTitles = [];
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        String? bookTitle,
+            author,
+            publisher,
+            postname,
+            picture,
+            price,
+            detail,
+            subject;
+        Timestamp? time;
+        List<String> tags = [];
+
+        data.forEach((key, value) {
+          if (key == "BookTitle") {
+            bookTitle = value;
+          } else if (key == "Author") {
+            author = value;
+          } else if (key == "Publisher") {
+            publisher = value;
+          } else if (key == "Image") {
+            picture = value;
+          } else if (key == "Price") {
+            price = value;
+          } else if (key == "Subject") {
+            subject = value;
+          } else if (key == "timestamp") {
+            time = value;
+          } else if (key == "Detail") {
+            detail = value;
+          } else if (key == "Postname") {
+            postname = value;
+          } else if (key == "Tag") {
+            if (value is String) {
+              tags.add(value);
+            } else {
+              for (var tag in value.values) {
+                tags.add(tag);
+              }
+            }
+          }
+        });
+
+        BookInfo book = BookInfo(
+          title: bookTitle ?? " ",
+          author: author ?? " ",
+          publishing: publisher ?? " ",
+          condition: PlusCondition(
+            price: price,
+            picture: picture,
+            subject: subject,
+            postname: postname,
+            detail: detail,
+            time: time?.toDate().toString(),
+            tags: tags,
+          ),
+        );
+        bookTitles.add(book);
+      }
+      return bookTitles;
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,41 +140,16 @@ class _DetailPageState extends State<DetailPage> {
         backgroundColor: const Color(0xFFFFFFFF),
         title: const Text(
           '상세 정보',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isBookmarked = !isBookmarked;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.transparent, // 테두리 색상 없음
-                  ),
-                ),
-                child: Icon(
-                  isBookmarked ? Icons.bookmark : Icons.bookmark_border, // 북마크 상태에 따라 아이콘 변경
-                  color: const Color(0xFFFE4D02), // 아이콘 색상 설정
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
-
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: GestureDetector(
@@ -106,7 +161,7 @@ class _DetailPageState extends State<DetailPage> {
               },
               child: Container(
                 padding: const EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
@@ -119,142 +174,244 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 매우 작은 높이로 우선 크기 설정
-          child: const Divider(
-            color: Colors.grey, // 회색 선 색상 설정
-            height: 1.0, // 선의 높이 설정
-          ),
-        ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 250.0,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: _dummyText.length,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _currentPage = page;
-                    });
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        'https://via.placeholder.com/350',
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildPageIndicator(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  Text(
-                    '닉네임',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  Text(
-                    '2024.03.03',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    '선형대수',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    height: 2,
-                    color: const Color(0xFFFE4D02),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    '공학이론',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    '저자',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    '청람',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildTag('#쑤박'),
-                      const SizedBox(width: 4),
-                      _buildTag('#에누리 가능'),
-                      const SizedBox(width: 4),
-                      _buildTag('#부경대 후문'),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
-                  BookVersionSelector(),
-                  const SizedBox(height: 8),
-                  Handwritten(),
-                  const SizedBox(height: 16),
-                  BookCondition(),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.white,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ChatPage()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFE4D02),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        controller: _scrollController,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            FutureBuilder<List<BookInfo>>(
+              future: searchBooksByImage(imageUrl),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('결과 없음');
+                } else {
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return SingleChildScrollView(
+                          child: Column(
+                        children: [
+                          const Divider(
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 250.0,
+                            child: Image.network(
+                              snapshot.data![index].condition!.picture!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildPageIndicator(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _dummyText[_currentPage],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                snapshot.data![index].title,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                              Text(
+                                snapshot.data![index].condition!.time!,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.grey),
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                snapshot.data![index].condition!.postname!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                height: 2,
+                                color: const Color(0xFFFE4D02),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                snapshot.data![index].condition?.subject ??
+                                    'No subject available',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                snapshot.data![index].author,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Text(
+                                    snapshot.data![index].publishing,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 200,
+                                  ),
+                                  Text(
+                                    snapshot.data![index].condition!.price! +
+                                        "원",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: snapshot.data![index].condition!.tags!
+                                    .take(5)
+                                    .map((tag) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    child: Chip(
+                                      label: Text(
+                                        '#$tag',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFFFE4D02),
+                                        ),
+                                      ),
+                                      shape: const StadiumBorder(
+                                        side: BorderSide(
+                                          color: Color(0xFFFE4D02),
+                                          width:
+                                              1.0, // Adjust this value for thickness
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 8),
+                              const Divider(
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              BookVersionSelector(),
+                              const SizedBox(height: 8),
+                              Handwritten(),
+                              const SizedBox(height: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        '책 상태',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 50),
+                                      ToggleButtons(
+                                        onPressed: (int index) {
+                                          setState(() {
+                                            for (int i = 0;
+                                                i < selectedCondition.length;
+                                                i++) {
+                                              selectedCondition[i] = i == index;
+                                            }
+                                          });
+                                        },
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                        selectedBorderColor: Colors.red[700],
+                                        selectedColor: Colors.white,
+                                        fillColor: Colors.red[200],
+                                        color: Colors.red[400],
+                                        constraints: const BoxConstraints(
+                                          minHeight: 40.0,
+                                          minWidth: 80.0,
+                                        ),
+                                        isSelected: selectedCondition,
+                                        children: conditions,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8), // Add SizedBox here
+                                  Container(
+                                    height: 1,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8), // Add SizedBox here
+                                  Text(
+                                    '판매자의 말',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8), // Add SizedBox here
+                                  Text(
+                                    snapshot.data![index].condition!.detail!,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8), // Add SizedBox here
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                  Center(child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChatListScreen()));
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFFFE8653),
+                                          textStyle: const TextStyle(
+                                              color: Colors.white),
+                                          padding: EdgeInsets.only(
+                                              left: 100, right: 100)),
+                                      child: const Text('채팅하기',style: TextStyle(color: Colors.white))))
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ));
+                    },
+                  );
+                }
+              },
             ),
-            minimumSize: const Size(double.infinity, 50),
-          ),
-          child: const SizedBox(
-            width: double.infinity,
-            child: Text(
-              '채팅 하기',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          ],
         ),
       ),
     );
@@ -270,30 +427,11 @@ class _DetailPageState extends State<DetailPage> {
           margin: const EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
+            color:
+                _currentPage == index ? const Color(0xFFFE4D02) : Colors.grey,
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildTag(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(
-          color: const Color(0xFFFE4D02),
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color(0xFFFE4D02),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
     );
   }
 
@@ -307,12 +445,11 @@ class _DetailPageState extends State<DetailPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(width: 12), // 오른쪽으로 이동시킬 너비의 SizedBox 추가
           Text(
             '필기 여부',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: 30),
+          SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -341,6 +478,8 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
+
+  void setState(Null Function() param0) {}
 }
 
 class BookVersionSelector extends StatefulWidget {
@@ -351,7 +490,7 @@ class BookVersionSelector extends StatefulWidget {
 }
 
 class _BookVersionSelectorState extends State<BookVersionSelector> {
-  List<bool> selectedVersion = [false, false];
+  List<bool> selectedVersion = [true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +507,7 @@ class _BookVersionSelectorState extends State<BookVersionSelector> {
             '구판/신판',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: 30),
+          SizedBox(width: 30),
           ToggleButtons(
             onPressed: (int index) {
               setState(() {
@@ -394,82 +533,3 @@ class _BookVersionSelectorState extends State<BookVersionSelector> {
     );
   }
 }
-
-class BookCondition extends StatefulWidget {
-  const BookCondition({Key? key}) : super(key: key);
-
-  @override
-  _BookConditionState createState() => _BookConditionState();
-}
-
-class _BookConditionState extends State<BookCondition> {
-  List<bool> selectedCondition = [false, false, false];
-
-  @override
-  Widget build(BuildContext context) {
-    const List<Widget> conditions = [
-      Text('상'),
-      Text('중'),
-      Text('하'),
-    ];
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-        Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(width: 15), // 오른쪽으로 이동시킬 너비의 SizedBox 추가
-            Text(
-          '책 상태',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 50),
-        ToggleButtons(
-        onPressed: (int index) {
-      setState(() {
-        for (int i = 0; i < selectedCondition.length; i++) {
-          selectedCondition[i] = i == index;
-        }                  });
-        },
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          selectedBorderColor: Colors.red[700],
-          selectedColor: Colors.white,
-          fillColor: Colors.red[200],
-          color: Colors.red[400],
-          constraints: const BoxConstraints(
-            minHeight: 40.0,
-            minWidth: 80.0,
-          ),
-          isSelected: selectedCondition,
-          children: conditions,
-        ),
-          ],
-        ),
-            const SizedBox(height: 16),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '판매자의 말',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '부경대 후문에서 거래 가능합니다~',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-    );
-  }
-}
-

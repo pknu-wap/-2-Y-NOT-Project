@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_01/SignUpPage.dart';
@@ -5,8 +6,8 @@ import 'package:flutter_01/About Chat/ChatList.dart';
 import 'package:get/get.dart';
 import 'loginPage.dart';
 import 'Book_db.dart';
-import 'package:flutter_01/DetailPage.dart';
-import 'package:flutter_01/Make_BookList.dart';
+import 'Book_SearchList.dart' ;
+import 'splash.dart';
 
 
 void main() async {
@@ -14,6 +15,8 @@ void main() async {
   await Firebase.initializeApp(); // Firebase 초기화
   Get.testMode = true;
   runApp(MyApp()); // MyApp 위젯을 실행
+  await FirebaseAppCheck.instance.activate(
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/success': (context) => ChatListScreen(),//BookList(Searchresult: searchresult),
       },
-      home: DetailPage(),
+      home: HomeScreen(),
     );
   }
 }
