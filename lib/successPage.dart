@@ -11,6 +11,12 @@ import 'DetailPage.dart';
 import 'dart:math';
 import 'BookInfo.dart';
 import 'MyPage.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class App{
+  App._();
+  static TextTheme get font => GoogleFonts.gamjaFlowerTextTheme();
+}
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -41,13 +47,13 @@ class _MainPageState extends State<MainPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           foregroundColor: Colors.white,
-          backgroundColor: Colors.orangeAccent,
+          backgroundColor: Color(0xFFFE4D02),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10.0),
           child: Column(children: [
             Row(children: [
-              const SizedBox(width: 230),
+              const SizedBox(width: 250),
               SaveCon(),
               const SizedBox(width: 1),
               AlarmCon(),
@@ -123,52 +129,57 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget Recent_text() {
-    return const Text(
+    return Text(
       'User 활동 내역',
       textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
+      style: GoogleFonts.gamjaFlower(
+        fontSize: 25, // 폰트 크기
         fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
+        color: Colors.black,
       ),
     );
   }
 
   Widget Find_text() {
-    return const Text(
+    return Text(
       '찾고 계시는 책이 있나요?',
       textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
+      style: GoogleFonts.gamjaFlower(
+        fontSize: 25, // 폰트 크기
         fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
+        color: Colors.black,
       ),
     );
   }
 
   Widget Realtime_text() {
-    return const Text(
+    return Text(
       '실시간 최근 올라온 책들',
       textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 15, // 폰트 크기
+      style: GoogleFonts.gamjaFlower(
+        fontSize: 25, // 폰트 크기
         fontWeight: FontWeight.bold, // 폰트 두께
-        color: Colors.black, // 폰트 색상
+        color: Colors.black,
       ),
     );
   }
 
   Widget Find_Activity() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('book').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-        var images = snapshot.data!.docs;
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(4, (index) {
-              var image = images[index];
+        stream: FirebaseFirestore.instance.collection('book').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+
+          var images = snapshot.data!.docs;
+          var random = Random();
+          var selectedImages = images..shuffle(random);
+          selectedImages = selectedImages.take(4).toList();
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+            children: List.generate(selectedImages.length, (index) {
+              var image = selectedImages[index];
               var imageUrl = image['Image'];
               return GestureDetector(
                 onTap: () => Navigator.push(
@@ -187,11 +198,11 @@ class _MainPageState extends State<MainPage> {
                 ),
               );
             }),
-          ),
-        );
-      },
-    );
-  }
+            ),
+            );
+          },
+          );
+        }
 
   Widget Recent_Activity() {
     return StreamBuilder(
@@ -279,7 +290,7 @@ class _MainPageState extends State<MainPage> {
             MaterialPageRoute(builder: (context) => const SaveSpace()),
           );
         },
-        color: Colors.orangeAccent,
+        color: Color(0xFFFE4D02),
         icon: const Icon(Icons.bookmark_outline_outlined));
   }
 
@@ -293,7 +304,7 @@ class _MainPageState extends State<MainPage> {
       },
       icon: const Icon(Icons.notifications_none),
       iconSize: 30,
-      color: Colors.orangeAccent,
+      color: Color(0xFFFE4D02),
     );
   }
 
