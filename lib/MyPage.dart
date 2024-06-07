@@ -1,18 +1,18 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 import 'package:flutter_01/Book_SearchList.dart' as BookSearch;
+import 'package:flutter_01/WishList.dart' hide MainPage, BookInfo, BookList;
+import 'package:flutter_01/profile.dart' hide MainPage, BookList;
 import 'package:flutter_01/successPage.dart';
-import 'package:flutter_01/WishList.dart';
-import 'package:flutter_01/profile.dart';
+import 'dart:io';
+import 'package:flutter_01/BookInfo.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Screen'),
+        title: Text('Chat Screen'), // title 속성 추가
       ),
       body: Center(
         child: Text('This is the chat screen'),
@@ -21,101 +21,117 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
+
 class MyPage extends StatefulWidget {
   final String inputText;
 
   MyPage({Key? key, this.inputText = ''}) : super(key: key);
 
   @override
-  _MyPageState createState() => _MyPageState();
+  _MyPageState createState() => _MyPageState(inputText: inputText);
 }
 
 class _MyPageState extends State<MyPage> {
+  Widget BookList({required BookInfo Searchresult}) {
+    // BookList 메서드의 구현 내용을 여기에 추가합니다.
+    // Searchresult를 사용하여 무언가를 수행합니다.
+    return Container(
+      // 예시: 간단한 컨테이너 반환
+      child: Text('Book List for ${Searchresult.title}'),
+    );
+  }
+
+
+  final String inputText; // 수정: inputText 변수를 클래스 내에서 정의합니다.
+
+  _MyPageState({required this.inputText}); // 수정: 생성자를 통해 inputText를 받습니다.
+
   File? _imageFile; // 선택된 이미지를 저장하는 변수
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-                // Handle back button
-              },
-              child: Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  '마이페이지',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const SizedBox(width: 16),
+                GestureDetector(
+                  child: const Icon(Icons.arrow_back_ios_new, color: Colors.grey, size: 24),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
+                const Expanded(child: SizedBox()),
+                const Text(
+                  '마이 페이지',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                ),
+                const Expanded(child: SizedBox()),
+                GestureDetector(
+                  child: const Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationsPage()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
+            SizedBox(height: 10), // 여기서 아래 여백을 조절할 수 있습니다.
+            PreferredSize(
+              preferredSize: const Size.fromHeight(5.0),
+              child: Container(
+                color: Colors.grey,
+                height: 2.0,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotificationsPage()),
-                );
-              },
-              child: Icon(Icons.notifications_none_outlined, color: Color(0xFFFE4D02), size: 32),
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildProfileSection(context), // 프로필 섹션 추가
+                  _buildCategorySection(context),
+                  _buildPurchaseAndRentalSection(context),
+                ],
+              ),
             ),
           ],
         ),
-
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5.0),
-          child: Container(
-            color: Colors.grey,
-            height: 2.0,
-          ),
-        ),
       ),
-      body: ListView(
-        children: [
-          _buildProfileSection(context), // 프로필 섹션 추가
-          _buildCategorySection(context),
-          _buildPurchaseAndRentalSection(context),
-        ],
-      ),
-      /*bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) {
-          switch (index) {
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int wants) {
+          switch (wants) {
             case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainPage()),
-              );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MainPage()));
               break;
             case 1:
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BookSearch.BookList(
-                    Searchresult: BookSearch.BookInfo(
-                      subject: '',
-                      author: '',
-                      publishing: '',
-                    ),
-                  ),
-                ),
-              );
-              break;
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BookList(
+                          Searchresult: BookInfo(
+                              title: inputText ?? '',
+                              author: '',
+                              publishing: ''))));
             case 2:
-              Get.to(ChatScreen());
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatPage()),
+              );
               break;
             case 3:
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyPage()),
-              );
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
               break;
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
@@ -127,14 +143,15 @@ class _MyPageState extends State<MyPage> {
               ),
               label: '판매'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
+              icon: Icon(
+                Icons.chat,
+              ),
               label: '채팅'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: '정보'),
+              icon: Icon(Icons.account_circle), label: '정보'),
         ],
         type: BottomNavigationBarType.fixed,
-      ),*/
+      ),
     );
   }
 
