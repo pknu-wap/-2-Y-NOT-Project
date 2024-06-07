@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -98,7 +99,7 @@ class BookList extends StatelessWidget {
                     AlarmCon(context: context),  // 알람 버튼
                   ],
                 ),
-                SearchB(),
+                BuildBar(),
                 FutureBuilder<List<BookInfo>>(
                   future: searchBooks(Searchresult.title),  // FutureBuilder를 사용하여 비동기적으로 책 목록 검색
                   builder: (context, snapshot) {
@@ -258,17 +259,50 @@ class BookList extends StatelessWidget {
         );
       },
       iconSize: 30,
-      color: Colors.orangeAccent,
+      color: Color(0xFFFE4D02),
       icon: const Icon(Icons.notifications_none),
     );
   }
+}
+Color blendWithWhite(Color color, double factor) {
+  assert(factor >= 0.0 && factor <= 1.0);
 
+  int red = (color.red + (255 - color.red) * factor).toInt();
+  int green = (color.green + (255 - color.green) * factor).toInt();
+  int blue = (color.blue + (255 - color.blue) * factor).toInt();
+
+  return Color.fromARGB(color.alpha, red, green, blue);
+}
+class BuildBar extends StatefulWidget{
+  const BuildBar({super.key});
+
+  @override
+  State<BuildBar> createState() => _BuildBarState();
+}
+class _BuildBarState extends State<BuildBar>{
+  String? inputText;
   // 검색 바 위젯
-  Widget SearchB() {
-    return const SearchBar(
-      leading: Icon(Icons.search),
-      hintText: "검색어를 입력하세요",
-      backgroundColor: MaterialStatePropertyAll(Colors.white70),
-    );
-  }
+  @override
+  Widget build(BuildContext context) {
+      return SearchBar(
+        onChanged: (value) {
+          setState(() => inputText = value);
+          //print('Input Text = $inputText');
+        },
+        leading: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookList(
+                      Searchresult: BookInfo(
+                          title: inputText ?? '', author: '', publishing: '')),
+                ),
+              );
+            }),
+        hintText: "검색어를 입력하세요",
+        backgroundColor: MaterialStateProperty.all(blendWithWhite(Color(0xFFFE4D02), 0.7)),
+      );
+    }
 }
